@@ -1,0 +1,59 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# StrucDiv
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The StrucDiv package provides methods to estimate spatial (i.e. horizontal) structural diversity, which can also be understood as spatial heterogeneity in continuous data. With these methods, latent landscape features, i.e. spatial structural diversity features can be detected in continuous remote sensing data, or in other data in gridded field format. Methods are based on the spatial arrangement of pixel values, or ranks, similar to Haralick et. al (1973) <DOI:10.1109/TSMC.1973.4309314>. A moving window defines the scale on which gray level co-occurrence matrices are computed. The following metrics are available: different versions of entropy, which can be pooled under the concept of structural diversity entropy, also normalized entropy, dissimilarity, contrast, and homogeneity. Structural diversity entropy includes entropy, entropy weighted with absolute, and with square difference weights, i.e. differences between pixel values, or ranks, that form a pair. Normalized entropy is entropy normalized over maximum entropy, which is scale-dependent. These methods can be applied to any continuous gridded data and to categorical data if entropy is not weighted, or if categories follow a meaningful order. For entropy (not weighted) and normalized entropy, high numbers of gray levels can lead to structureless images.
+
+
+## Installation
+
+You can install the released version of StrucDiv from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("StrucDiv")
+```
+
+## Example
+
+Calculate normalized entropy on Normalized Difference Vegetation Index (NDVI) data, which was binned to 15 gray levels (see data documentation). We define the size of the moving window with window side length (wsl) three, and we consider distance one between pixels (direct neighbors), and all four possible directions in which pixels can be considered as pairs.
+
+```{r example, message = FALSE}
+library(StrucDiv)
+ent <- StrucDiv(ndvi.15gl, wsl = 5, dist = 1, angle = "all", fun = entropyNorm, na.handling = na.pass)
+
+```
+
+```{r plot, echo=FALSE, message = FALSE}
+library(raster)
+
+long <- c(166:174)
+lat <- c(66.61 : 68.61)
+
+par(mfrow=c(1,2))
+par(mai=c(.5,.5,.5,.9)) # unten, links, oben, rechts
+plot(ndvi.15gl, box = FALSE, bty = "n", axes =FALSE)
+title(sub="NDVI, 15 gray levels", line = -15)
+axis(1, pos = 66.62804, at = long, cex.axis=1)
+axis(2, pos =165.0205, at = lat, cex.axis=1)
+plot(ent, box = FALSE, bty = "n", axes =FALSE)
+axis(1, pos = 66.62804, at = long, cex.axis=1)
+axis(2, pos =165.0205, at = lat, cex.axis=1)
+title(sub="normalized entropy", line = -15)
+
+```

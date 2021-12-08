@@ -1,0 +1,25 @@
+Type: Package
+Package: StrucDiv2
+Title: Spatial Structural Diversity Analysis of Raster Data
+Version: 0.1.0
+Authors@R: c(
+    person("Leila", "Schuh", email = "l.schuh@posteo.net", role = c("aut", "cre")),
+    person("Kalina", "Cherneva", email = "kachernev@gmail.com", role = "ctr"),
+    person("Reinhard", "Furrer", email = "reinhard.furrer@math.uzh.ch", role = "ths"),
+    person("Patrick", "Schratz", role = "ctb"),
+    person("University Research Priority Progam Global Change and Biodiversity of the University of Zurich", role = "fnd"))
+Maintainer: Leila Schuh <leila.schuh@math.uzh.ch>
+Description: The StrucDiv package provides methods to estimate spatial structural diversity, and to detect latent landscape features in continuous remote sensing data, or in other data in gridded field format. 
+License: GPL(>=3)
+Imports:
+    Rcpp (>= 1.0.4),
+    tidyr (>= 1.0.2),
+    raster (>= 3.1.5)
+Suggests:
+    testthat
+LinkingTo:
+    Rcpp,
+    RcppProgress
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
