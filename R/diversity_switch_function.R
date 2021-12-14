@@ -33,8 +33,8 @@ homogeneity <- function(rank, delta, Hetx, SpatMat, nrp, narm, ...) {
   switch_function <- function(rank) {
     
     switch(EXPR = as.character(rank),
-           "FALSE" = .HomogeneityRank(Hetx = Hetx, PMat = SpatMat, narm = narm),
-           "TRUE" = .HomogeneityValue(Hetx = Hetx, PMat = SpatMat, narm = narm)
+           "TRUE" = .HomogeneityRank(Hetx = Hetx, PMat = SpatMat, narm = narm),
+           "FALSE" = .HomogeneityValue(Hetx = Hetx, PMat = SpatMat, narm = narm)
            )
   }
   

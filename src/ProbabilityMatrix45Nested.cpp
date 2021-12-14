@@ -95,7 +95,7 @@ private:
 
 // [[Rcpp::export(name=".ProbabilityMatrixDiagonal45Nested")]]
 List ProbabilityMatrixDiagonal45Nested(NumericMatrix vMat, NumericMatrix vMat_big,
-                                       int d, bool narm,
+                                       int d,
                                        bool display_progress=true){
 
   List outList(vMat.nrow());
@@ -120,11 +120,20 @@ List ProbabilityMatrixDiagonal45Nested(NumericMatrix vMat, NumericMatrix vMat_bi
     NumericVector values = na_omit(rowvec);
     NumericVector Values = sort_unique(values);
     
-    if(Values.length() == 0) continue;
+    NumericVector rowvec_big = vMat_big(t,_);
+    NumericMatrix xMat2_big( sqrt(vMat_big.ncol()), sqrt(vMat_big.ncol()), rowvec_big.begin() );
+    NumericMatrix xMat_big = transpose(xMat2_big);  // transpose is fine because we
+    // always have square matrices and we simply need to switch rows and columns
+    
+    NumericVector values_big = na_omit(rowvec_big);
+    NumericVector Values_big = sort_unique(values_big);
     
     LogicalVector v = is_na(rowvec);
     
-    if(narm==0 && any(v).is_true()) continue;
+    LogicalVector v_big = is_na(rowvec_big);
+
+    if( (Values.length() == 0) | (Values_big.length() == 0) ) continue;
+    
     
     // allocate the matrix we will return
     NumericMatrix out(Values.length(), Values.length());
@@ -160,31 +169,18 @@ List ProbabilityMatrixDiagonal45Nested(NumericMatrix vMat, NumericMatrix vMat_bi
     colnames(out2) = Values;
     rownames(out2) = Values;
 
-    NumericVector rowvec_big = vMat_big(t,_);
-    NumericMatrix xMat2_big( sqrt(vMat_big.ncol()), sqrt(vMat_big.ncol()), rowvec_big.begin() );
-    NumericMatrix xMat_big = transpose(xMat2_big);  // transpose is fine because we
-    // always have square matrices and we simply need to switch rows and columns
-    
-    NumericVector values_big = na_omit(rowvec_big);
-    NumericVector Values_big = sort_unique(values_big);
-    
-    if(Values_big.length() == 0) continue;
-    
-    LogicalVector v_big = is_na(rowvec_big);
-    
-    if(narm==0 && any(v_big).is_true()) continue;
     
     // allocate the matrix we will return
     NumericMatrix out_big(Values_big.length(), Values_big.length());
     
-    for(int i = 0; i < out.nrow(); i++){
-      for(int j = 0; j < out.ncol(); j++){
-        for(int a = 0; a < xMat.nrow(); a++){
-          for(int b = 0; b < xMat.ncol(); b++){
-            if( (b >= d) & (a < xMat.nrow() - d) ){
+    for(int i = 0; i < out_big.nrow(); i++){
+      for(int j = 0; j < out_big.ncol(); j++){
+        for(int a = 0; a < xMat_big.nrow(); a++){
+          for(int b = 0; b < xMat_big.ncol(); b++){
+            if( (b >= d) & (a < xMat_big.nrow() - d) ){
               
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b-d)){
-                out(i,j) += 1;
+              if(Values_big(i) == xMat_big(a,b) & Values_big(j) == xMat_big(a+d, b-d)){
+                out_big(i,j) += 1;
                 
               }
             }
