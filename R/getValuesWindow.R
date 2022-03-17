@@ -94,4 +94,19 @@
 }
 
 
+.G <- function(Mat, overlap, edge){
+  for (i in overlap:(1 + edge)){
+    Mat[ ,i] <- (i - edge) / (overlap - edge)
+    Mat[ ,(ncol(Mat) - i + 1)] <- (i - edge) / (overlap - edge)
+    Mat[i, ] <- (i - edge) / (overlap - edge)
+    Mat[(nrow(Mat) - i + 1), ] <- (i - edge) / (overlap - edge)
+  }
+  Mat[ ,0:edge] <- 0 
+  Mat[ ,(ncol(Mat) - edge + 1):ncol(Mat)] <- 0 
+  Mat[0:edge, ] <- 0 
+  Mat[(nrow(Mat) - edge + 1):nrow(Mat), ] <- 0 
+  return(Mat)
+}
+
+
 ############################################################################################################################

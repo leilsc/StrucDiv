@@ -16,6 +16,7 @@
 #' @param nrp integer. The number of possible pixel pairs. StrucDiv calculates it 
 #' internally and passes it to the diversity functions.
 #' @param narm logical. It is automatically set to 0 if na.handling = na.pass, and to 1 if na.handling = na.omit.
+#' @param display_progress logical. Shows if the progress bar should be displayed.
 #' @param ... possible further arguments.
 #' @details This function is used internally and is called as an argument to the \code{StrucDiv}.
 #' @examples 
@@ -28,13 +29,13 @@
 #' @importFrom raster raster
 #' @export
 
-homogeneity <- function(rank, delta, Hetx, SpatMat, nrp, narm, ...) {
+homogeneity <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...) {
   
   switch_function <- function(rank) {
     
     switch(EXPR = as.character(rank),
-           "TRUE" = .HomogeneityRank(Hetx = Hetx, PMat = SpatMat, narm = narm),
-           "FALSE" = .HomogeneityValue(Hetx = Hetx, PMat = SpatMat, narm = narm)
+           "TRUE" = .HomogeneityRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE" = .HomogeneityValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress)
            )
   }
   
@@ -47,13 +48,13 @@ homogeneity <- function(rank, delta, Hetx, SpatMat, nrp, narm, ...) {
 #' @export
 
 
-dissimilarity <- function(rank, delta, Hetx, SpatMat, nrp, narm, ...) {
+dissimilarity <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...) {
   
   switch_function <- function(rank) {
     
     switch(EXPR = as.character(rank),
-           "TRUE" = .DissimilarityRank(Hetx = Hetx, PMat = SpatMat, narm = narm),
-           "FALSE" = .DissimilarityValue(Hetx = Hetx, PMat = SpatMat, narm = narm)
+           "TRUE" = .DissimilarityRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE" = .DissimilarityValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress)
     )
   }
   
@@ -65,13 +66,13 @@ dissimilarity <- function(rank, delta, Hetx, SpatMat, nrp, narm, ...) {
 #' @rdname Diversity
 #' @export
 
-contrast <- function(rank, delta, Hetx, SpatMat, nrp, narm, ...) {
+contrast <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...) {
   
   switch_function <- function(rank) {
     
     switch(EXPR = as.character(rank),
-           "TRUE" = .ContrastRank(Hetx = Hetx, PMat = SpatMat, narm = narm),
-           "FALSE" = .ContrastValue(Hetx = Hetx, PMat = SpatMat, narm = narm)
+           "TRUE" = .ContrastRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE" = .ContrastValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress)
     )
   }
   
@@ -83,19 +84,19 @@ contrast <- function(rank, delta, Hetx, SpatMat, nrp, narm, ...) {
 #' @rdname Diversity
 #' @export
 
-entropy <- function(rank, delta, Hetx, SpatMat, nrp, narm, ...) {
+entropy <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...) {
   
   rank_delta <- paste(rank, delta)
   
   switch_function <- function(rank_delta) {
     
     switch(EXPR = rank_delta,
-           "FALSE 0" = .Entropy(Hetx = Hetx, PMat = SpatMat, narm = narm),
-           "TRUE 0" = .Entropy(Hetx = Hetx, PMat = SpatMat, narm = narm),
-           "TRUE 1" = .WeightedEntropyAbsRank(Hetx = Hetx, PMat = SpatMat, narm = narm),
-           "FALSE 1" = .WeightedEntropyAbsValue(Hetx = Hetx, PMat = SpatMat, narm = narm),
-           "TRUE 2" = .WeightedEntropySqrRank(Hetx = Hetx, PMat = SpatMat, narm = narm),
-           "FALSE 2" = .WeightedEntropySqrValue(Hetx = Hetx, PMat = SpatMat, narm = narm)
+           "FALSE 0" = .Entropy(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE 0" = .Entropy(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE 1" = .WeightedEntropyAbsRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE 1" = .WeightedEntropyAbsValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE 2" = .WeightedEntropySqrRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE 2" = .WeightedEntropySqrValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress)
     )
   }
   
@@ -107,9 +108,9 @@ entropy <- function(rank, delta, Hetx, SpatMat, nrp, narm, ...) {
 #' @rdname Diversity
 #' @export
 
-entropyNorm <- function(rank, delta, Hetx, SpatMat, nrp, narm, ...) {
+entropyNorm <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...) {
   
-  v <- .NormalizedEntropy(Hetx = Hetx, PMat = SpatMat, nrp = nrp, narm = narm)
+  v <- .NormalizedEntropy(Hetx = Hetx, PMat = SpatMat, nrp = nrp, narm = narm, display_progress = display_progress)
   
   return(v)
   

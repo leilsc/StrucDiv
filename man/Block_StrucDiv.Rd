@@ -7,7 +7,7 @@
 Block_StrucDiv(
   x,
   window,
-  wsl,
+  wsl = NULL,
   WSLw,
   overlap,
   dist = 1,
@@ -30,12 +30,14 @@ horizontal structural diversity should be calculated.}
 
 \item{wsl}{uneven integer. The window side length, 
 wsl x wsl defines the size of the moving window.
-The window must be smaller than the dimensions of the input raster.}
+The window must be smaller than the dimensions of the input raster. Default is NULL
+in which case no nesting is used.}
 
 \item{WSLw}{an uneven integer smaller than the dimensions of the input raster 
 and larger than wsl.}
 
-\item{overlap}{an integer that defines the overlap between the blocks.}
+\item{overlap}{an integer that defines the overlap between the blocks. It must
+be at least 2*(WSLw-1) or bigger.}
 
 \item{dist}{integer. The distance between two pixels that should be considered as a pair, 
 defaults to dist = 1 (direct neighbors).}

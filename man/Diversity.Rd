@@ -9,15 +9,15 @@
 \alias{entropyNorm}
 \title{Diversity functions}
 \usage{
-homogeneity(rank, delta, Hetx, SpatMat, nrp, narm, ...)
+homogeneity(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
 
-dissimilarity(rank, delta, Hetx, SpatMat, nrp, narm, ...)
+dissimilarity(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
 
-contrast(rank, delta, Hetx, SpatMat, nrp, narm, ...)
+contrast(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
 
-entropy(rank, delta, Hetx, SpatMat, nrp, narm, ...)
+entropy(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
 
-entropyNorm(rank, delta, Hetx, SpatMat, nrp, narm, ...)
+entropyNorm(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
 }
 \arguments{
 \item{rank}{logical. Should values be replaced with ranks in each co-occurrence 
@@ -37,6 +37,8 @@ to the \code{StrucDiv} function.}
 internally and passes it to the diversity functions.}
 
 \item{narm}{logical. It is automatically set to 0 if na.handling = na.pass, and to 1 if na.handling = na.omit.}
+
+\item{display_progress}{logical. Shows if the progress bar should be displayed.}
 
 \item{...}{possible further arguments.}
 }
