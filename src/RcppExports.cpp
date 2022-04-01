@@ -75,6 +75,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// EntropyParallel
+double EntropyParallel(NumericVector Hetx, NumericMatrix PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_EntropyParallel(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(EntropyParallel(Hetx, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 // HomogeneityRank
 NumericVector HomogeneityRank(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_HomogeneityRank(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -258,6 +272,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ProbabilityMatrixAllNestedParallel
+NumericMatrix ProbabilityMatrixAllNestedParallel(NumericVector vMat, NumericVector vMat_big, int d, bool display_progress);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixAllNestedParallel(SEXP vMatSEXP, SEXP vMat_bigSEXP, SEXP dSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type vMat(vMatSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixAllNestedParallel(vMat, vMat_big, d, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 // WeightedEntropyAbsRank
 NumericVector WeightedEntropyAbsRank(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_WeightedEntropyAbsRank(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -283,6 +311,20 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(WeightedEntropyAbsValue(Hetx, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// WeightedEntropyAbsValueParallel
+double WeightedEntropyAbsValueParallel(NumericVector Hetx, NumericMatrix PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_WeightedEntropyAbsValueParallel(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(WeightedEntropyAbsValueParallel(Hetx, PMat, narm, display_progress));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -314,6 +356,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// WeightedEntropySqrValueParallel
+NumericVector WeightedEntropySqrValueParallel(NumericVector Hetx, NumericMatrix PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_WeightedEntropySqrValueParallel(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(WeightedEntropySqrValueParallel(Hetx, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 // do_focal_get
 NumericVector do_focal_get(NumericMatrix d, NumericVector dim, NumericVector ngb);
 RcppExport SEXP _StrucDiv2_do_focal_get(SEXP dSEXP, SEXP dimSEXP, SEXP ngbSEXP) {
@@ -334,6 +390,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_StrucDiv2_DissimilarityRank", (DL_FUNC) &_StrucDiv2_DissimilarityRank, 4},
     {"_StrucDiv2_DissimilarityValue", (DL_FUNC) &_StrucDiv2_DissimilarityValue, 4},
     {"_StrucDiv2_Entropy", (DL_FUNC) &_StrucDiv2_Entropy, 4},
+    {"_StrucDiv2_EntropyParallel", (DL_FUNC) &_StrucDiv2_EntropyParallel, 4},
     {"_StrucDiv2_HomogeneityRank", (DL_FUNC) &_StrucDiv2_HomogeneityRank, 4},
     {"_StrucDiv2_HomogeneityValue", (DL_FUNC) &_StrucDiv2_HomogeneityValue, 4},
     {"_StrucDiv2_NormalizedEntropy", (DL_FUNC) &_StrucDiv2_NormalizedEntropy, 5},
@@ -347,10 +404,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_StrucDiv2_ProbabilityMatrixVerticalNested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixVerticalNested, 4},
     {"_StrucDiv2_ProbabilityMatrixAllDynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllDynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixAllNested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllNested, 4},
+    {"_StrucDiv2_ProbabilityMatrixAllNestedParallel", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllNestedParallel, 4},
     {"_StrucDiv2_WeightedEntropyAbsRank", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsRank, 4},
     {"_StrucDiv2_WeightedEntropyAbsValue", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsValue, 4},
+    {"_StrucDiv2_WeightedEntropyAbsValueParallel", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsValueParallel, 4},
     {"_StrucDiv2_WeightedEntropySqrRank", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrRank, 4},
     {"_StrucDiv2_WeightedEntropySqrValue", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrValue, 4},
+    {"_StrucDiv2_WeightedEntropySqrValueParallel", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrValueParallel, 4},
     {"_StrucDiv2_do_focal_get", (DL_FUNC) &_StrucDiv2_do_focal_get, 3},
     {NULL, NULL, 0}
 };

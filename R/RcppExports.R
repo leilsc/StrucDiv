@@ -21,6 +21,10 @@
     .Call(`_StrucDiv2_Entropy`, Hetx, PMat, narm, display_progress)
 }
 
+.EntropyParallel <- function(Hetx, PMat, narm, display_progress = FALSE) {
+    .Call(`_StrucDiv2_EntropyParallel`, Hetx, PMat, narm, display_progress)
+}
+
 .HomogeneityRank <- function(Hetx, PMat, narm, display_progress = TRUE) {
     .Call(`_StrucDiv2_HomogeneityRank`, Hetx, PMat, narm, display_progress)
 }
@@ -73,6 +77,10 @@
     .Call(`_StrucDiv2_ProbabilityMatrixAllNested`, vMat, vMat_big, d, display_progress)
 }
 
+.ProbabilityMatrixAllNestedParallel <- function(vMat, vMat_big, d, display_progress = FALSE) {
+    .Call(`_StrucDiv2_ProbabilityMatrixAllNestedParallel`, vMat, vMat_big, d, display_progress)
+}
+
 .WeightedEntropyAbsRank <- function(Hetx, PMat, narm, display_progress = TRUE) {
     .Call(`_StrucDiv2_WeightedEntropyAbsRank`, Hetx, PMat, narm, display_progress)
 }
@@ -81,12 +89,20 @@
     .Call(`_StrucDiv2_WeightedEntropyAbsValue`, Hetx, PMat, narm, display_progress)
 }
 
+.WeightedEntropyAbsValueParallel <- function(Hetx, PMat, narm, display_progress = FALSE) {
+    .Call(`_StrucDiv2_WeightedEntropyAbsValueParallel`, Hetx, PMat, narm, display_progress)
+}
+
 .WeightedEntropySqrRank <- function(Hetx, PMat, narm, display_progress = TRUE) {
     .Call(`_StrucDiv2_WeightedEntropySqrRank`, Hetx, PMat, narm, display_progress)
 }
 
 .WeightedEntropySqrValue <- function(Hetx, PMat, narm, display_progress = TRUE) {
     .Call(`_StrucDiv2_WeightedEntropySqrValue`, Hetx, PMat, narm, display_progress)
+}
+
+.WeightedEntropySqrValueParallel <- function(Hetx, PMat, narm, display_progress = FALSE) {
+    .Call(`_StrucDiv2_WeightedEntropySqrValueParallel`, Hetx, PMat, narm, display_progress)
 }
 
 .focal_get <- function(d, dim, ngb) {

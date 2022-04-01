@@ -16,6 +16,7 @@ StrucDiv2(
   padValue = NA,
   aroundTheGlobe = FALSE,
   filename = "",
+  display_progress = TRUE,
   ...
 )
 }

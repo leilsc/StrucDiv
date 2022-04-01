@@ -59,7 +59,7 @@
 StrucDiv2 <- function(x, wsl, dist = 1, angle = "all",
                      rank = FALSE, fun, delta = 0, 
                      na.handling = na.pass, padValue = NA, 
-                     aroundTheGlobe = FALSE, filename = "", ...) {
+                     aroundTheGlobe = FALSE, filename = "", display_progress = TRUE, ...) {
   
   dotArgs <- list(...)
   
@@ -105,7 +105,7 @@ StrucDiv2 <- function(x, wsl, dist = 1, angle = "all",
     stop("Delta must be 0, 1, or 2.")
   }
   
-  filename <- raster::trim(filename)
+  filename <- glue::trim(filename)
   
   if (raster::canProcessInMemory(out)) {
     
@@ -155,7 +155,7 @@ StrucDiv2 <- function(x, wsl, dist = 1, angle = "all",
     }
     
     v <- do.call(fun, list(rank = rank, Hetx = Hetx, SpatMat = SpatMat, delta = delta,
-                           nrp = nrp, narm = narm))
+                           nrp = nrp, narm = narm, display_progress = display_progress))
     
     out <- raster::setValues(out, v)
     return(out)

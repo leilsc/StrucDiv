@@ -138,7 +138,7 @@ Block_StrucDiv <- function(x, window, wsl = NULL, WSLw,
   
   out <- raster::crop(x, raster::extent(x, 1, 1, 1, 1))
 
-  filename <- raster::trim(filename)
+  filename <- glue::trim(filename)
 
   if (raster::canProcessInMemory(x)) {
     

@@ -46,6 +46,10 @@
 #' to calculate diversity without edge effects on the sides.
 #' Defaults to FALSE.
 #' @param filename character. If the output raster should be written to a file, define file name (optional).
+#' @param parallelize logical. Set to TRUE to parallelize the computation on multiple cores.
+#' Default is FALSE. Please set to TRUE only for bigger problems.
+#' @param ncores integer. Number of cores to parallelize on. If parallelize is TRUE,
+#' the default number of cores is total cores on the machine minus one.
 #' @param ... possible further arguments.
 #' @return A raster layer
 #' @examples 
@@ -61,7 +65,8 @@
 Nested_StrucDiv <- function(x, wsl, WSLw, dist = 1, angle = "all",
                      rank = FALSE, fun, delta = 0, 
                      na.handling = na.pass, padValue = NA, 
-                     aroundTheGlobe = FALSE, filename = "", ...) {
+                     aroundTheGlobe = FALSE, filename = "", display_progress = TRUE, 
+                     parallelize = FALSE, ncores = NULL, ...) {
   
   dotArgs <- list(...)
   
@@ -107,7 +112,11 @@ Nested_StrucDiv <- function(x, wsl, WSLw, dist = 1, angle = "all",
     stop("Delta must be 0, 1, or 2.")
   }
   
-  filename <- raster::trim(filename)
+  # if (!is.null | ncores%%1 != 0) {
+  #   stop("ncores must be an integer.")
+  # }
+  
+  filename <- glue::trim(filename)
   
   if (raster::canProcessInMemory(out)) {
     
@@ -133,34 +142,6 @@ Nested_StrucDiv <- function(x, wsl, WSLw, dist = 1, angle = "all",
     )
     
     
-    switch_angle <- function(angle) {
-      
-      switch(angle,
-             "horizontal" = .ProbabilityMatrixHorizontalNested(vMat = vMat, 
-                                                               vMat_big = vMat_big,
-                                                               d = dist),
-             "vertical" = .ProbabilityMatrixVerticalNested(vMat = vMat, 
-                                                           vMat_big = vMat_big, 
-                                                           d = dist),
-             "diagonal45" = .ProbabilityMatrixDiagonal45Nested(vMat = vMat, 
-                                                               vMat_big = vMat_big,
-                                                               d = dist),
-             "diagonal135" = .ProbabilityMatrixDiagonal135Nested(vMat = vMat, 
-                                                                 vMat_big = vMat_big,
-                                                                 d = dist),
-             "all" = .ProbabilityMatrixAllNested(vMat = vMat, 
-                                                 vMat_big = vMat_big,
-                                                 d = dist),
-             .ProbabilityMatrixHorizontalNested(vMat = vMat,
-                                                vMat_big = vMat_big,
-                                                d = dist)
-      )
-      
-    }
-    
-    
-    SpatMat <- switch_angle(angle)
-    
     if (angle %in% c("horizontal", "vertical")) {
       nrp <- 2*wsl*(wsl - dist)
       # nrp_big <- 2*WSLw*(WSLw - dist)
@@ -177,13 +158,97 @@ Nested_StrucDiv <- function(x, wsl, WSLw, dist = 1, angle = "all",
       # nrp_big <- 4 * (WSLw - dist) * (2 * WSLw - dist)
     }
     
+    ## handle the number of cores to parallelize on
+    cores = parallel::detectCores() - 1
+    ncores = ifelse(is.null(ncores), cores, ncores)
+    ncores = ifelse(ncores > cores+1, cores+1, ncores)
+    ncores = ifelse(ncores == 0, cores, ncores)
+    cl <- parallel::makeCluster(cores)
+    on.exit(parallel::stopCluster(cl))
     
-    v <- do.call(fun, list(rank = rank, Hetx = Hetx, SpatMat = SpatMat, delta = delta,
-                           nrp = nrp, narm = narm))
+    doParallel::registerDoParallel(cl)
+    
+    #suppressWarnings(
+    
+    if(parallelize == TRUE){
+    v <- foreach::foreach( row.num = 1:nrow(vMat), 
+                                 .packages = "StrucDiv2",
+                                 # .noexport = 
+                                 #   c(".ProbabilityMatrixAllNestedParallel", ".EntropyParallel"),
+                                 .combine='cbind' ) %dopar% {
+        
+        switch_angle <- function(angle) {
+          
+          switch(angle,
+                 "horizontal" = .ProbabilityMatrixHorizontalNested(vMat = vMat, 
+                                                                   vMat_big = vMat_big,
+                                                                   d = dist),
+                 "vertical" = .ProbabilityMatrixVerticalNested(vMat = vMat, 
+                                                               vMat_big = vMat_big, 
+                                                               d = dist),
+                 "diagonal45" = .ProbabilityMatrixDiagonal45Nested(vMat = vMat, 
+                                                                   vMat_big = vMat_big,
+                                                                   d = dist),
+                 "diagonal135" = .ProbabilityMatrixDiagonal135Nested(vMat = vMat, 
+                                                                     vMat_big = vMat_big,
+                                                                     d = dist),
+                 "all" = .ProbabilityMatrixAllNestedParallel(vMat = vMat[row.num,], 
+                                                     vMat_big = vMat_big[row.num,],
+                                                     d = dist),
+                 .ProbabilityMatrixAllNestedParallel(vMat = vMat[row.num,], 
+                                                     vMat_big = vMat_big[row.num,],
+                                                     d = dist)
+          )
+          
+        }
+    
+    SpatMat <- switch_angle(angle)
+    # print(row.num)
+    do.call(fun, list(rank = rank, Hetx = Hetx[row.num,], SpatMat = SpatMat, delta = delta,
+                           nrp = nrp, narm = narm, display_progress = display_progress, 
+                      parallelize = parallelize))
+    
+      }
+      #)
+    } ## end if
+    
+    else{
+      switch_angle <- function(angle) {
+        
+        switch(angle,
+               "horizontal" = .ProbabilityMatrixHorizontalNested(vMat = vMat, 
+                                                                 vMat_big = vMat_big,
+                                                                 d = dist),
+               "vertical" = .ProbabilityMatrixVerticalNested(vMat = vMat, 
+                                                             vMat_big = vMat_big, 
+                                                             d = dist),
+               "diagonal45" = .ProbabilityMatrixDiagonal45Nested(vMat = vMat, 
+                                                                 vMat_big = vMat_big,
+                                                                 d = dist),
+               "diagonal135" = .ProbabilityMatrixDiagonal135Nested(vMat = vMat, 
+                                                                   vMat_big = vMat_big,
+                                                                   d = dist),
+               "all" = .ProbabilityMatrixAllNested(vMat = vMat, 
+                                                           vMat_big = vMat_big,
+                                                           d = dist),
+               .ProbabilityMatrixAllNested(vMat = vMat, 
+                                                   vMat_big = vMat_big,
+                                                   d = dist)
+        )
+      
+      }
+      
+      SpatMat <- switch_angle(angle)
+      
+      v <- do.call(fun, list(rank = rank, Hetx = Hetx, SpatMat = SpatMat, delta = delta,
+                             nrp = nrp, narm = narm, display_progress = display_progress, 
+                             parallelize = parallelize))
+      
+    }
     
     out <- raster::setValues(out, v)
     return(out)
-    
+
     if (filename != "") {
       out <- raster::writeRaster(out, filename)
     }

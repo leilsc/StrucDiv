@@ -9,13 +9,32 @@
 \alias{entropyNorm}
 \title{Diversity functions}
 \usage{
-homogeneity(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
+homogeneity(
+  rank,
+  delta,
+  Hetx,
+  SpatMat,
+  nrp,
+  narm,
+  display_progress = TRUE,
+  ...
+)
 
 dissimilarity(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
 
 contrast(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
 
-entropy(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
+entropy(
+  rank,
+  delta,
+  Hetx,
+  SpatMat,
+  nrp,
+  narm,
+  display_progress,
+  parallelize = FALSE,
+  ...
+)
 
 entropyNorm(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
 }

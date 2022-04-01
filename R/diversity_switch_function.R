@@ -29,7 +29,7 @@
 #' @importFrom raster raster
 #' @export
 
-homogeneity <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...) {
+homogeneity <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress = TRUE, ...) {
   
   switch_function <- function(rank) {
     
@@ -84,9 +84,12 @@ contrast <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ..
 #' @rdname Diversity
 #' @export
 
-entropy <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...) {
+entropy <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, 
+                    parallelize = FALSE, ...) {
   
   rank_delta <- paste(rank, delta)
+  
+  if(parallelize == FALSE){
   
   switch_function <- function(rank_delta) {
     
@@ -98,6 +101,22 @@ entropy <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...
            "TRUE 2" = .WeightedEntropySqrRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
            "FALSE 2" = .WeightedEntropySqrValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress)
     )
+  }
+  }
+  
+  else{
+  
+  switch_function <- function(rank_delta) {
+    
+    switch(EXPR = rank_delta,
+           "FALSE 0" = .EntropyParallel(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE 0" = .Entropy(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE 1" = .WeightedEntropyAbsRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE 1" = .WeightedEntropyAbsValueParallel(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE 2" = .WeightedEntropySqrRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE 2" = .WeightedEntropySqrValueParallel(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress)
+    )
+  }
   }
   
   v <- switch_function(rank_delta)

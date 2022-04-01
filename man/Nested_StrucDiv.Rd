@@ -17,6 +17,9 @@ Nested_StrucDiv(
   padValue = NA,
   aroundTheGlobe = FALSE,
   filename = "",
+  display_progress = TRUE,
+  parallelize = FALSE,
+  ncores = NULL,
   ...
 )
 }
@@ -69,6 +72,12 @@ to calculate diversity without edge effects on the sides.
 Defaults to FALSE.}
 
 \item{filename}{character. If the output raster should be written to a file, define file name (optional).}
+
+\item{parallelize}{logical. Set to TRUE to parallelize the computation on multiple cores.
+Default is FALSE.}
+
+\item{ncores}{integer. Number of cores to parallelize on. If parallelize is TRUE,
+the default number of cores is total cores on the machine minus one.}
 
 \item{...}{possible further arguments.}
 }

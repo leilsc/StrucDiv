@@ -14,7 +14,10 @@ License: GPL(>=3)
 Imports:
     Rcpp (>= 1.0.4),
     tidyr (>= 1.0.2),
-    raster (>= 3.1.5)
+    raster (>= 3.1.5),
+    doParallel (>= 1.0.15),
+    foreach (>= 1.5.0),
+    parallel
 Suggests:
     testthat
 LinkingTo:
