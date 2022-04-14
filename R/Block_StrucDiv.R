@@ -121,6 +121,11 @@ Block_StrucDiv <- function(x, window, wsl = NULL, WSLw,
     stop("Overlap is too small. Please input an overlap of at least 2*(WSLw-1).")
   }
   
+  if ( overlap > floor(window[1]/2) ) {
+    stop("Overlap is too big Please input an overlap of at most half the window size.")
+  }
+  
+  
   if (!(angle %in% c("horizontal", "vertical", "diagonal45", "diagonal135", "all"))) {
     stop('Angle must be one of "horizontal", "vertical", "diagonal45", "diagonal135", or "all".')
   }
@@ -132,9 +137,6 @@ Block_StrucDiv <- function(x, window, wsl = NULL, WSLw,
   if ( !(delta %in% c(0,1,2)) ) {
     stop("Delta must be 0, 1, or 2.")
   }
-  
-  x <- raster::crop(x, raster::extent(x, 1, (nrow(x) - nrow(x) %% window[1]), 1, 
-                                      (ncol(x) - ncol(x) %% window[2])))
   
   out <- raster::crop(x, raster::extent(x, 1, 1, 1, 1))
 
