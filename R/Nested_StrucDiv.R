@@ -207,6 +207,7 @@ Nested_StrucDiv <- function(x, wsl, WSLw, dist = 1, angle = "all",
     do.call(fun, list(rank = rank, Hetx = Hetx[row.num,], SpatMat = SpatMat, delta = delta,
                            nrp = nrp, narm = narm, display_progress = display_progress, 
                       parallelize = parallelize))
+    gc()
     
       }
       #)
