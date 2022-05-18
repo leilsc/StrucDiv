@@ -1,5 +1,5 @@
-#' @name StrucDiv2
-#' @rdname StrucDiv2
+#' @name strucDiv
+#' @rdname strucDiv
 #' @title Calculate spatial (horizontal) structural diversity for an arbitrary raster layer. 
 #' @description
 #' This is a wrapper function that returns a spatial structural diversity map 
@@ -56,7 +56,7 @@
 #' @export
 
 
-StrucDiv2 <- function(x, wsl, dist = 1, angle = "all",
+strucDiv <- function(x, wsl, dist = 1, angle = "all",
                      rank = FALSE, fun, delta = 0, 
                      na.handling = na.pass, padValue = NA, 
                      aroundTheGlobe = FALSE, filename = "", display_progress = TRUE, ...) {

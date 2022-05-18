@@ -160,6 +160,36 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ProbabilityMatrixHorizontalPost
+List ProbabilityMatrixHorizontalPost(NumericMatrix vMat, NumericMatrix x, int d, int nrp, int nrp_big, bool display_progress);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixHorizontalPost(SEXP vMatSEXP, SEXP xSEXP, SEXP dSEXP, SEXP nrpSEXP, SEXP nrp_bigSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat(vMatSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< int >::type nrp(nrpSEXP);
+    Rcpp::traits::input_parameter< int >::type nrp_big(nrp_bigSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixHorizontalPost(vMat, x, d, nrp, nrp_big, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ProbabilityMatrixHorizontalPrior
+NumericMatrix ProbabilityMatrixHorizontalPrior(NumericMatrix vMat, int d, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixHorizontalPrior(SEXP vMatSEXP, SEXP dSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat(vMatSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixHorizontalPrior(vMat, d, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ProbabilityMatrixDiagonal135Dynamic
 List ProbabilityMatrixDiagonal135Dynamic(NumericMatrix vMat, int d, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_ProbabilityMatrixDiagonal135Dynamic(SEXP vMatSEXP, SEXP dSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -185,6 +215,36 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type d(dSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixDiagonal135Nested(vMat, vMat_big, d, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ProbabilityMatrixDiagonal135Post
+List ProbabilityMatrixDiagonal135Post(NumericMatrix vMat, NumericMatrix x, int d, int nrp, int nrp_big, bool display_progress);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixDiagonal135Post(SEXP vMatSEXP, SEXP xSEXP, SEXP dSEXP, SEXP nrpSEXP, SEXP nrp_bigSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat(vMatSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< int >::type nrp(nrpSEXP);
+    Rcpp::traits::input_parameter< int >::type nrp_big(nrp_bigSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixDiagonal135Post(vMat, x, d, nrp, nrp_big, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ProbabilityMatrixDiagonal135Prior
+NumericMatrix ProbabilityMatrixDiagonal135Prior(NumericMatrix vMat, int d, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixDiagonal135Prior(SEXP vMatSEXP, SEXP dSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat(vMatSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixDiagonal135Prior(vMat, d, narm, display_progress));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -216,6 +276,36 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ProbabilityMatrixDiagonal45Post
+List ProbabilityMatrixDiagonal45Post(NumericMatrix vMat, NumericMatrix x, int d, int nrp, int nrp_big, bool display_progress);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixDiagonal45Post(SEXP vMatSEXP, SEXP xSEXP, SEXP dSEXP, SEXP nrpSEXP, SEXP nrp_bigSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat(vMatSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< int >::type nrp(nrpSEXP);
+    Rcpp::traits::input_parameter< int >::type nrp_big(nrp_bigSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixDiagonal45Post(vMat, x, d, nrp, nrp_big, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ProbabilityMatrixDiagonal45Prior
+NumericMatrix ProbabilityMatrixDiagonal45Prior(NumericMatrix vMat, int d, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixDiagonal45Prior(SEXP vMatSEXP, SEXP dSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat(vMatSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixDiagonal45Prior(vMat, d, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ProbabilityMatrixVerticalDynamic
 List ProbabilityMatrixVerticalDynamic(NumericMatrix vMat, int d, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_ProbabilityMatrixVerticalDynamic(SEXP vMatSEXP, SEXP dSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -241,6 +331,36 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type d(dSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixVerticalNested(vMat, vMat_big, d, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ProbabilityMatrixVerticalPost
+List ProbabilityMatrixVerticalPost(NumericMatrix vMat, NumericMatrix x, int d, int nrp, int nrp_big, bool display_progress);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixVerticalPost(SEXP vMatSEXP, SEXP xSEXP, SEXP dSEXP, SEXP nrpSEXP, SEXP nrp_bigSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat(vMatSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< int >::type nrp(nrpSEXP);
+    Rcpp::traits::input_parameter< int >::type nrp_big(nrp_bigSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixVerticalPost(vMat, x, d, nrp, nrp_big, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ProbabilityMatrixVerticalPrior
+NumericMatrix ProbabilityMatrixVerticalPrior(NumericMatrix vMat, int d, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixVerticalPrior(SEXP vMatSEXP, SEXP dSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat(vMatSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixVerticalPrior(vMat, d, narm, display_progress));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -283,6 +403,36 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type d(dSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixAllNestedParallel(vMat, vMat_big, d, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ProbabilityMatrixAllPost
+List ProbabilityMatrixAllPost(NumericMatrix vMat, NumericMatrix x, int d, int nrp, int nrp_big, bool display_progress);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixAllPost(SEXP vMatSEXP, SEXP xSEXP, SEXP dSEXP, SEXP nrpSEXP, SEXP nrp_bigSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat(vMatSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< int >::type nrp(nrpSEXP);
+    Rcpp::traits::input_parameter< int >::type nrp_big(nrp_bigSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixAllPost(vMat, x, d, nrp, nrp_big, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ProbabilityMatrixAllPrior
+NumericMatrix ProbabilityMatrixAllPrior(NumericMatrix vMat, int d, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixAllPrior(SEXP vMatSEXP, SEXP dSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat(vMatSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixAllPrior(vMat, d, narm, display_progress));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -396,15 +546,25 @@ static const R_CallMethodDef CallEntries[] = {
     {"_StrucDiv2_NormalizedEntropy", (DL_FUNC) &_StrucDiv2_NormalizedEntropy, 5},
     {"_StrucDiv2_ProbabilityMatrixHorizontalDynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontalDynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixHorizontalNested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontalNested, 4},
+    {"_StrucDiv2_ProbabilityMatrixHorizontalPost", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontalPost, 6},
+    {"_StrucDiv2_ProbabilityMatrixHorizontalPrior", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontalPrior, 4},
     {"_StrucDiv2_ProbabilityMatrixDiagonal135Dynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal135Dynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixDiagonal135Nested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal135Nested, 4},
+    {"_StrucDiv2_ProbabilityMatrixDiagonal135Post", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal135Post, 6},
+    {"_StrucDiv2_ProbabilityMatrixDiagonal135Prior", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal135Prior, 4},
     {"_StrucDiv2_ProbabilityMatrixDiagonal45Dynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal45Dynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixDiagonal45Nested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal45Nested, 4},
+    {"_StrucDiv2_ProbabilityMatrixDiagonal45Post", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal45Post, 6},
+    {"_StrucDiv2_ProbabilityMatrixDiagonal45Prior", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal45Prior, 4},
     {"_StrucDiv2_ProbabilityMatrixVerticalDynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixVerticalDynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixVerticalNested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixVerticalNested, 4},
+    {"_StrucDiv2_ProbabilityMatrixVerticalPost", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixVerticalPost, 6},
+    {"_StrucDiv2_ProbabilityMatrixVerticalPrior", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixVerticalPrior, 4},
     {"_StrucDiv2_ProbabilityMatrixAllDynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllDynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixAllNested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllNested, 4},
     {"_StrucDiv2_ProbabilityMatrixAllNestedParallel", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllNestedParallel, 4},
+    {"_StrucDiv2_ProbabilityMatrixAllPost", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllPost, 6},
+    {"_StrucDiv2_ProbabilityMatrixAllPrior", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllPrior, 4},
     {"_StrucDiv2_WeightedEntropyAbsRank", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsRank, 4},
     {"_StrucDiv2_WeightedEntropyAbsValue", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsValue, 4},
     {"_StrucDiv2_WeightedEntropyAbsValueParallel", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsValueParallel, 4},

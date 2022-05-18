@@ -45,12 +45,28 @@
     .Call(`_StrucDiv2_ProbabilityMatrixHorizontalNested`, vMat, vMat_big, d, display_progress)
 }
 
+.ProbabilityMatrixHorizontalPost <- function(vMat, x, d, nrp, nrp_big, display_progress = TRUE) {
+    .Call(`_StrucDiv2_ProbabilityMatrixHorizontalPost`, vMat, x, d, nrp, nrp_big, display_progress)
+}
+
+.ProbabilityMatrixHorizontalPrior <- function(vMat, d, narm, display_progress = TRUE) {
+    .Call(`_StrucDiv2_ProbabilityMatrixHorizontalPrior`, vMat, d, narm, display_progress)
+}
+
 .ProbabilityMatrixDiagonal135Dynamic <- function(vMat, d, narm, display_progress = TRUE) {
     .Call(`_StrucDiv2_ProbabilityMatrixDiagonal135Dynamic`, vMat, d, narm, display_progress)
 }
 
 .ProbabilityMatrixDiagonal135Nested <- function(vMat, vMat_big, d, display_progress = TRUE) {
     .Call(`_StrucDiv2_ProbabilityMatrixDiagonal135Nested`, vMat, vMat_big, d, display_progress)
+}
+
+.ProbabilityMatrixDiagonal135Post <- function(vMat, x, d, nrp, nrp_big, display_progress = TRUE) {
+    .Call(`_StrucDiv2_ProbabilityMatrixDiagonal135Post`, vMat, x, d, nrp, nrp_big, display_progress)
+}
+
+.ProbabilityMatrixDiagonal135Prior <- function(vMat, d, narm, display_progress = TRUE) {
+    .Call(`_StrucDiv2_ProbabilityMatrixDiagonal135Prior`, vMat, d, narm, display_progress)
 }
 
 .ProbabilityMatrixDiagonal45Dynamic <- function(vMat, d, narm, display_progress = TRUE) {
@@ -61,12 +77,28 @@
     .Call(`_StrucDiv2_ProbabilityMatrixDiagonal45Nested`, vMat, vMat_big, d, display_progress)
 }
 
+.ProbabilityMatrixDiagonal45Post <- function(vMat, x, d, nrp, nrp_big, display_progress = TRUE) {
+    .Call(`_StrucDiv2_ProbabilityMatrixDiagonal45Post`, vMat, x, d, nrp, nrp_big, display_progress)
+}
+
+.ProbabilityMatrixDiagonal45Prior <- function(vMat, d, narm, display_progress = TRUE) {
+    .Call(`_StrucDiv2_ProbabilityMatrixDiagonal45Prior`, vMat, d, narm, display_progress)
+}
+
 .ProbabilityMatrixVerticalDynamic <- function(vMat, d, narm, display_progress = TRUE) {
     .Call(`_StrucDiv2_ProbabilityMatrixVerticalDynamic`, vMat, d, narm, display_progress)
 }
 
 .ProbabilityMatrixVerticalNested <- function(vMat, vMat_big, d, display_progress = TRUE) {
     .Call(`_StrucDiv2_ProbabilityMatrixVerticalNested`, vMat, vMat_big, d, display_progress)
+}
+
+.ProbabilityMatrixVerticalPost <- function(vMat, x, d, nrp, nrp_big, display_progress = TRUE) {
+    .Call(`_StrucDiv2_ProbabilityMatrixVerticalPost`, vMat, x, d, nrp, nrp_big, display_progress)
+}
+
+.ProbabilityMatrixVerticalPrior <- function(vMat, d, narm, display_progress = TRUE) {
+    .Call(`_StrucDiv2_ProbabilityMatrixVerticalPrior`, vMat, d, narm, display_progress)
 }
 
 .ProbabilityMatrixAllDynamic <- function(vMat, d, narm, display_progress = TRUE) {
@@ -79,6 +111,14 @@
 
 .ProbabilityMatrixAllNestedParallel <- function(vMat, vMat_big, d, display_progress = FALSE) {
     .Call(`_StrucDiv2_ProbabilityMatrixAllNestedParallel`, vMat, vMat_big, d, display_progress)
+}
+
+.ProbabilityMatrixAllPost <- function(vMat, x, d, nrp, nrp_big, display_progress = TRUE) {
+    .Call(`_StrucDiv2_ProbabilityMatrixAllPost`, vMat, x, d, nrp, nrp_big, display_progress)
+}
+
+.ProbabilityMatrixAllPrior <- function(vMat, d, narm, display_progress = TRUE) {
+    .Call(`_StrucDiv2_ProbabilityMatrixAllPrior`, vMat, d, narm, display_progress)
 }
 
 .WeightedEntropyAbsRank <- function(Hetx, PMat, narm, display_progress = TRUE) {

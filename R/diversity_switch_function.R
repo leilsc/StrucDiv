@@ -129,7 +129,8 @@ entropy <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress,
 
 entropyNorm <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...) {
   
-  v <- .NormalizedEntropy(Hetx = Hetx, PMat = SpatMat, nrp = nrp, narm = narm, display_progress = display_progress)
+  v <- .NormalizedEntropy(Hetx = Hetx, PMat = SpatMat, nrp = nrp, narm = narm, 
+                          display_progress = display_progress)
   
   return(v)
   
