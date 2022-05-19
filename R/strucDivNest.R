@@ -99,13 +99,11 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     warning("The raster image does not go around the globe.")
   }
   
-  suppressWarnings(
-    if ( identical(na.handling, na.pass) && anyNA(raster::values(x)) ) {
+  if ( identical(na.handling, na.pass) && anyNA(raster::values(x)) ) {
       warning("Raster layer contains missing values. Wherever there are missing values,
               an NA will be returned. if you want to proceed without NAs, 
               set na.handling = na.omit.")
     }
-      )
   
   out <- raster::raster(x)
   
@@ -143,12 +141,12 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     }
   }
   
-  if(dimB == FALSE & !is.null(oLap)){
+  if((dimB == FALSE)[1] & !is.null(oLap)){
     oLap <- NULL
     warning("oLap is ignored because dimB = FALSE")
   }
   
-  if(dimB != FALSE){
+  if((dimB != FALSE)[1] & is.null(oLap)){
     
     minOL <- 2*(wslI-1)
     maxOL <- 0.5* min(dimB)
@@ -182,14 +180,14 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     stop("domain must be logical.")
   }
   
-  if(priorB == FALSE & dimB == TRUE) {
+  if(priorB == FALSE & (dimB == TRUE)[1]) {
   
   warning("Blocks are only used for parallelization. 
           If you want to use blocks for prior information, set priorB = TRUE.")
 
   }
   
-  if(priorB == TRUE & dimB == FALSE) {
+  if(priorB == TRUE & (dimB == FALSE)[1]) {
     
     stop("Specify dimB and oLap to use blocks for prior information.")
     
@@ -202,7 +200,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     )
   }
    
-  if( is.null(wslO) & dimB == FALSE & domain == FALSE ){
+  if( is.null(wslO) & (dimB == FALSE)[1] & domain == FALSE ){
     
     warning("No prior information is provided, hence you are not using a nested-scales approach. 
             The output reflects spatial structural diversity approximation on a scale of wslI $\times$ wslI. 
@@ -390,7 +388,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       
     }
     
-    if( dimB != FALSE ){
+    if( (dimB != FALSE)[1] ){
       
       if( priorB == FALSE & is.null(wslO)){
         
