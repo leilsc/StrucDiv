@@ -95,13 +95,16 @@ private:
 
 
 
-// [[Rcpp::export(name = ".Entropy")]]
-NumericVector Entropy( NumericMatrix Hetx, 
-                       List PMat,
-                       bool narm,
-                       bool display_progress=true){
+// [[Rcpp::export(name = ".NormalizedEntropyNested")]]
+NumericVector NormalizedEntropyNested( NumericMatrix Hetx, 
+                                       NumericMatrix vMat_big,
+                                       List PMat, int nrp,
+                                 bool narm,
+                                 bool display_progress=true){
   
   NumericVector out(Hetx.nrow());
+  
+  double hmax = log(nrp);
   
   MyProgressBar pb;
   
@@ -110,8 +113,9 @@ NumericVector Entropy( NumericMatrix Hetx,
   for(int i = 0; i < Hetx.nrow(); i++){
     
     NumericVector x = Hetx(i,_);
-
-    LogicalVector v = is_na(x);
+    NumericVector x1 = vMat_big(i,_);
+    
+    LogicalVector v = is_na(x1);
     
     if(narm==0 && any(v).is_true()) {
       
@@ -154,7 +158,7 @@ NumericVector Entropy( NumericMatrix Hetx,
             p.increment(); // update progress
             
             if(xPMatSub(m,n) == 0) EntMat(m,n) = xPMatSub(m,n) * 0;
-            else EntMat(m,n) = xPMatSub(m,n) * (-log(xPMatSub(m,n)));
+            else EntMat(m,n) = xPMatSub(m,n) * (-log(xPMatSub(m,n))) / hmax;
             
           }
         }
@@ -164,7 +168,6 @@ NumericVector Entropy( NumericMatrix Hetx,
       }
     }
   }
-  
   return(out);
   
 }

@@ -6,7 +6,6 @@ using namespace Rcpp ;
 
 
 
-
 class MyProgressBar: public ProgressBar{
   public: // ====== LIFECYCLE =====
     
@@ -95,11 +94,15 @@ private:
 
 
 
-// [[Rcpp::export(name = ".Entropy")]]
-NumericVector Entropy( NumericMatrix Hetx, 
-                       List PMat,
-                       bool narm,
-                       bool display_progress=true){
+
+
+
+// [[Rcpp::export(name = ".ContrastRankNested")]]
+NumericVector ContrastRankNested( NumericMatrix Hetx, 
+                                  NumericMatrix vMat_big,
+                                  List PMat, 
+                                  bool narm,
+                                  bool display_progress=true ){
   
   NumericVector out(Hetx.nrow());
   
@@ -110,8 +113,9 @@ NumericVector Entropy( NumericMatrix Hetx,
   for(int i = 0; i < Hetx.nrow(); i++){
     
     NumericVector x = Hetx(i,_);
-
-    LogicalVector v = is_na(x);
+    NumericVector x1 = vMat_big(i,_);
+    
+    LogicalVector v = is_na(x1);
     
     if(narm==0 && any(v).is_true()) {
       
@@ -129,6 +133,7 @@ NumericVector Entropy( NumericMatrix Hetx,
       }
       
       else {
+        
         NumericVector xVal = sort_unique(xVal_);
         NumericMatrix xPMat(xVal.length(), xVal.length());
         rownames(xPMat) = xVal;
@@ -146,23 +151,23 @@ NumericVector Entropy( NumericMatrix Hetx,
           }
         }
         
-        NumericMatrix EntMat(ValPos.length(), ValPos.length());
+        NumericMatrix ConMat(ValPos.length(), ValPos.length());
         
         for (int m = 0; m < xPMatSub.nrow(); m++) {
           for( int n = 0; n < xPMatSub.ncol(); n++) {
             
             p.increment(); // update progress
             
-            if(xPMatSub(m,n) == 0) EntMat(m,n) = xPMatSub(m,n) * 0;
-            else EntMat(m,n) = xPMatSub(m,n) * (-log(xPMatSub(m,n)));
+            ConMat(m,n) = xPMatSub(m,n) * ( pow(ValPos[m] - ValPos[n], 2) );
             
           }
         }
         
-        out[i] = sum(EntMat);
+        out[i] = sum(ConMat);
         
       }
     }
+    
   }
   
   return(out);

@@ -19,6 +19,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ContrastRankNested
+NumericVector ContrastRankNested(NumericMatrix Hetx, NumericMatrix vMat_big, List PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_ContrastRankNested(SEXP HetxSEXP, SEXP vMat_bigSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< List >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ContrastRankNested(Hetx, vMat_big, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ContrastValue
 NumericVector ContrastValue(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_ContrastValue(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -30,6 +45,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(ContrastValue(Hetx, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ContrastValueNested
+NumericVector ContrastValueNested(NumericMatrix Hetx, NumericMatrix vMat_big, List PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_ContrastValueNested(SEXP HetxSEXP, SEXP vMat_bigSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< List >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(ContrastValueNested(Hetx, vMat_big, PMat, narm, display_progress));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -47,6 +77,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// DissimilarityRankNested
+NumericVector DissimilarityRankNested(NumericMatrix Hetx, NumericMatrix vMat_big, List PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_DissimilarityRankNested(SEXP HetxSEXP, SEXP vMat_bigSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< List >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(DissimilarityRankNested(Hetx, vMat_big, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 // DissimilarityValue
 NumericVector DissimilarityValue(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_DissimilarityValue(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -61,6 +106,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// DissimilarityValueNested
+NumericVector DissimilarityValueNested(NumericMatrix Hetx, NumericMatrix vMat_big, List PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_DissimilarityValueNested(SEXP HetxSEXP, SEXP vMat_bigSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< List >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(DissimilarityValueNested(Hetx, vMat_big, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Entropy
 NumericVector Entropy(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_Entropy(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -72,6 +132,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(Entropy(Hetx, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// EntropyNested
+NumericVector EntropyNested(NumericMatrix Hetx, NumericMatrix vMat_big, List PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_EntropyNested(SEXP HetxSEXP, SEXP vMat_bigSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< List >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(EntropyNested(Hetx, vMat_big, PMat, narm, display_progress));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -103,6 +178,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// HomogeneityRankNested
+NumericVector HomogeneityRankNested(NumericMatrix Hetx, NumericMatrix vMat_big, List PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_HomogeneityRankNested(SEXP HetxSEXP, SEXP vMat_bigSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< List >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(HomogeneityRankNested(Hetx, vMat_big, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 // HomogeneityValue
 NumericVector HomogeneityValue(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_HomogeneityValue(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -114,6 +204,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(HomogeneityValue(Hetx, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// HomogeneityValueNested
+NumericVector HomogeneityValueNested(NumericMatrix Hetx, NumericMatrix vMat_big, List PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_HomogeneityValueNested(SEXP HetxSEXP, SEXP vMat_bigSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< List >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(HomogeneityValueNested(Hetx, vMat_big, PMat, narm, display_progress));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -129,6 +234,22 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(NormalizedEntropy(Hetx, PMat, nrp, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// NormalizedEntropyNested
+NumericVector NormalizedEntropyNested(NumericMatrix Hetx, NumericMatrix vMat_big, List PMat, int nrp, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_NormalizedEntropyNested(SEXP HetxSEXP, SEXP vMat_bigSEXP, SEXP PMatSEXP, SEXP nrpSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< List >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< int >::type nrp(nrpSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(NormalizedEntropyNested(Hetx, vMat_big, PMat, nrp, narm, display_progress));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -245,6 +366,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixDiagonal135Prior(vMat, d, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ProbabilityMatrixDiagonal45
+NumericMatrix ProbabilityMatrixDiagonal45(NumericMatrix xMat, int d, NumericVector Values);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixDiagonal45(SEXP xMatSEXP, SEXP dSEXP, SEXP ValuesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type xMat(xMatSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type Values(ValuesSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixDiagonal45(xMat, d, Values));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -450,6 +584,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// WeightedEntropyAbsRankNested
+NumericVector WeightedEntropyAbsRankNested(NumericMatrix Hetx, NumericMatrix vMat_big, List PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_WeightedEntropyAbsRankNested(SEXP HetxSEXP, SEXP vMat_bigSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< List >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(WeightedEntropyAbsRankNested(Hetx, vMat_big, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 // WeightedEntropyAbsValue
 NumericVector WeightedEntropyAbsValue(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_WeightedEntropyAbsValue(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -461,6 +610,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(WeightedEntropyAbsValue(Hetx, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// WeightedEntropyAbsValueNested
+NumericVector WeightedEntropyAbsValueNested(NumericMatrix Hetx, NumericMatrix vMat_big, List PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_WeightedEntropyAbsValueNested(SEXP HetxSEXP, SEXP vMat_bigSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< List >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(WeightedEntropyAbsValueNested(Hetx, vMat_big, PMat, narm, display_progress));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -492,6 +656,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// WeightedEntropySqrRankNested
+NumericVector WeightedEntropySqrRankNested(NumericMatrix Hetx, NumericMatrix vMat_big, List PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_WeightedEntropySqrRankNested(SEXP HetxSEXP, SEXP vMat_bigSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< List >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(WeightedEntropySqrRankNested(Hetx, vMat_big, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 // WeightedEntropySqrValue
 NumericVector WeightedEntropySqrValue(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_WeightedEntropySqrValue(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -503,6 +682,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(WeightedEntropySqrValue(Hetx, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// WeightedEntropySqrValueNested
+NumericVector WeightedEntropySqrValueNested(NumericMatrix Hetx, NumericMatrix vMat_big, List PMat, bool narm, bool display_progress);
+RcppExport SEXP _StrucDiv2_WeightedEntropySqrValueNested(SEXP HetxSEXP, SEXP vMat_bigSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Hetx(HetxSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type vMat_big(vMat_bigSEXP);
+    Rcpp::traits::input_parameter< List >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(WeightedEntropySqrValueNested(Hetx, vMat_big, PMat, narm, display_progress));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -536,14 +730,22 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_StrucDiv2_ContrastRank", (DL_FUNC) &_StrucDiv2_ContrastRank, 4},
+    {"_StrucDiv2_ContrastRankNested", (DL_FUNC) &_StrucDiv2_ContrastRankNested, 5},
     {"_StrucDiv2_ContrastValue", (DL_FUNC) &_StrucDiv2_ContrastValue, 4},
+    {"_StrucDiv2_ContrastValueNested", (DL_FUNC) &_StrucDiv2_ContrastValueNested, 5},
     {"_StrucDiv2_DissimilarityRank", (DL_FUNC) &_StrucDiv2_DissimilarityRank, 4},
+    {"_StrucDiv2_DissimilarityRankNested", (DL_FUNC) &_StrucDiv2_DissimilarityRankNested, 5},
     {"_StrucDiv2_DissimilarityValue", (DL_FUNC) &_StrucDiv2_DissimilarityValue, 4},
+    {"_StrucDiv2_DissimilarityValueNested", (DL_FUNC) &_StrucDiv2_DissimilarityValueNested, 5},
     {"_StrucDiv2_Entropy", (DL_FUNC) &_StrucDiv2_Entropy, 4},
+    {"_StrucDiv2_EntropyNested", (DL_FUNC) &_StrucDiv2_EntropyNested, 5},
     {"_StrucDiv2_EntropyParallel", (DL_FUNC) &_StrucDiv2_EntropyParallel, 4},
     {"_StrucDiv2_HomogeneityRank", (DL_FUNC) &_StrucDiv2_HomogeneityRank, 4},
+    {"_StrucDiv2_HomogeneityRankNested", (DL_FUNC) &_StrucDiv2_HomogeneityRankNested, 5},
     {"_StrucDiv2_HomogeneityValue", (DL_FUNC) &_StrucDiv2_HomogeneityValue, 4},
+    {"_StrucDiv2_HomogeneityValueNested", (DL_FUNC) &_StrucDiv2_HomogeneityValueNested, 5},
     {"_StrucDiv2_NormalizedEntropy", (DL_FUNC) &_StrucDiv2_NormalizedEntropy, 5},
+    {"_StrucDiv2_NormalizedEntropyNested", (DL_FUNC) &_StrucDiv2_NormalizedEntropyNested, 6},
     {"_StrucDiv2_ProbabilityMatrixHorizontalDynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontalDynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixHorizontalNested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontalNested, 4},
     {"_StrucDiv2_ProbabilityMatrixHorizontalPost", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontalPost, 6},
@@ -552,6 +754,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_StrucDiv2_ProbabilityMatrixDiagonal135Nested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal135Nested, 4},
     {"_StrucDiv2_ProbabilityMatrixDiagonal135Post", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal135Post, 6},
     {"_StrucDiv2_ProbabilityMatrixDiagonal135Prior", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal135Prior, 4},
+    {"_StrucDiv2_ProbabilityMatrixDiagonal45", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal45, 3},
     {"_StrucDiv2_ProbabilityMatrixDiagonal45Dynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal45Dynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixDiagonal45Nested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal45Nested, 4},
     {"_StrucDiv2_ProbabilityMatrixDiagonal45Post", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal45Post, 6},
@@ -566,10 +769,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"_StrucDiv2_ProbabilityMatrixAllPost", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllPost, 6},
     {"_StrucDiv2_ProbabilityMatrixAllPrior", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllPrior, 4},
     {"_StrucDiv2_WeightedEntropyAbsRank", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsRank, 4},
+    {"_StrucDiv2_WeightedEntropyAbsRankNested", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsRankNested, 5},
     {"_StrucDiv2_WeightedEntropyAbsValue", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsValue, 4},
+    {"_StrucDiv2_WeightedEntropyAbsValueNested", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsValueNested, 5},
     {"_StrucDiv2_WeightedEntropyAbsValueParallel", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsValueParallel, 4},
     {"_StrucDiv2_WeightedEntropySqrRank", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrRank, 4},
+    {"_StrucDiv2_WeightedEntropySqrRankNested", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrRankNested, 5},
     {"_StrucDiv2_WeightedEntropySqrValue", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrValue, 4},
+    {"_StrucDiv2_WeightedEntropySqrValueNested", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrValueNested, 5},
     {"_StrucDiv2_WeightedEntropySqrValueParallel", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrValueParallel, 4},
     {"_StrucDiv2_do_focal_get", (DL_FUNC) &_StrucDiv2_do_focal_get, 3},
     {NULL, NULL, 0}

@@ -8,6 +8,7 @@
 #' matrix. Defaults to FALSE.
 #' @param Hetx is the diversity matrix that is returned by an internal function
 #' to the \code{StrucDiv} function. 
+#' @param vMat_big is a matrix. Default is NULL.
 #' @param SpatMat is the probability matrix that is returned by an internal function
 #' to the \code{StrucDiv} function. 
 #' @param delta difference weight. The delta parameter can only be set when the metric entropy is used. 
@@ -29,17 +30,19 @@
 #' @importFrom raster raster
 #' @export
 
-homogeneity <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress = TRUE, ...) {
+homogeneity <- function(rank, delta, Hetx, vMat_big = NULL, SpatMat, nrp, narm, display_progress = TRUE, ...) {
   
-  switch_function <- function(rank) {
+  switch_function <- function(rank, vMat_big) {
     
-    switch(EXPR = as.character(rank),
-           "TRUE" = .HomogeneityRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "FALSE" = .HomogeneityValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress)
+    switch(EXPR = paste(rank, is.null(vMat_big)),
+           "TRUE TRUE" = .HomogeneityRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE FALSE" = .HomogeneityRankNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE TRUE" = .HomogeneityValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE FALSE" = .HomogeneityValueNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress)
            )
   }
   
-  v <- switch_function(rank)
+  v <- switch_function(rank, vMat_big)
   return(v)
   
 }
@@ -48,17 +51,20 @@ homogeneity <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress 
 #' @export
 
 
-dissimilarity <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...) {
+dissimilarity <- function(rank, delta, Hetx, vMat_big = NULL, SpatMat, nrp, narm, display_progress, ...) {
   
-  switch_function <- function(rank) {
+  switch_function <- function(rank, vMat_big) {
     
-    switch(EXPR = as.character(rank),
-           "TRUE" = .DissimilarityRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "FALSE" = .DissimilarityValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress)
+    switch(EXPR = paste(rank, is.null(vMat_big)),
+           "TRUE TRUE" = .DissimilarityRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE FALSE" = .DissimilarityRankNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE TRUE" = .DissimilarityValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE FALSE" = .DissimilarityValueNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress)
+           
     )
   }
   
-  v <- switch_function(rank)
+  v <- switch_function(rank, vMat_big)
   return(v)
   
 }
@@ -66,17 +72,19 @@ dissimilarity <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progres
 #' @rdname Diversity
 #' @export
 
-contrast <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...) {
+contrast <- function(rank, delta, Hetx, vMat_big = NULL, SpatMat, nrp, narm, display_progress, ...) {
   
-  switch_function <- function(rank) {
+  switch_function <- function(rank, vMat_big) {
     
-    switch(EXPR = as.character(rank),
-           "TRUE" = .ContrastRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "FALSE" = .ContrastValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress)
+    switch(EXPR = paste(rank, is.null(vMat_big)),
+           "TRUE TRUE" = .ContrastRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE FALSE" = .ContrastRankNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE TRUE" = .ContrastValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE FALSE" = .ContrastValueNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress)
     )
   }
   
-  v <- switch_function(rank)
+  v <- switch_function(rank, vMat_big)
   return(v)
   
 }
@@ -84,22 +92,28 @@ contrast <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ..
 #' @rdname Diversity
 #' @export
 
-entropy <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, 
+entropy <- function(rank, delta, Hetx, vMat_big = NULL, SpatMat, nrp, narm, display_progress, 
                     parallelize = FALSE, ...) {
   
-  rank_delta <- paste(rank, delta)
+  rank_delta <- paste(rank, delta, is.null(vMat_big))
   
   if(parallelize == FALSE){
   
   switch_function <- function(rank_delta) {
     
     switch(EXPR = rank_delta,
-           "FALSE 0" = .Entropy(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "TRUE 0" = .Entropy(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "TRUE 1" = .WeightedEntropyAbsRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "FALSE 1" = .WeightedEntropyAbsValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "TRUE 2" = .WeightedEntropySqrRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "FALSE 2" = .WeightedEntropySqrValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress)
+           "FALSE 0 TRUE" = .Entropy(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE 0 TRUE" = .Entropy(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE 1 TRUE" = .WeightedEntropyAbsRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE 1 TRUE" = .WeightedEntropyAbsValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE 2 TRUE" = .WeightedEntropySqrRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE 2 TRUE" = .WeightedEntropySqrValue(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE 0 FALSE" = .EntropyNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE 0 FALSE" = .EntropyNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE 1 FALSE" = .WeightedEntropyAbsRankNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE 1 FALSE" = .WeightedEntropyAbsValueNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "TRUE 2 FALSE" = .WeightedEntropySqrRankNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress),
+           "FALSE 2 FALSE" = .WeightedEntropySqrValueNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress)
     )
   }
   }
@@ -127,10 +141,20 @@ entropy <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress,
 #' @rdname Diversity
 #' @export
 
-entropyNorm <- function(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...) {
+entropyNorm <- function(rank, delta, Hetx, vMat_big = NULL, SpatMat, nrp, narm, display_progress, ...) {
+  
+  if(is.null(vMat_big)){
   
   v <- .NormalizedEntropy(Hetx = Hetx, PMat = SpatMat, nrp = nrp, narm = narm, 
                           display_progress = display_progress)
+  }
+  
+  else{
+    
+    v <- .NormalizedEntropyNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, 
+                                  nrp = nrp, narm = narm, display_progress = display_progress)
+    
+  }
   
   return(v)
   

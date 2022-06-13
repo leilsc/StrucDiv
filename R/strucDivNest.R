@@ -20,7 +20,7 @@
 #' @param dimB is a vector of length 2 or a logical. This is the block size.
 #' Default is FALSE in which case the image is not cut into blocks.
 #' @param oLap an integer that defines the overlap between the blocks. It must
-#' be at least 2*(wslO-1) or bigger. Blocks can overlap by a maximum of half the 
+#' be at least wslI-1 or bigger. Blocks can overlap by a maximum of half the 
 #' rows of blocks in row-direction, and by half the columns of blocks in column-direction.
 #' @param priorB logical Should the blocks be used for prior estimates? 
 #' If priorB = TRUE, then the spatial structure in a block serves as prior for 
@@ -83,6 +83,8 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                          display_progress = FALSE, 
                          filename = "", ...) {
   
+  # browser()
+  
   dotArgs <- list(...)
   
   ## General warnings and errors!
@@ -103,7 +105,12 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       warning("Raster layer contains missing values. Wherever there are missing values,
               an NA will be returned. if you want to proceed without NAs, 
               set na.handling = na.omit.")
-    }
+  }
+  
+  if ( identical(na.handling, na.pass) && anyNA(raster::values(x)) && domain == TRUE ) {
+    return(NA)
+    warning("The domain contains missing values. You may want to consider the argument 'na.handling = na.ignore'.")
+  }
   
   out <- raster::raster(x)
   
@@ -148,7 +155,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
   
   if((dimB != FALSE)[1] & is.null(oLap)){
     
-    minOL <- 2*(wslI-1)
+    minOL <- (wslI-1)
     maxOL <- 0.5* min(dimB)
     oLap <- floor((maxOL-minOL)/2 + minOL)
     warning("oLap is calculated to lie in the middle of its min and max values 
@@ -158,8 +165,9 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
   
   if(!is.null(oLap) & is.numeric(dimB)){
     
-    if (oLap < 2*(wslI-1)) {
-      stop("Overlap is too small. Please input an overlap of at least 2*(wslI-1).")
+    if (oLap < (wslI-1)) {
+      stop("Overlap is too small. The overlap must be oLap >= wslI-1.")
+           
     }
     
     if ( oLap > floor(dimB[1]/2) ) {
@@ -180,7 +188,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     stop("domain must be logical.")
   }
   
-  if(priorB == FALSE & (dimB == TRUE)[1]) {
+  if(priorB == FALSE & is.numeric(dimB[1])) {
   
   warning("Blocks are only used for parallelization. 
           If you want to use blocks for prior information, set priorB = TRUE.")
@@ -306,7 +314,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     
     SpatMat <- switch_angle(angle)
     
-    v <- do.call(fun, list(rank = rank, Hetx = Hetx, SpatMat = SpatMat, delta = delta,
+    v <- do.call(fun, list(rank = rank, Hetx = Hetx, vMat_big = vMat_big, SpatMat = SpatMat, delta = delta,
                            nrp = nrp, narm = narm, display_progress = display_progress, 
                            parallelize = parallelize))
     
@@ -375,7 +383,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       }
       if (angle == "all") {
         nrp <- 4 * (wslI - dist) * (2 * wslI - dist)
-        nrp_big <- 4 * (nrow(xMat) - dist) * (2 * ncol(xMat) - dist)
+        nrp_big <- 2*((nrow(xMat)-dist)*(2*ncol(xMat)-dist)+(ncol(xMat)-dist)*(2*nrow(xMat)-dist))
       }
       
       SpatMat <- switch_angle(angle)
@@ -530,7 +538,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
             nrp_big <- (nrow(blockra) - dist) * 2 *(ncol(blockra) - dist)
           }
           if (angle == "all") {
-            nrp_big <- 4 * (nrow(blockra) - dist) * (2 * ncol(blockra) - dist)
+            nrp_big <- 2*((nrow(blockra)-dist)*(2*ncol(blockra)-dist)+(ncol(blockra)-dist)*(2*nrow(blockra)-dist))
           }
           
         }
@@ -538,6 +546,8 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                                                     ColIndex[j], ColIndex[j] + dimB[2] - 1)
           raster::crs(blockra) <- raster::crs(x)
           raster::res(blockra) <- raster::res(x)
+          
+          vMat_big = NULL
           
           if(!is.null(wslO)) {
             suppressMessages( vMat_big <- .getValuesWindow(blockra, wsl = wslO, padValue = padValue,
@@ -561,8 +571,13 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
           
           SpatMat <- switch_angle(angle)
           
-          sdiv <- do.call(fun, list(rank = rank, Hetx = Hetx, SpatMat = SpatMat, delta = delta,
+          sdiv <- do.call(fun, list(rank = rank, Hetx = Hetx, vMat_big = vMat_big, SpatMat = SpatMat, delta = delta,
                                     nrp = nrp, narm = narm, display_progress = FALSE))
+          
+          if(anyNA(raster::values(blockra)) && priorB == TRUE && narm == 0) {
+            sdiv <- NA
+            warning("At least on block contains missing values. You may want to consider the argument 'na.handling = na.omit'.")
+          }
           
           # multiply each block with the spatial weights matrix
           wdiv <- sdiv * wmx
