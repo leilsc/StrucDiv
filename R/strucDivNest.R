@@ -550,11 +550,11 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
           vMat_big = NULL
           
           if(!is.null(wslO)) {
-            suppressMessages( vMat_big <- .getValuesWindow(blockra, wsl = wslO, padValue = padValue,
+            suppressMessages( vMat_big <- .getValuesWindow(blockra, wsl = wslO, padValue = 1,
                                                            aroundTheGlobe = aroundTheGlobe) )
           }
           
-          suppressMessages( vMat <- .getValuesWindow(blockra, wsl = wslI, padValue = padValue,
+          suppressMessages( vMat <- .getValuesWindow(blockra, wsl = wslI, padValue = 1,
                                                      aroundTheGlobe = aroundTheGlobe) )
           Hetx <- vMat
           
@@ -580,6 +580,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
           }
           
           # multiply each block with the spatial weights matrix
+          sdiv <- matrix(sdiv, dimB[1], dimB[2], byrow = TRUE)
           wdiv <- sdiv * wmx
           # rasterize weighted blocks
           wdiv <- raster::raster(wdiv)
