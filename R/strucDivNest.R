@@ -83,7 +83,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                          display_progress = FALSE, 
                          filename = "", ...) {
   
-  #browser()
+  browser()
   
   dotArgs <- list(...)
   
@@ -505,8 +505,8 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       
       wmx <- .G(Mat = wmx, overlap = oLap, edge = floor(0.5*wsl))
       
-      num <- out
-      denom <- out
+      num <- setValues(out, values = NA)
+      denom <- setValues(out, values = NA)
       
       stepsize <- dimB[1]-oLap
       rowtimes <- (nrow(x) - dimB[1]) / (dimB[1] - oLap) + 1
@@ -584,6 +584,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
           # multiply each block with the spatial weights matrix
           sdiv <- matrix(sdiv, dimB[1], dimB[2], byrow = TRUE)
           wdiv <- sdiv * wmx
+          
           # rasterize weighted blocks
           wdiv <- raster::raster(wdiv)
           raster::extent(wdiv) <- raster::extent(x, RowIndex[i], RowIndex[i] + dimB[1] - 1,
@@ -599,6 +600,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
           num <- raster::mosaic(num, wdiv, fun = sum)
           # create denominator - take the sum of overlapping weights (i.e. take the sum where they overlap)
           denom <- raster::mosaic(denom, WMRext, fun = sum)
+
           # create final raster layer
         }
         # setTxtProgressBar(pb,i)
