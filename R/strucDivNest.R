@@ -83,7 +83,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                          display_progress = FALSE, 
                          filename = "", ...) {
   
-  # browser()
+  #browser()
   
   dotArgs <- list(...)
   
@@ -503,7 +503,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       
       wsl <- ifelse(is.null(wslO), wslI, wslO)
       
-      wmx <- .G(Mat = wmx, overlap = oLap, edge = wsl-1)
+      wmx <- .G(Mat = wmx, overlap = oLap, edge = floor(0.5*wsl))
       
       num <- out
       denom <- out
@@ -519,6 +519,8 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       ColIndex <- c(1, cumsum(times) + 1)
       
       # pb = txtProgressBar(min = 0, max = length(RowIndex), initial = 0, style = 3)
+      
+      # block_layers <- list()
       
       for (i in 1:length(RowIndex)) {
         for (j in 1:length(ColIndex)) {
@@ -550,11 +552,11 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
           vMat_big = NULL
           
           if(!is.null(wslO)) {
-            suppressMessages( vMat_big <- .getValuesWindow(blockra, wsl = wslO, padValue = 1,
+            suppressMessages( vMat_big <- .getValuesWindow(blockra, wsl = wslO, padValue = NA,
                                                            aroundTheGlobe = aroundTheGlobe) )
           }
           
-          suppressMessages( vMat <- .getValuesWindow(blockra, wsl = wslI, padValue = 1,
+          suppressMessages( vMat <- .getValuesWindow(blockra, wsl = wslI, padValue = NA,
                                                      aroundTheGlobe = aroundTheGlobe) )
           Hetx <- vMat
           
@@ -600,6 +602,8 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
           # create final raster layer
         }
         # setTxtProgressBar(pb,i)
+        
+        
       }
       
       # close(pb)
