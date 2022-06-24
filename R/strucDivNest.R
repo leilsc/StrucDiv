@@ -83,7 +83,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                          display_progress = FALSE, 
                          filename = "", ...) {
   
-  browser()
+  # browser()
   
   dotArgs <- list(...)
   
@@ -499,11 +499,9 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
         nrp <- 4 * (wslI - dist) * (2 * wslI - dist)
       }
       
-      wmx <- matrix(1, ncol = dimB[2], nrow = dimB[1])
-      
       wsl <- ifelse(is.null(wslO), wslI, wslO)
       
-      wmx <- .G(Mat = wmx, overlap = oLap, edge = floor(0.5*wsl))
+      wmx <- .WM(nrow = dimB[1], ncol = dimB[2], ul = oLap, nNA = floor(0.5*wsl))
       
       num <- setValues(out, values = NA)
       denom <- setValues(out, values = NA)
@@ -578,7 +576,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
           
           if(anyNA(raster::values(blockra)) && priorB == TRUE && narm == 0) {
             sdiv <- NA
-            warning("At least on block contains missing values. You may want to consider the argument 'na.handling = na.omit'.")
+            warning("At least one block contains missing values. You may want to consider the argument 'na.handling = na.omit'.")
           }
           
           # multiply each block with the spatial weights matrix
@@ -587,13 +585,15 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
           
           # rasterize weighted blocks
           wdiv <- raster::raster(wdiv)
-          raster::extent(wdiv) <- raster::extent(x, RowIndex[i], RowIndex[i] + dimB[1] - 1,
-                                                 ColIndex[j], ColIndex[j] + dimB[2] - 1)
-          raster::crs(wdiv) <- raster::crs(x)
-          raster::res(wdiv) <- raster::res(x)
+          # raster::extent(wdiv) <- raster::extent(x, RowIndex[i], RowIndex[i] + dimB[1] - 1,
+          #                                        ColIndex[j], ColIndex[j] + dimB[2] - 1)
+          # raster::crs(wdiv) <- raster::crs(x)
+          # raster::res(wdiv) <- raster::res(x)
+          
+          wdiv <- setValues(blockra, values = values(wdiv))
           
           wmr <- raster(wmx) # rasterize weights matrix so we can create denominator layer
-          WMRext <- setValues(wdiv, values = values(wmr)) # each block gets a weights matrix layer
+          WMRext <- setValues(blockra, values = values(wmr)) # each block gets a weights matrix layer
           # that has the same extent, i.e. is in the same place as the block
           
           # create numerator - take the sum of overlapping weighted blocks (i.e. take the sum where they overlap)

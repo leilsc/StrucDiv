@@ -94,18 +94,19 @@
 }
 
 
-.G <- function(Mat, overlap, edge){
-  for (i in overlap:(1 + edge)){
-    Mat[ ,i] <- (i - edge) / (overlap - edge)
-    Mat[ ,(ncol(Mat) - i + 1)] <- (i - edge) / (overlap - edge)
-    Mat[i, ] <- (i - edge) / (overlap - edge)
-    Mat[(nrow(Mat) - i + 1), ] <- (i - edge) / (overlap - edge)
-  }
-  Mat[ ,0:edge] <- 0 
-  Mat[ ,(ncol(Mat) - edge + 1):ncol(Mat)] <- 0 
-  Mat[0:edge, ] <- 0 
-  Mat[(nrow(Mat) - edge + 1):nrow(Mat), ] <- 0 
-  return(Mat)
+.WM <- function(nrow, ncol, ul, nNA){
+  ul <- ul - 2*nNA
+  ul1 <- ul + 1
+  w <- matrix(1, nrow, ncol)
+  w[nNA+(1:ul),] <- 1:ul/ul1
+  w[nrow-nNA-(0:(ul-1)),] <- 1:ul/ul1
+  w[, nNA+1:ul] <- w[,nNA+1:ul] * (rep(1:ul, each=ncol))/ul1
+  w[, ncol-nNA-(0:(ul-1))] <- w[,ncol-nNA-(0:(ul-1))] * (rep(1:ul, each=ncol))/ul1
+  w[1:nNA,] <- 0
+  w[,1:nNA] <- 0
+  w[nrow-(0:(nNA-1)),] <- 0
+  w[,ncol-(0:(nNA-1))] <- 0
+  w
 }
 
 
