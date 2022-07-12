@@ -2,7 +2,7 @@
 % Please edit documentation in R/strucDivNest.R
 \name{strucDivNest}
 \alias{strucDivNest}
-\title{Quantify spatial (i.e. horizontal) structural diversity across scales in an arbitrary raster layer.}
+\title{Quantify Spatial Structural Diversity Across Scales in an Arbitrary Raster Layer}
 \usage{
 strucDivNest(
   x,
@@ -35,32 +35,33 @@ horizontal structural diversity should be calculated.}
 The window must be smaller than the dimensions of the input raster and smaller than the outer scale. 
 Default is NULL, in which case no nesting is used.}
 
-\item{wslO}{uneven integer.  The window side length of the outer scale,
-#' \code{wslO} x \code{wslO} defines the size of the outer moving window.
+\item{wslO}{uneven integer.  The window side length of the outer scale, 
+\code{wslO} x \code{wslO} defines the size of the outer moving window.
 The window must be smaller than the dimensions of the input raster and larger than the inner scale (i.e. \code{wslI}). 
 Defaults to \code{NULL}, in which case no nesting is used.}
 
 \item{dimB}{a vector of length 2 or logical. This defines the block size (number of rows, number of columns). 
-The domain (i.e. the input raster) is divided into equal size, overlapping blocks. Each block provides prior information for the inner scale. 
-The inner window moves inside each block. Structural diversity is quantified in each block.
+The domain (i.e. the input raster) is divided into equal size, overlapping blocks. 
+Each block provides prior information for the inner window, which moves inside each block. 
+Structural diversity is quantified in each block.
 Blocks are merged together in a spatially weighted manner, using linear weights.
 Defaults to \code{FALSE}, in which case no blocks are used.}
 
 \item{oLap}{integer. This defines the size of overlap between the blocks. The overlap must
-be at least \code{wslI}-1 or bigger. Blocks can overlap by a maximum of half the 
+be at least \code{wslI-1} or bigger. Blocks can overlap by a maximum of half the 
 rows of blocks in row-direction, and by half the columns of blocks in column-direction.
-If oLap is not specified, it is internally calculated to lie at the upper median position between minimum and maximum overlap.
-Defaults to \code{NULL} in which no blocks are used.}
+If oLap is not specified, the minimum overlap is used.
+Defaults to \code{NULL} in which case no blocks are used.}
 
-\item{priorB}{logical. Should blocks be used for prior estimates? 
-If \code{priorB = TRUE}, then the spatial structure in a block serves as prior for 
-spatial structural diversity estimates of the moving windows inside the block. 
+\item{priorB}{logical. Should blocks be used for prior information? 
+If \code{priorB = TRUE}, then the spatial structure in a block serves 
+as prior information for the inner scale. 
 If \code{priorB = FALSE}, then the blocks are only used to increase speed through 
-parallelization, not for prior information
+parallelization, not for prior information.
 Defaults to \code{FALSE}.}
 
 \item{domain}{logical. Should the domain (i.e. the input raster) be used for prior information?
-If  \code{domain = TRUE}, then is is used as prior for all inner moving windows.
+If  \code{domain = TRUE}, then it is used as prior for all inner moving windows.
 Defaults to \code{FALSE}.}
 
 \item{dist}{integer. The distance between two pixels that should be considered as a pair, 
@@ -74,41 +75,41 @@ The direction-invariant version is \code{"all"}, which considers all of the 4 an
 
 \item{fun}{function, the structural diversity metric. Takes one of the following: \code{entropy},
 \code{entropyNorm}, \code{contrast}, \code{dissimilarity}, or \code{homogeneity}. 
-Structural diversity entropy is \code{entropy} with different \code{delta} parameters. Shannon entropy is employed, when \code{delta} = "0". 
-Shannon entropy has a scale-dependent maximum when \code{strucDiv} is used, but this maximum may be violated in \code{strucDivNest}, 
-when information from different scales is combined.
-Additionally, the value gradient is considered when \code{delta} = "1" or \code{delta} = "2". 
-The values of structural diversity entropy with \code{delta} = "1" or \code{delta} = "2" are not restricted and depend on the values of the input raster.
+Structural diversity entropy is \code{entropy} with different \code{delta} parameters. Shannon entropy is employed, when \code{delta = 0}. 
+Shannon entropy has a scale-dependent maximum when \code{\link{strucDiv}} is used, but this maximum may be violated in \code{\link{strucDivNest}}, 
+when information from different scales is combined, depending on the posterior probabilities of pixel value co-occurrences.
+Additionally, the value gradient is considered when \code{delta = 1} or \code{delta = 2}. 
+The values of structural diversity entropy with \code{delta = 1} or \code{delta = 2} are not restricted and depend on the values of the input raster.
 the metric \code{entropyNorm} is Shannon entropy normalized over maximum entropy, which depends on the size of the moving window when no scales are nested. 
-When information from different scales is combined in \code{strucDivNest}, the metric \code{entropyNorm} may be larger than 1.
-The metrics \code{contrast}, \code{dissimilarity} and \code{homogeneity} are established second-order texture metrics. 
-the metrics \code{contrast} and \code{dissimilarity} consider the value gradient, their values are not restricted and depend on the values of the input raster.
-the metric \code{homogeneity} quantifies the closeness of empirical probabilities to the diagonal and ranges between 0 and 1 when scales are not nested. 
-When information from different scales is combined in \code{strucDivNest}, the metric \code{homogeneity} may be larger than 1.}
+When information from different scales is combined in \code{\link{strucDivNest}}, the metric \code{entropyNorm} may be larger than 1, 
+depending on the posterior probabilities of pixel value co-occurrences.
+The metrics \code{contrast} and \code{dissimilarity} consider the value gradient, their values are not restricted and depend on the values of the input raster.
+The metric \code{homogeneity} quantifies the closeness of empirical probabilities to the diagonal and ranges between 0 and 1 when scales are not nested. 
+When information from different scales is combined in \code{\link{strucDivNest}}, the metric \code{homogeneity} may be larger than 1, 
+depending on the posterior probabilities of pixel value co-occurrences.}
 
-\item{delta}{character, takes three options: \code{"0"}, \code{"1"}, or \code{"2"}. 
-the parameter \code{delta} is the difference weight, 
+\item{delta}{numeric, takes three options: \code{0}, \code{1}, or \code{2}. 
+The parameter \code{delta} is the difference weight, 
 it defines how the differences between pixel values within a pixel pair should be weighted.  
 If \code{rank = TRUE}, delta defines how the differences between ranks should be weighted.  
-The default value is \code{"0"} (no weight). Set \code{delta = "1"} for absolute difference weight, 
-or \code{delta = "2"} for squared difference weight. 
+Defaults to \code{0} (no weight). Set \code{delta = 1} for absolute weights, 
+or \code{delta = 2} for square weights. 
 The \code{delta} parameter can only be set when the metric \code{entropy} is used. 
-the metric \code{dissimilarity} automatically employs \code{delta = "1"}, and \code{contrast} employs \code{delta = "2"}.}
+the metric \code{dissimilarity} automatically employs \code{delta = 1}, and \code{contrast} employs \code{delta = 2}.}
 
 \item{na.handling}{\code{na.omit} or \code{na.pass}. 
-If \code{na.handling = na.omit}, NAs are ignored, structural diversity metrics are calculated with less values. 
-In this case the GLCM does not sum to 1.
+If \code{na.handling = na.omit}, NAs are ignored and structural diversity metrics are calculated with less values. 
 If \code{na.handling = na.pass} and if there is at least one missing value inside the moving window,
 an NA is assigned to the center pixel. Therefore, the diversity map will contain more 
 NAs than the input raster layer.
 Defaults to \code{na.pass}.}
 
-\item{padValue}{numeric. The value of the padded cells at the edges of the input raster. 
+\item{padValue}{numeric or \code{NA}. The value of the padded cells at the edges of the input raster. 
 Defaults to \code{NA}.}
 
 \item{aroundTheGlobe}{logical. If the input raster goes around the whole globe, 
-set \code{aroundTheGlobe = TRUE}, and the input raster will be "glued together" from both sides
-to calculate diversity without edge effects on the sides.
+set \code{aroundTheGlobe = TRUE}, and the input raster will be 'glued together' from both sides
+to calculate structural diversity without edge effects.
 Defaults to \code{FALSE}.}
 
 \item{parallelize}{logical. Set to \code{parallelize = TRUE} to parallelize the computation on multiple cores.
@@ -122,7 +123,7 @@ Defaults to \code{FALSE}.}
 }
 \value{
 The output is a (spatial) structural diversity map, returned as a raster layer.
-If the outer scale is a moving window, then the output raster has the same dimensions as the input raster.
+If the outer scale is a moving window or the domain, then the output raster has the same dimensions as the input raster.
 If the outer scale is a block, then the output raster may be smaller than the input raster 
 because if there are edges that do not fit inside the blocks, they are cut off.
 When \code{na.handling = na.pass}, then the output map will have an NA-edge of 0.5*(\code{wslO}-1), 
@@ -131,47 +132,54 @@ The output represents spatial structural diversity quantified across different s
 size of the inner and the outer scale.
 }
 \description{
-This is a wrapper function that returns a spatial structural diversity map 
+This is a wrapper function that returns a 'spatial structural diversity map' 
 as a raster layer. 
+'Spatial structural diversity' will hereafter be used synonymous to 'structural diversity'.
 Pixels are considered as pairs in user-specified distances and angles. 
 Angles include horizontal and vertical direction, and the diagonals at 45° and 135°. 
 The direction-invariant version considers all angles. 
-Spatial structural diversity - hereafter structural diversity - is quantified based on the probabilities that pixel values 
-are arranged in the specified way (distance and angle). The \code{struDiv} function employs empirical probabilities of pixel value co-occurrence. 
-The \code{strucDivNest} function combines information from two different scales with an empirical Bayesian approach and a Beta-Binomial model.
+Spatial structural diversity is quantified based on the probabilities that pixel values 
+are arranged in the specified way (distance and angle). The \code{\link{strucDiv}} function employs empirical probabilities of pixel value co-occurrence. 
+The \code{\link{strucDivNest}} function combines information from two different scales with an empirical Bayesian approach and a Beta-Binomial model.
 Two scales are nested inside each other - a larger, outer scale and a smaller, inner scale. 
 Three different nesting schemes are available, whereby the inner scale is always a moving window.
 The outer scale can either be another mowing window, a block, or the domain (i.e. the input raster).
-the outer scale is used as prior information, and the inner scale serves as likelihood to estimate posterior probabilities
+The outer scale is used as prior information, and the inner scale serves as likelihood to estimate posterior probabilities
 of pixel value co-occurrences. 
 In the Beta-Binomial model both, the prior and the posterior follow a beta distribution, and the likelihood follows a conditional 
 binomial distribution.
 Posterior probabilities are estimated with mean estimates.
 Structural diversity is quantified based on these posterior probabilities.
 Structural diversity metrics are calculated on every element of the GLCM, 
-their sum is assigned to the center pixel of the moving window 
-and represents the (spatial) structural diversity of the area captured by the moving window. 
-The final map is called a '(spatial) structural diversity map' and is returned as a raster layer 
-with the same dimensions as the input raster.
+and their sum is assigned to the center pixel of the moving window. 
+The final map is called a '(spatial) structural diversity map' and is returned as a raster layer. 
 The output map represents structural diversity, quantified across different spatial scales, which are defined
 by the outer scale and the inner scale.
 }
 \details{
 The memory requirement of the function is determined 
 by \code{raster::canProcessInMemory()}. 
-If the raster file cannot be processed in memory, its size needs to be reduced before \code{strucDivNest} can be used.
+If the raster file cannot be processed in memory, its size needs to be reduced before \code{\link{strucDivNest}} can be used.
 }
 \examples{
-Calculate structural diversity entropy on a small raster file with a random normal distribution
+Calculate structural diversity entropy with delta = 2 on a small raster file with a random normal distribution
 a <- raster::raster(matrix(rnorm(648), 18, 36))
 raster::plot(a)
-contrast_a <- strucDivNest(a, wslI = 3, wslO = 7, fun = entropy, delta = 2, na.handling = na.omit, rank = FALSE)
-raster::plot(contrast_a)
+sde_a <- strucDivNest(a, wslI = 3, wslO = 7, fun = entropy, delta = 2, na.handling = na.omit, rank = FALSE)
+raster::plot(sde_a)
 
-# Calculate structural diversity entropy on a small raster file with a random normal distribution
+# Calculate structural diversity entropy with delta = 1 on a small raster file with a random normal distribution
 b <- raster::raster(matrix(rnorm(2500), 50, 50))
 raster::plot(b)
-dissim_b <- strucDivNest(b, wslI = 3, dimB = c(10, 10), oLap = 4, priorB = TRUE, fun = entropy, delta = 1, na.handling = na.pass, rank = FALSE)
-raster::plot(dissim_b)
+sde_b <- strucDivNest(b, wslI = 3, dimB = c(10, 10), oLap = 4, priorB = TRUE, fun = entropy, delta = 1, na.handling = na.pass, rank = FALSE)
+raster::plot(sde_b)
+
+Calculate contrast on NDVI data, use block nesting scheme 
+contrastNest_ndvi <- strucDivNest(ndvi, wslI = 9, dimB = c(50, 50), oLap = 20, priorB = TRUE fun = contrast, na.handling = na.pass, rank = FALSE)
+raster::plot(contrastNest_ndvi)
+
+Calculate entropy on NDVI data binned to 15 gray levels, use domain nesting scheme 
+entropyNest_ndvi15 <- strucDivNest(ndvi.15gl, wslI = 5, domain = TRUE, fun = entropy, na.handling = na.pass, rank = FALSE)
+raster::plot(entropyNest_ndvi15)
 
 }

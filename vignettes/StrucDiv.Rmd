@@ -1,0 +1,122 @@
+---
+title: "StrucDiv"
+author: "Leila Schuh"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    #number_sections: true
+    toc: true
+    #toc_depth: 2
+bibliography: bibliography.bib
+vignette: >
+  %\VignetteIndexEntry{StrucDiv}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "figure/StrucDiv-",
+  out.width = "100%"
+)
+```
+
+## `StrucDiv`: Spatial structural diversity quantification in raster data
+
+Spatial structural diversity refers to the spatial, i.e. horizontal, configuration of landscape elements. Hereafter, 'spatial structural diversity' will be used synonymous to 'structural diversity'. The `StrucDiv` package provides methods to quantify structural diversity in raster data, i.e. data in gridded field format. With these methods, structural diversity features can be detected. Structural diversity features have also been called latent landscape features. Typical structural diversity features include narrow borders, line features, patches and hotspots [@Schuhetal2020, @Schuhetal2021].
+The methods are based on the spatial arrangement of pixels as pairs, based on @Haralick1973. Pixels are considered as pairs at user-specified distances and angles. Distance refers to the distance between two pixels that are considered a pair. Angle refers to the angle at which two pixels are considered a pair. Angles can be horizontal or vertical direction, or the diagonals at 45° or 135°. The direction-invariant version considers all angles. The area within which pixel value co-occurrences are investigated is realized with a moving window approach. Windows overlap and move by one pixel at a time.
+
+### `strucDiv`: Scale-specific spatial structural diversity quantification
+
+The `strucDiv` function quantifies structural diversity on a particular scale, which is defined by the size of the moving window. Within the area captured by the moving window, pixel values are considered as pairs with the specified spatial arrangement, as described above.
+The frequencies of pixel pair occurrences are normalized by the total number of pixel pairs, which returns the gray level co-occurrence matrix (GLCM). The GLCM contains the empirical probabilities $P_{i,j}$ that pixel values v$_{i}$ and v$_{j}$ occur as a pair at the specified distance and angle(s), in the area captured by the moving window. The total number of pixel pairs depends on the spatial scale, i.e. on the size of the moving window. The size of the square moving window is defined by its window side length (WSL), which must be an uneven integer.
+
+Pixel values v$_{i}$ and v$_{j}$ that occur as a pair enter the GLCM as row and column names, hence $i$ and $j$ index the position of a pixel value in the GLCM. The values at positions $i$ and $j$ can differ between GLCMs. Instead of pixel values v$_{i}$ and  v$_{j}$, ranks (r, s) can be considered. Ranks refer to the position of the pixel value in the GLCM, hence the value associated with a rank can differ between GLCMs. The total (GLCM-specific) number of values is denoted with $m$, and the total (GLCM-specific) number of ranks is denoted with $l$.
+
+Structural diversity metrics are calculated for every element of the GLCM, and their sum is assigned to the center pixel of the moving window and represents the structural diversity of the area captured by the window. The final map is called a '(spatial) structural diversity map' and it represents spatial structural diversity quantified on a particular scale.
+
+### `strucDivNest`: Cross-scale spatial structural diversity quantification
+
+The `strucDivNest` function allows to combine information from two different scales with an empirical Bayesian approach and a Beta-Binomial model. Two scales are nested inside each other - a larger, outer scale and a smaller, inner scale. Three different nesting schemes are available, whereby the inner scale is always a moving window. 
+The outer scale can either be another mowing window, a block, or the domain (i.e. the input raster). 
+The outer scale is used as prior information, and the inner scale serves as likelihood to estimate posterior probabilities of pixel value co-occurrences. 
+In the Beta-Binomial model both, the prior and the posterior follow a beta distribution, and the likelihood follows a conditional binomial distribution. 
+Posterior probabilities are estimated with mean estimates. 
+Structural diversity is quantified based on these posterior probabilities. 
+Structural diversity metrics are calculated on every element of the GLCM, 
+and their sum is assigned to the center pixel of the moving window. The final map is called a '(spatial) structural diversity map' and is returned as a raster layer. The output map represents structural diversity, quantified across different spatial scales, which are defined by the outer scale and the inner scale.
+
+## Spatial structural diversity metrics
+
+Spatial structural diversity metrics include: contrast, dissimilarity, homogeneity, entropy in different formulations, and normalized entropy. Structural diversity entropy includes a difference weight $\delta \in \{0, 1, 2\}$, which weighs the differences between pixel values  v$_{i}$ and v$_{j}$, using either absolute, or square weights. When $\delta$ = 0, structural diversity entropy corresponds to Shannon entropy [@Shannon]. Shannon entropy has a scale-specific maximum, however, when the `strucDivNest` function is used, this maximum may be violated, depending on the posterior probabilities of pixel value co-occurrences.
+The values of structural diversity entropy with $\delta \in \{1, 2\}$ are not restricted and depend on the values of the input raster.
+Normalized entropy is Shannon entropy normalized over maximum entropy. When the `strucDiv` function is used, normalized entropy ranges between 0 and 1. When the `strucDivNest` function is used, normalized entropy may be larger than 1, depending on the posterior probabilities of pixel value co-occurrences.
+Dissimilarity naturally employs $\delta = 1$, contrast employs $\delta = 2$, and homogeneity employs $\delta = 2$ in the denominator.
+The values of dissimilarity and contrast are not restricted and depend on the values of the input raster.
+Homogeneity measures the closeness of $P_{i,j}$ to the diagonal in the GLCM, and ranges between 0 and 1 when the `strucDiv` function is used. When the `strucDivNest` function is used, homogeneity may be larger than 1, depending on the posterior probabilities of pixel value co-occurrences.
+
+For entropy, normalized entropy, and homogeneity, the possible number of gray levels (GL) is restricted, i.e. high numbers of GL lead to structureless diversity maps [@Schuhetal2020].
+
+### Structural diversity metrics using pixel values
+
+\begin{align}
+  \text{Structural diversity entropy} & = \ - \sum_{i,j=1}^{m} P_{ij} \ln P_{ij} \ |v_{i}-v_{j}| ^ \delta,  \delta \in \{0,1,2\}
+     \label{DivEnt} \\
+   \text{Contrast} & = \sum_{i,j=1}^{m} P_{ij} \ |v_{i}-v_{j}| ^ \delta, \delta = 2
+    \label{ValCon} \\
+   \text{Dissimilarity} & = \sum_{i,j=1}^{m} P_{ij} \ |v_{i}-v_{j}| ^\delta, \delta = 1
+\label{ValDis} \\
+     \text{Homogeneity} & = \sum_{i,j=1}^{m} P_{ij} / (1 + |i-j|^\delta), \delta = 2
+  \label{ValHom}
+\end{align}
+
+### Structural diversity metrics using ranks
+
+\begin{align}
+   \text{Structural diversity entropy} & = \ - \sum_{r,s=1}^{l} P_{rs} \ln P_{rs} \ |r-s| ^ \delta,  \delta \in \{0,1,2\} 
+    \label{RankDivEnt}\\
+    \text{Contrast} & = \sum_{r,s=1}^{l} P_{rs} \ |r-s| ^ \delta, \delta = 2
+   \label{RankCon} \\
+   \text{Dissimilarity} & = \sum_{r,s=1}^{l} P_{rs} \ |r-s| ^ \delta, \delta = 1
+   \label{ConDis} \\
+     \text{Homogeneity} & = \sum_{r,s=1}^{l} P_{rs} / (1 + |r-s|^\delta), \delta = 2
+  \label{HomRank}
+\end{align}
+
+## Data
+
+These spatial structural diversity methods can be applied to any continuous raster data, or continuous raster data that is binned to reduce the number of GL. The methods can also be applied to categorical data if categories are numbered in a meaningful way, or if entropy or normalized entropy are used. This is because when $\delta \in \{1, 2\}$, the difference weight cannot be computed for categorical data or is meaningless when categories are not encoded in a meaningful way.
+
+## Installation
+
+You can install the released version of StrucDiv from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("StrucDiv")
+```
+
+## Example
+
+Calculate normalized entropy on Normalized Difference Vegetation Index (NDVI) data, which was binned to 15 GL (see data documentation). We define the size of the moving window with WSL three, and we consider distance one between pixels (i.e. direct neighbors), and a direction-invariant approach.
+
+```{r data, echo=FALSE, message = FALSE, eval = FALSE}
+library(raster)
+library(StrucDiv)
+ndvi.15gl <- raster(ndvi.15gl)
+extent(ndvi.15gl) <-  c(165.0205, 174.8301, 66.62804, 68.61332)
+```
+
+```{r example, echo=TRUE, message = FALSE, eval=FALSE}
+
+entNorm <- strucDiv(ndvi.15gl, wsl = 5, dist = 1, angle = "all", fun = entropyNorm,
+                  na.handling = na.pass)
+
+```
+
+![title](figIn/vign.png)
+<figcaption align = "left">Fig.1 Left: NDVI data reduced to 15 GL. 
+Right: structural diversity quantified with normalized entropy.</figcaption>
+
+## References
+
