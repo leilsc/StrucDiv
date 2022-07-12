@@ -7,12 +7,13 @@
 \alias{contrast}
 \alias{entropy}
 \alias{entropyNorm}
-\title{Diversity functions}
+\title{Spatial structural diversity metrics}
 \usage{
 homogeneity(
   rank,
   delta,
   Hetx,
+  vMat_big = NULL,
   SpatMat,
   nrp,
   narm,
@@ -20,14 +21,35 @@ homogeneity(
   ...
 )
 
-dissimilarity(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
+dissimilarity(
+  rank,
+  delta,
+  Hetx,
+  vMat_big = NULL,
+  SpatMat,
+  nrp,
+  narm,
+  display_progress,
+  ...
+)
 
-contrast(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
+contrast(
+  rank,
+  delta,
+  Hetx,
+  vMat_big = NULL,
+  SpatMat,
+  nrp,
+  narm,
+  display_progress,
+  ...
+)
 
 entropy(
   rank,
   delta,
   Hetx,
+  vMat_big = NULL,
   SpatMat,
   nrp,
   narm,
@@ -36,24 +58,44 @@ entropy(
   ...
 )
 
-entropyNorm(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
+entropyNorm(
+  rank,
+  delta,
+  Hetx,
+  vMat_big = NULL,
+  SpatMat,
+  nrp,
+  narm,
+  display_progress,
+  ...
+)
 }
 \arguments{
 \item{rank}{logical. Should values be replaced with ranks in each co-occurrence 
-matrix. Defaults to FALSE.}
+matrix (GLCM)? Defaults to \code{FALSE}.}
 
-\item{delta}{difference weight. The delta parameter can only be set when the metric entropy is used. 
-The default value is 0. It can also take the values 1 for absolute value and
-2 for squared. Contrast automatically employs delta = 2 and dissimilarity employs delta = 1.}
+\item{delta}{character, takes 3 options: \code{"0"},\code{ "1"}, or \code{"2"}. 
+The parameter \code{delta} is the difference weight parameter, 
+it defines how the differences between pixel values within a pixel pair should be weighted.  
+If \code{rank = TRUE}, delta defines how the differences between ranks should be weighted.  
+The default value is \code{"0"} (no weight). Set \code{delta = "1"} for absolute difference weight, 
+or \code{delta = "2"} for squared difference weight. 
+The \code{delta} parameter can only be set when the metric \code{entropy} is used. 
+The metric \code{dissimilarity} automatically employs \code{delta = "1"}, and \code{contrast} employs \code{delta = "2"}.}
 
-\item{Hetx}{is the diversity matrix that is returned by an internal function
-to the \code{StrucDiv} function.}
+\item{Hetx}{the spatial structural diversity matrix that is returned by an internal function
+to the \code{\link{StrucDiv}} and \code{\link{strucDivNest}} functions. the spatial structural diversity metric is calculated on every element
+of the GLCM, which generates the spatial structural diversity matrix \code{Hetx}. The sum of this
+matrix represents the spatial structural diversity estimate of the moving window, 
+the size of which is defined by \code{wsl} in the \code{\link{StrucDiv}} function.}
 
-\item{SpatMat}{is the probability matrix that is returned by an internal function
-to the \code{StrucDiv} function.}
+\item{vMat_big}{matrix. The value matrix of the outer scale. Defaults to \code{NULL}, in which case no nesting is used.}
 
-\item{nrp}{integer. The number of possible pixel pairs. StrucDiv calculates it 
-internally and passes it to the diversity functions.}
+\item{SpatMat}{the GLCM that is returned by an internal function
+to the \code{\link{StrucDiv}} and \code{\link{strucDivNest}} functions.}
+
+\item{nrp}{integer. The number of possible pixel pairs. The fucntions \code{\link{strucDiv}} and \code{\link{strucDivNest}} calculate it 
+internally and pass it to the diversity functions.}
 
 \item{narm}{logical. It is automatically set to 0 if na.handling = na.pass, and to 1 if na.handling = na.omit.}
 
@@ -62,11 +104,22 @@ internally and passes it to the diversity functions.}
 \item{...}{possible further arguments.}
 }
 \description{
-The \code{homogeneity}, \code{contrast}, \code{dissimilarity} and \code{entropy} 
-functions are used in the default configuration of \code{\link{StrucDiv}}.
+The functions \code{entropy} , \code{entropyNorm}, \code{contrast}, \code{dissimilarity} and \code{homogeneity}
+are the spatial structural diversity metrics used in the default configuration of \code{\link{strucDiv}} and \code{\link{strucDivNest}}. 
+Structural diversity entropy is \code{entropy} with different \code{delta} parameters. Shannon entropy is employed, when \code{delta = "0"}. 
+Shannon entropy has a window-dependent maximum when \code{\link{strucDiv}} is used, which may be violated when \code{\link{strucDivNest}} is used, depending on the 
+posterior probabilities of pixel value co-occurrences.
+Additionally, the value gradient is considered when \code{delta = "1"} or \code{delta = "2"}. 
+The values of structural diversity entropy with \code{delta = "1"} or \code{delta = "2"} are not restricted and depend on the values of the input raster.
+the metric \code{entropyNorm} is Shannon entropy normalized over maximum entropy, which depends on the size of the moving window when no nesting is used. 
+The metric \code{entropyNorm} ranges between 0 and 1, when \code{\link{strucDiv}} is used, but may be larger than 1 when \code{\link{strucDivNest}} is used, 
+depending on the posterior probabilities of pixel value co-occurrences.
+The metrics \code{contrast} and \code{dissimilarity} consider the value gradient, their values are not restricted and depend on the values of the input raster.
+The metric \code{homogeneity} quantifies the closeness of empirical probabilities to the diagonal and ranges between 0 and 1 when \code{\link{strucDiv}} is used, 
+but may be larger than 1 when \code{\link{strucDivNest}} is used, depending on the posterior probabilities of pixel value co-occurrences.
 }
 \details{
-This function is used internally and is called as an argument to the \code{StrucDiv}.
+This function is used internally and is called as an argument to the \code{\link{strucDiv}}.
 }
 \examples{
 \dontrun{
