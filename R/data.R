@@ -15,6 +15,7 @@
 #' \item{\code{Data retrieval}}{Data was pre-processed and downloaded from Google Earth Engine.}
 #' }
 #' 
+#' \seealso{ndvi.gl15}
 #' 
 #' For further details, see \url{https://lpdaac.usgs.gov/products/mod13q1v006/}
 #' and \url{https://earthengine.google.com/}
@@ -41,6 +42,7 @@
 #' \item{\code{Data retrieval}}{Data was pre-processed and downloaded from Google Earth Engine.}
 #' }
 #' 
+#' \seealso{ndvi}
 #' 
 #' For further details, see \url{https://lpdaac.usgs.gov/products/mod13q1v006/}
 #' and \url{https://earthengine.google.com/}

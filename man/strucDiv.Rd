@@ -2,7 +2,7 @@
 % Please edit documentation in R/StrucDiv.R
 \name{strucDiv}
 \alias{strucDiv}
-\title{Quantify spatial (i.e. horizontal) structural diversity in an arbitrary raster layer.}
+\title{Quantify Spatial Structural Diversity in an Arbitrary Raster Layer}
 \usage{
 strucDiv(
   x,
@@ -40,43 +40,44 @@ The direction-invariant version is \code{"all"}, which considers all of the 4 an
 
 \item{fun}{function, the structural diversity metric. Takes one of the following: \code{entropy},
 \code{entropyNorm}, \code{contrast}, \code{dissimilarity}, or \code{homogeneity}. 
-Structural diversity entropy is entropy with different \code{delta} parameters. Shannon entropy is employed, when \code{delta} = "0". 
+Structural diversity entropy is entropy with different \code{delta} parameters. Shannon entropy is employed, when \code{delta = 0}. 
 Shannon entropy has a scale-dependent maximum.
-Additionally, the value gradient is considered when \code{delta} = "1" or \code{delta} = "2". 
-The values of structural diversity entropy with \code{delta} = "1" or \code{delta} = "2" are not restricted and depend on the values of the input raster.
+Additionally, the value gradient is considered when \code{delta} = 1 or \code{delta} = 2. 
+The values of structural diversity entropy with \code{delta} = 1 or \code{delta} = 2 are not restricted and depend on the values of the input raster.
 The metric \code{entropyNorm} is Shannon entropy normalized over maximum entropy, which depends on the size of the moving window. 
 The metric \code{entropyNorm} ranges between 0 and 1.
-The metrics \code{contrast}, \code{dissimilarity} and \code{homogeneity} are established second-order texture metrics. 
 The metrics \code{contrast} and \code{dissimilarity} consider the value gradient, their values are not restricted and depend on the values of the input raster.
 the metric \code{homogeneity} quantifies the closeness of empirical probabilities to the diagonal and ranges between 0 and 1. 
 The metric \code{homogeneity} is 1 when all pixel pairs are the same and approaches  0 as differences increase.}
 
-\item{delta}{character, takes three options: \code{"0"}, \code{"1"}, or \code{"2"}. 
+\item{delta}{numeric, takes three options: \code{0}, \code{1}, or \code{2}. 
 the parameter \code{delta} is the difference weight, 
 it defines how the differences between pixel values within a pixel pair should be weighted.  
 If \code{rank = TRUE}, delta defines how the differences between ranks should be weighted.  
-The default value is \code{"0"} (no weight). Set \code{delta = "1"} for absolute difference weight, 
-or \code{delta = "2"} for squared difference weight. 
+The default value is \code{0} (no weight). Set \code{delta = 2} for absolute difference weight, 
+or \code{delta = 2} for squared difference weight. 
 The \code{delta} parameter can only be set when the metric \code{entropy} is used. 
-the metric \code{dissimilarity} automatically employs \code{delta = "1"}, and \code{contrast} employs \code{delta = "2"}.}
+The metric \code{dissimilarity} automatically employs \code{delta = 2}, and \code{contrast} employs \code{delta = 2}.}
 
 \item{na.handling}{\code{na.omit} or \code{na.pass}. 
 If \code{na.handling = na.omit}, NAs are ignored, structural diversity metrics are calculated with less values. 
 In this case the GLCM does not sum to 1.
 If \code{na.handling = na.pass} and if there is at least one missing value inside the moving window,
 an NA is assigned to the center pixel. Therefore, the diversity map will contain more 
-NAs than the input raster layer.
+NAs than the input raster.
 Defaults to \code{na.pass}.}
 
-\item{padValue}{numeric. The value of the padded cells at the edges of the input raster. 
+\item{padValue}{numeric or \code{NA}. The value of the padded cells at the edges of the input raster. 
 Defaults to \code{NA}.}
 
 \item{aroundTheGlobe}{logical. If the input raster goes around the whole globe, 
-set \code{aroundTheGlobe = TRUE}, and the input raster will be "glued together" from both sides
-to calculate diversity without edge effects on the sides.
+set \code{aroundTheGlobe = TRUE}, and the input raster will be 'glued together' from both sides
+to calculate structural diversity without edge effects.
 Defaults to \code{FALSE}.}
 
 \item{filename}{character. If the output raster should be written to a file, define file name (optional).}
+
+\item{display_progress}{logical. If \code{display_progress = TRUE}, a progress bar will be visible.}
 
 \item{...}{possible further arguments.}
 }
@@ -88,8 +89,9 @@ The output represents spatial structural diversity quantified on a spatial scale
 size of the moving window.
 }
 \description{
-This is a wrapper function that returns a spatial structural diversity map 
+This is a wrapper function that returns a 'spatial structural diversity map' 
 as a raster layer. 
+'Spatial structural diversity' will hereafter be used synonymous to 'structural diversity'.
 Pixels are considered as pairs in user-specified distances and angles. 
 Angles include horizontal and vertical direction, and the diagonals at 45° and 135°. 
 The direction-invariant version considers all angles. 
@@ -116,13 +118,21 @@ If the raster file cannot be processed in memory, its size needs to be reduced b
 Calculate contrast on a small raster file with random normal distribution
 a <- raster::raster(matrix(rnorm(648), 18, 36))
 raster::plot(a)
-contrast_a <- strucDiv(a, 3, fun = contrast, na.handling = na.omit, rank = FALSE)
+contrast_a <- strucDiv(a, wsl = 3, fun = contrast, na.handling = na.omit, rank = FALSE)
 raster::plot(contrast_a)
 
 # Calculate dissimilarity on a small raster file with random normal distribution
 b <- raster::raster(matrix(rnorm(100), 10, 10))
 raster::plot(b)
-dissim_b <- strucDiv(b, 5, fun = dissimilarity, na.handling = na.pass, rank = FALSE)
+dissim_b <- strucDiv(b, wsl = 5, dist = 1, angle =  "all", fun = dissimilarity, na.handling = na.pass, rank = FALSE)
 raster::plot(dissim_b)
+
+Calculate entropy on NDVI data binned to 15 gray levels
+entropy_ndvi15 <- strucDiv(ndvi.15gl, wsl = 3, fun = entropy, na.handling = na.pass, rank = FALSE)
+raster::plot(entropy_ndvi15)
+
+Calculate structural diversity entropy with delta = 2 on NDVI data 
+sde_ndvi <- strucDiv(ndvi, wsl = 3, fun = entropy, delta = 2, na.handling = na.pass, rank = FALSE)
+raster::plot(sde_ndvi)
 
 }

@@ -1,14 +1,14 @@
 #' @name Diversity
 #' @rdname Diversity
-#' @title Spatial structural diversity metrics
+#' @title Spatial Structural Diversity Metrics
 #' @description
 #' The functions \code{entropy} , \code{entropyNorm}, \code{contrast}, \code{dissimilarity} and \code{homogeneity}
-#' are the spatial structural diversity metrics used in the default configuration of \code{\link{strucDiv}} and \code{\link{strucDivNest}}. 
-#' Structural diversity entropy is \code{entropy} with different \code{delta} parameters. Shannon entropy is employed, when \code{delta = "0"}. 
-#' Shannon entropy has a window-dependent maximum when \code{\link{strucDiv}} is used, which may be violated when \code{\link{strucDivNest}} is used, depending on the 
-#' posterior probabilities of pixel value co-occurrences.
-#' Additionally, the value gradient is considered when \code{delta = "1"} or \code{delta = "2"}. 
-#' The values of structural diversity entropy with \code{delta = "1"} or \code{delta = "2"} are not restricted and depend on the values of the input raster.
+#' are the spatial structural diversity metrics used in the default configurations of \code{\link{strucDiv}} and \code{\link{strucDivNest}}. 
+#' Structural diversity entropy is \code{entropy} with different \code{delta} parameters. Shannon entropy is employed, when \code{delta = 0}. 
+#' Shannon entropy has a window-dependent maximum when \code{\link{strucDiv}} is used, which may be violated when \code{\link{strucDivNest}} is used, 
+#' depending on the posterior probabilities of pixel value co-occurrences.
+#' Additionally, the value gradient is considered when \code{delta = 1} or \code{delta = 2}. 
+#' The values of structural diversity entropy with \code{delta = 1} or \code{delta = 2} are not restricted and depend on the values of the input raster.
 #' the metric \code{entropyNorm} is Shannon entropy normalized over maximum entropy, which depends on the size of the moving window when no nesting is used. 
 #' The metric \code{entropyNorm} ranges between 0 and 1, when \code{\link{strucDiv}} is used, but may be larger than 1 when \code{\link{strucDivNest}} is used, 
 #' depending on the posterior probabilities of pixel value co-occurrences.
@@ -17,39 +17,33 @@
 #' but may be larger than 1 when \code{\link{strucDivNest}} is used, depending on the posterior probabilities of pixel value co-occurrences.
 #' @param rank logical. Should values be replaced with ranks in each co-occurrence 
 #' matrix (GLCM)? Defaults to \code{FALSE}.
-#' @param Hetx is the diversity matrix that is returned by an internal function
-#' to the \code{\link{strucDiv}} and \code{\link{strucDivNest}} functions. 
 #' @param vMat_big matrix. The value matrix of the outer scale. Defaults to \code{NULL}, in which case no nesting is used.
 #' @param SpatMat is the probability matrix that is returned by an internal function
 #' to the \code{\link{strucDiv}} and \code{\link{strucDivNest}} functions. 
-#' @param delta character, takes 3 options: \code{"0"},\code{ "1"}, or \code{"2"}. 
+#' @param delta numeric, takes 3 options: \code{0}, \code{1}, or \code{2}. 
 #' The parameter \code{delta} is the difference weight parameter, 
 #' it defines how the differences between pixel values within a pixel pair should be weighted.  
 #' If \code{rank = TRUE}, delta defines how the differences between ranks should be weighted.  
-#' The default value is \code{"0"} (no weight). Set \code{delta = "1"} for absolute difference weight, 
-#' or \code{delta = "2"} for squared difference weight. 
+#' The default value is \code{0} (no weight). Set \code{delta = 1} for absolute weights, 
+#' or \code{delta = 2} for squared weights. 
 #' The \code{delta} parameter can only be set when the metric \code{entropy} is used. 
-#' The metric \code{dissimilarity} automatically employs \code{delta = "1"}, and \code{contrast} employs \code{delta = "2"}.
-#' @param nrp integer. The number of possible pixel pairs. The fucntions \code{\link{strucDiv}} and \code{\link{strucDivNest}} calculate it 
-#' internally and pass it to the diversity functions.
+#' The metric \code{dissimilarity} automatically employs \code{delta = 1}, and \code{contrast} employs \code{delta = 2}.
+#' @param nrp integer. The total number of pixel pairs. \code{nrp} is calculated internally by the 
+#' functions \code{\link{strucDiv}} and \code{\link{strucDivNest}} and passed to the diversity functions.
 #' @param SpatMat the GLCM that is returned by an internal function
-#' to the \code{\link{StrucDiv}} and \code{\link{strucDivNest}} functions. 
-#' @param Hetx the spatial structural diversity matrix that is returned by an internal function
-#' to the \code{\link{StrucDiv}} and \code{\link{strucDivNest}} functions. the spatial structural diversity metric is calculated on every element
-#' of the GLCM, which generates the spatial structural diversity matrix \code{Hetx}. The sum of this
-#' matrix represents the spatial structural diversity estimate of the moving window, 
-#' the size of which is defined by \code{wsl} in the \code{\link{StrucDiv}} function.
-#' @param narm logical. It is automatically set to 0 if na.handling = na.pass, and to 1 if na.handling = na.omit.
-#' @param display_progress logical. Shows if the progress bar should be displayed.
+#' to the \code{\link{strucDiv}} and \code{\link{strucDivNest}} functions. 
+#' @param Hetx the structural diversity matrix that is returned by an internal function
+#' to the \code{\link{strucDiv}} and \code{\link{strucDivNest}} functions. 
+#' The structural diversity metric is calculated on every element
+#' of the GLCM, which generates the structural diversity matrix \code{Hetx}. The sum of this
+#' matrix is assigned to the center pixel of the moving window. 
+#' @param narm logical. Should NAs be removed? It is automatically set to 0 if \code{na.handling = na.pass}, 
+#' and to 1 if \code{na.handling = na.omit}.
+#' @param display_progress logical. Should a progress bar be displayed?
+#' @param parallelize logical. Should the computation be parallelized on multiple cores?
 #' @param ... possible further arguments.
-#' @details This function is used internally and is called as an argument to the \code{\link{strucDiv}}.
-#' @examples 
-#' \dontrun{
-#' a <- raster::raster(matrix(rnorm(25), 5, 5))
-#' hetx <- matrix(rnorm(25*9), 5*5, 3*3)
-#' z <- matrix(runif(9, 0,1), 3, 3)
-#' spatmat <- list(z, z, z, z, z, z, z, z, z, z, z, z, z, z, z, z, z, z, z, z, z, z, z, z, z)
-#' }
+#' @details This function is used internally and is called 
+#' as an argument to the \code{\link{strucDiv}} and \code{\link{strucDivNest}} functions.
 #' @importFrom raster raster
 #' @export
 

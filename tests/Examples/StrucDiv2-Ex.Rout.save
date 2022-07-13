@@ -1,0 +1,42 @@
+
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "StrucDiv2"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('StrucDiv2')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("strucDiv")
+> ### * strucDiv
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: strucDiv
+> ### Title: Quantify Spatial Structural Diversity in an Arbitrary Raster
+> ###   Layer
+> ### Aliases: strucDiv
+> 
+> ### ** Examples
+> 
+> Calculate contrast on a small raster file with random normal distribution
+Error: unexpected symbol in "Calculate contrast"
+Execution halted
