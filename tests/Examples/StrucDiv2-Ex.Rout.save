@@ -37,6 +37,126 @@ Type 'q()' to quit R.
 > 
 > ### ** Examples
 > 
-> Calculate contrast on a small raster file with random normal distribution
-Error: unexpected symbol in "Calculate contrast"
-Execution halted
+> # Construct a small raster file containing realizations of normal random variables:
+> a <- raster::raster(matrix(rnorm(648), 18, 36))
+> raster::plot(a)
+> # Calculate contrast:
+> contrast_a <- strucDiv(a, wsl = 3, fun = contrast, na.handling = na.omit, rank = FALSE)
+Extracting values from raster file
+Calculating gray level co-occurrence matrix
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+Calculating horizontal structural diversity
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+> raster::plot(contrast_a)
+> 
+> # Calculate dissimilarity:
+> b <- raster::raster(matrix(rnorm(100), 10, 10))
+> raster::plot(b)
+> dissim_b <- strucDiv(b, wsl = 5, dist = 1, angle =  "all", fun = dissimilarity, 
++     na.handling = na.pass, rank = FALSE)
+Extracting values from raster file
+Calculating gray level co-occurrence matrix
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+**************************************************************Calculating horizontal structural diversity
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+**************************************************************> raster::plot(dissim_b)
+> 
+> # Calculate entropy on NDVI data binned to 15 gray levels
+> ndvi.15gl <- raster::raster(ndvi.15gl)
+> entropy_ndvi15 <- strucDiv(ndvi.15gl, wsl = 3, fun = entropy, na.handling = na.pass, rank = FALSE)
+Extracting values from raster file
+Calculating gray level co-occurrence matrix
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+Calculating horizontal structural diversity
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+> raster::plot(entropy_ndvi15)
+> 
+> # Calculate structural diversity entropy with delta = 2 on NDVI data 
+> ndvi <- raster::raster(ndvi)
+> sde_ndvi <- strucDiv(ndvi, wsl = 3, fun = entropy, delta = 2, na.handling = na.pass, rank = FALSE)
+Extracting values from raster file
+Calculating gray level co-occurrence matrix
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+Calculating horizontal structural diversity
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+> raster::plot(sde_ndvi)
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("strucDivNest")
+> ### * strucDivNest
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: strucDivNest
+> ### Title: Quantify Spatial Structural Diversity Across Scales in an
+> ###   Arbitrary Raster Layer
+> ### Aliases: strucDivNest
+> 
+> ### ** Examples
+> 
+> # Construct a small raster file containing realizations of normal random variables:
+> a <- raster::raster(matrix(rnorm(648), 18, 36))
+> raster::plot(a)
+> # Calculate structural diversity entropy with delta = 2
+> sde_a <- strucDivNest(a, wslI = 3, wslO = 7, fun = entropy, delta = 2, na.handling = na.omit, 
++     rank = FALSE)
+Extracting values from raster file
+> raster::plot(sde_a)
+> 
+> # Calculate structural diversity entropy with delta = 1
+> b <- raster::raster(matrix(rnorm(2500), 50, 50))
+> raster::plot(b)
+> sde_b <- strucDivNest(b, wslI = 3, dimB = c(10, 10), oLap = 4, priorB = TRUE, fun = entropy, 
++     delta = 1, na.handling = na.pass, rank = FALSE)
+> raster::plot(sde_b)
+> 
+> # Calculate contrast on NDVI data, use block nesting scheme 
+> ndvi <- raster::raster(ndvi)
+> contrastNest_ndvi <- strucDivNest(ndvi, wslI = 9, dimB = c(50, 50), oLap = 20, priorB = TRUE,
++      fun = contrast, na.handling = na.pass, rank = FALSE)
+> raster::plot(contrastNest_ndvi)
+> 
+> # Calculate entropy on NDVI data binned to 15 gray levels, use domain nesting scheme 
+> ndvi.15gl <- raster::raster(ndvi.15gl)
+> entropyNest_ndvi15 <- strucDivNest(ndvi.15gl, wslI = 5, domain = TRUE, fun = entropy, 
++     na.handling = na.pass, rank = FALSE)
+Extracting values from raster file
+> raster::plot(entropyNest_ndvi15)
+> 
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  483.347 1.713 486.379 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

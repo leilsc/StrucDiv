@@ -114,6 +114,9 @@ neighbors), and all four possible directions in which pixels can be
 considered as pairs.
 
 ``` r
+ndvi.15gl <- raster(ndvi.15gl)
+extent(ndvi.15gl) <-  c(165.0205, 174.8301, 66.62804, 68.61332)
+
 entNorm <- strucDiv(ndvi.15gl, wsl = 5, dist = 1, angle = "all", fun = entropyNorm,
                   na.handling = na.pass)
 ```

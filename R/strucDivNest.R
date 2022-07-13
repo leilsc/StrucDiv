@@ -135,11 +135,13 @@
 #' raster::plot(sde_b)
 #' 
 #' # Calculate contrast on NDVI data, use block nesting scheme 
+#' ndvi <- raster::raster(ndvi)
 #' contrastNest_ndvi <- strucDivNest(ndvi, wslI = 9, dimB = c(50, 50), oLap = 20, priorB = TRUE,
 #'      fun = contrast, na.handling = na.pass, rank = FALSE)
 #' raster::plot(contrastNest_ndvi)
 #' 
 #' # Calculate entropy on NDVI data binned to 15 gray levels, use domain nesting scheme 
+#' ndvi.15gl <- raster::raster(ndvi.15gl)
 #' entropyNest_ndvi15 <- strucDivNest(ndvi.15gl, wslI = 5, domain = TRUE, fun = entropy, 
 #'     na.handling = na.pass, rank = FALSE)
 #' raster::plot(entropyNest_ndvi15)
