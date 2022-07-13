@@ -1,2 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+CommentsRF.md
+README.Rmd
+testdat.tif
+testv2.R

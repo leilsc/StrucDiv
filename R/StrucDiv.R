@@ -84,28 +84,30 @@
 #' The output represents spatial structural diversity quantified on a spatial scale defined by the 
 #' size of the moving window.
 #' @examples
-#' Calculate contrast on a small raster file with random normal distribution
+#' # Construct a small raster file containing realizations of normal random variables:
 #' a <- raster::raster(matrix(rnorm(648), 18, 36))
 #' raster::plot(a)
+#' # Calculate contrast:
 #' contrast_a <- strucDiv(a, wsl = 3, fun = contrast, na.handling = na.omit, rank = FALSE)
 #' raster::plot(contrast_a)
 #' 
-#' # Calculate dissimilarity on a small raster file with random normal distribution
+#' # Calculate dissimilarity:
 #' b <- raster::raster(matrix(rnorm(100), 10, 10))
 #' raster::plot(b)
-#' dissim_b <- strucDiv(b, wsl = 5, dist = 1, angle =  "all", fun = dissimilarity, na.handling = na.pass, rank = FALSE)
+#' dissim_b <- strucDiv(b, wsl = 5, dist = 1, angle =  "all", fun = dissimilarity, 
+#'     na.handling = na.pass, rank = FALSE)
 #' raster::plot(dissim_b)
 #' 
-#' Calculate entropy on NDVI data binned to 15 gray levels
+#' # Calculate entropy on NDVI data binned to 15 gray levels
 #' entropy_ndvi15 <- strucDiv(ndvi.15gl, wsl = 3, fun = entropy, na.handling = na.pass, rank = FALSE)
 #' raster::plot(entropy_ndvi15)
 #' 
-#' Calculate structural diversity entropy with delta = 2 on NDVI data 
+#' # Calculate structural diversity entropy with delta = 2 on NDVI data 
 #' sde_ndvi <- strucDiv(ndvi, wsl = 3, fun = entropy, delta = 2, na.handling = na.pass, rank = FALSE)
 #' raster::plot(sde_ndvi)
 #' 
 #' @export
-
+#' @useDynLib StrucDiv2, .registration=TRUE
 
 strucDiv <- function(x, wsl, dist = 1, angle = "all",
                      rank = FALSE, fun, delta = 0, 

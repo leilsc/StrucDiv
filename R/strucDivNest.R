@@ -119,24 +119,29 @@
 #' The output represents spatial structural diversity quantified across different spatial scale, which are defined by the 
 #' size of the inner and the outer scale.
 #' @examples
-#' Calculate structural diversity entropy with delta = 2 on a small raster file with a random normal distribution
+#' # Construct a small raster file containing realizations of normal random variables:
 #' a <- raster::raster(matrix(rnorm(648), 18, 36))
 #' raster::plot(a)
-#' sde_a <- strucDivNest(a, wslI = 3, wslO = 7, fun = entropy, delta = 2, na.handling = na.omit, rank = FALSE)
+#' # Calculate structural diversity entropy with delta = 2
+#' sde_a <- strucDivNest(a, wslI = 3, wslO = 7, fun = entropy, delta = 2, na.handling = na.omit, 
+#'     rank = FALSE)
 #' raster::plot(sde_a)
 #' 
-#' # Calculate structural diversity entropy with delta = 1 on a small raster file with a random normal distribution
+#' # Calculate structural diversity entropy with delta = 1
 #' b <- raster::raster(matrix(rnorm(2500), 50, 50))
 #' raster::plot(b)
-#' sde_b <- strucDivNest(b, wslI = 3, dimB = c(10, 10), oLap = 4, priorB = TRUE, fun = entropy, delta = 1, na.handling = na.pass, rank = FALSE)
+#' sde_b <- strucDivNest(b, wslI = 3, dimB = c(10, 10), oLap = 4, priorB = TRUE, fun = entropy, 
+#'     delta = 1, na.handling = na.pass, rank = FALSE)
 #' raster::plot(sde_b)
 #' 
-#' Calculate contrast on NDVI data, use block nesting scheme 
-#' contrastNest_ndvi <- strucDivNest(ndvi, wslI = 9, dimB = c(50, 50), oLap = 20, priorB = TRUE fun = contrast, na.handling = na.pass, rank = FALSE)
+#' # Calculate contrast on NDVI data, use block nesting scheme 
+#' contrastNest_ndvi <- strucDivNest(ndvi, wslI = 9, dimB = c(50, 50), oLap = 20, priorB = TRUE,
+#'      fun = contrast, na.handling = na.pass, rank = FALSE)
 #' raster::plot(contrastNest_ndvi)
 #' 
-#' Calculate entropy on NDVI data binned to 15 gray levels, use domain nesting scheme 
-#' entropyNest_ndvi15 <- strucDivNest(ndvi.15gl, wslI = 5, domain = TRUE, fun = entropy, na.handling = na.pass, rank = FALSE)
+#' # Calculate entropy on NDVI data binned to 15 gray levels, use domain nesting scheme 
+#' entropyNest_ndvi15 <- strucDivNest(ndvi.15gl, wslI = 5, domain = TRUE, fun = entropy, 
+#'     na.handling = na.pass, rank = FALSE)
 #' raster::plot(entropyNest_ndvi15)
 #' 
 #' @export
