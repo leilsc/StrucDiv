@@ -4,4 +4,7 @@
 .Ruserdata
 R/RcppExports.R
 NAMESPACE
-Man/*.Rd
+man/*.Rd
+man/.Rapp.history
+data/.Rapp.history
+tests/.Rapp.history
