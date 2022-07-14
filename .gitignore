@@ -3,7 +3,6 @@
 .RData
 .Ruserdata
 R/RcppExports.R
-NAMESPACE
 man/*.Rd
 man/.Rapp.history
 data/.Rapp.history
