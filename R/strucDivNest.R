@@ -58,8 +58,9 @@
 #' set aroundTheGlobe = TRUE, and the input raster will be "glued together" from both sides
 #' to calculate diversity without edge effects on the sides.
 #' Defaults to FALSE.
-#' @param parallelize logical. Set to TRUE to parallelize the computation on multiple cores.
-#' Default is FALSE. Please set to TRUE only for bigger problems.
+#' @param ncores integer. The number of cores the computation will be parallelized on.
+#' Parallelization is only available with blocks - both when they are used as prior, 
+#' and when they are simply used to cut the image.
 #' @param display_progress logical
 #' @param filename character. If the output raster should be written to a file, define file name (optional).
 #' @param ... possible further arguments.
@@ -79,11 +80,11 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                          rank = FALSE, fun, delta = 0, 
                          na.handling = na.pass, padValue = NA, 
                          aroundTheGlobe = FALSE, 
-                         parallelize = FALSE, 
+                         ncores = 1,
                          display_progress = FALSE, 
                          filename = "", ...) {
   
-  # browser()
+  #browser()
   
   dotArgs <- list(...)
   
@@ -91,10 +92,6 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
   
   if(!is.logical(aroundTheGlobe)){
     stop("aroundTheGlobe must be either TRUE, or FALSE.")
-  }
-  
-  if(!is.logical(parallelize)){
-    stop("parallelize must be either TRUE, or FALSE.")
   }
   
   if(isTRUE(aroundTheGlobe) & !isTRUE(.isGlobalLonLat(x))){
@@ -285,10 +282,10 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       
     }
     
-    vMat <- .getValuesWindow(x, wsl = wslI, padValue = padValue, 
+    vMat <- getValuesWindow(x, wsl = wslI, padValue = padValue, 
                              aroundTheGlobe = aroundTheGlobe)
     
-    suppressMessages( vMat_big <- .getValuesWindow(x, wsl = wslO, padValue = padValue, 
+    suppressMessages( vMat_big <- getValuesWindow(x, wsl = wslO, padValue = padValue, 
                                                    aroundTheGlobe = aroundTheGlobe)  )
     
     Hetx <- vMat
@@ -315,8 +312,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     SpatMat <- switch_angle(angle)
     
     v <- do.call(fun, list(rank = rank, Hetx = Hetx, vMat_big = vMat_big, SpatMat = SpatMat, delta = delta,
-                           nrp = nrp, narm = narm, display_progress = display_progress, 
-                           parallelize = parallelize))
+                           nrp = nrp, narm = narm, display_progress = display_progress))
     
     out <- raster::setValues(out, v)
     
@@ -324,7 +320,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     
     if(domain == TRUE){  ## USE THE WHOLE IMAGE AS A PRIOR
       
-      vMat <- .getValuesWindow(x, wsl = wslI, padValue = padValue, 
+      vMat <- getValuesWindow(x, wsl = wslI, padValue = padValue, 
                                aroundTheGlobe = aroundTheGlobe)
       Hetx <- vMat
       
@@ -389,8 +385,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       SpatMat <- switch_angle(angle)
 
       v <- do.call(fun, list(rank = rank, Hetx = Hetx, SpatMat = SpatMat, delta = delta,
-                             nrp = nrp, narm = narm, display_progress = display_progress, 
-                             parallelize = parallelize))
+                             nrp = nrp, narm = narm, display_progress = display_progress))
       
       out <- raster::setValues(out, v)
       
@@ -520,97 +515,110 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       
       # block_layers <- list()
       
-      for (i in 1:length(RowIndex)) {
-        for (j in 1:length(ColIndex)) {
-          block <- raster::getValuesBlock(x = x, row = RowIndex[i], nrows = dimB[1],
-                                          col = ColIndex[j], ncols = dimB[2], format = "matrix")
-          blockra <- raster::raster(block)
-          
-        if(priorB == TRUE){
-          
-          if (angle == "horizontal") {
-            nrp_big <- 2*nrow(blockra)*(ncol(blockra) - dist)
-          }
-          if (angle == "vertical") {
-            nrp_big <- 2*ncol(blockra)*(nrow(blockra) - dist)
-          }
-          if (angle %in% c("diagonal45", "diagonal135")) {
-            nrp_big <- (nrow(blockra) - dist) * 2 *(ncol(blockra) - dist)
-          }
-          if (angle == "all") {
-            nrp_big <- 2*((nrow(blockra)-dist)*(2*ncol(blockra)-dist)+(ncol(blockra)-dist)*(2*nrow(blockra)-dist))
-          }
-          
-        }
-          raster::extent(blockra) <- raster::extent(x, RowIndex[i], RowIndex[i] + dimB[1] - 1,
-                                                    ColIndex[j], ColIndex[j] + dimB[2] - 1)
-          raster::crs(blockra) <- raster::crs(x)
-          raster::res(blockra) <- raster::res(x)
-          
-          vMat_big = NULL
-          
-          if(!is.null(wslO)) {
-            suppressMessages( vMat_big <- .getValuesWindow(blockra, wsl = wslO, padValue = NA,
-                                                           aroundTheGlobe = aroundTheGlobe) )
-          }
-          
-          suppressMessages( vMat <- .getValuesWindow(blockra, wsl = wslI, padValue = NA,
-                                                     aroundTheGlobe = aroundTheGlobe) )
-          Hetx <- vMat
-          
-          suppressWarnings(
-            if( identical(na.handling, na.omit) && anyNA(raster::values(x)) ) {
-              narm <- 1
-            }
-            else{
-              narm <- 0
-            }
-          )
-          
-          blockrama <- matrix(raster::values(blockra), nrow(blockra), ncol(blockra), byrow = TRUE)
-          
-          SpatMat <- switch_angle(angle)
-          
-          sdiv <- do.call(fun, list(rank = rank, Hetx = Hetx, vMat_big = vMat_big, SpatMat = SpatMat, delta = delta,
-                                    nrp = nrp, narm = narm, display_progress = FALSE))
-          
-          if(anyNA(raster::values(blockra)) && priorB == TRUE && narm == 0) {
-            sdiv <- NA
-            warning("At least one block contains missing values. You may want to consider the argument 'na.handling = na.omit'.")
-          }
-          
-          # multiply each block with the spatial weights matrix
-          sdiv <- matrix(sdiv, dimB[1], dimB[2], byrow = TRUE)
-          wdiv <- sdiv * wmx
-          
-          # rasterize weighted blocks
-          wdiv <- raster::raster(wdiv)
-          # raster::extent(wdiv) <- raster::extent(x, RowIndex[i], RowIndex[i] + dimB[1] - 1,
-          #                                        ColIndex[j], ColIndex[j] + dimB[2] - 1)
-          # raster::crs(wdiv) <- raster::crs(x)
-          # raster::res(wdiv) <- raster::res(x)
-          
-          wdiv <- setValues(blockra, values = values(wdiv))
-          
-          wmr <- raster(wmx) # rasterize weights matrix so we can create denominator layer
-          WMRext <- setValues(blockra, values = values(wmr)) # each block gets a weights matrix layer
-          # that has the same extent, i.e. is in the same place as the block
-          
-          # create numerator - take the sum of overlapping weighted blocks (i.e. take the sum where they overlap)
-          num <- raster::mosaic(num, wdiv, fun = sum)
-          # create denominator - take the sum of overlapping weights (i.e. take the sum where they overlap)
-          denom <- raster::mosaic(denom, WMRext, fun = sum)
-
-          # create final raster layer
-        }
-        # setTxtProgressBar(pb,i)
-        
-        
-      }
+      rows <- length(RowIndex)
+      cl <- parallel::makeCluster(ncores)
+      doParallel::registerDoParallel(cl)  
       
-      # close(pb)
+      suppressWarnings(
+        out <- foreach( row.num = 1:rows, .packages = c("raster", "StrucDiv2") ) %dopar% {
+
+          for (j in 1:length(ColIndex)) {
+            block <- raster::getValuesBlock(x = x, row = RowIndex[row.num], nrows = dimB[1],
+                                            col = ColIndex[j], ncols = dimB[2], format = "matrix")
+            blockra <- raster::raster(block)
+            
+            if(priorB == TRUE){
+              
+              if (angle == "horizontal") {
+                nrp_big <- 2*nrow(blockra)*(ncol(blockra) - dist)
+              }
+              if (angle == "vertical") {
+                nrp_big <- 2*ncol(blockra)*(nrow(blockra) - dist)
+              }
+              if (angle %in% c("diagonal45", "diagonal135")) {
+                nrp_big <- (nrow(blockra) - dist) * 2 *(ncol(blockra) - dist)
+              }
+              if (angle == "all") {
+                nrp_big <- 2*((nrow(blockra)-dist)*(2*ncol(blockra)-dist)+(ncol(blockra)-dist)*(2*nrow(blockra)-dist))
+              }
+              
+            }
+            raster::extent(blockra) <- raster::extent(x, RowIndex[row.num], RowIndex[row.num] + dimB[1] - 1,
+                                                      ColIndex[j], ColIndex[j] + dimB[2] - 1)
+            raster::crs(blockra) <- raster::crs(x)
+            raster::res(blockra) <- raster::res(x)
+            
+            vMat_big = NULL
+            
+            if(!is.null(wslO)) {
+              suppressMessages( vMat_big <- StrucDiv2::getValuesWindow(blockra, wsl = wslO, padValue = NA,
+                                                             aroundTheGlobe = aroundTheGlobe) )
+            }
+            
+            vMat <- StrucDiv2::getValuesWindow(blockra, wsl = wslI, padValue = NA, 
+                                    aroundTheGlobe = aroundTheGlobe)
+            Hetx <- vMat
+            
+            suppressWarnings(
+              if( identical(na.handling, na.omit) && anyNA(raster::values(x)) ) {
+                narm <- 1
+              }
+              else{
+                narm <- 0
+              }
+            )
+            
+            blockrama <- matrix(raster::values(blockra), nrow(blockra), ncol(blockra), byrow = TRUE)
+            
+            SpatMat <- switch_angle(angle)
+            
+            sdiv <- do.call(fun, list(rank = rank, Hetx = Hetx, vMat_big = vMat_big, SpatMat = SpatMat, delta = delta,
+                                      nrp = nrp, narm = narm, display_progress = FALSE))
+            
+            if(anyNA(raster::values(blockra)) && priorB == TRUE && narm == 0) {
+              sdiv <- NA
+              warning("At least one block contains missing values. You may want to consider the argument 'na.handling = na.omit'.")
+            }
+            
+            # multiply each block with the spatial weights matrix
+            sdiv <- matrix(sdiv, dimB[1], dimB[2], byrow = TRUE)
+            wdiv <- sdiv * wmx
+            
+            # rasterize weighted blocks
+            wdiv <- raster::raster(wdiv)
+            # raster::extent(wdiv) <- raster::extent(x, RowIndex[i], RowIndex[i] + dimB[1] - 1,
+            #                                        ColIndex[j], ColIndex[j] + dimB[2] - 1)
+            # raster::crs(wdiv) <- raster::crs(x)
+            # raster::res(wdiv) <- raster::res(x)
+            
+            wdiv <- setValues(blockra, values = values(wdiv))
+            
+            wmr <- raster(wmx) # rasterize weights matrix so we can create denominator layer
+            WMRext <- setValues(blockra, values = values(wmr)) # each block gets a weights matrix layer
+            # that has the same extent, i.e. is in the same place as the block
+            
+            # create numerator - take the sum of overlapping weighted blocks (i.e. take the sum where they overlap)
+            num <- raster::mosaic(num, wdiv, fun = sum)
+            # create denominator - take the sum of overlapping weights (i.e. take the sum where they overlap)
+            denom <- raster::mosaic(denom, WMRext, fun = sum)
+            
+            # create final raster layer
+          }
+                          
+            list(num = num, denom = denom)
+            
+          # setTxtProgressBar(pb,i)
+        }
+      )
+      
+      parallel::stopCluster(cl)
+      
+      num <- raster::mosaic(out[[1]]$num, out[[2]]$num, fun = sum)
+      denom <- raster::mosaic(out[[1]]$denom, out[[2]]$denom, fun = sum)
       
       out <- num/denom
+      
+      # close(pb)
       
       return(out)
       

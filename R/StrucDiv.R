@@ -109,7 +109,7 @@ strucDiv <- function(x, wsl, dist = 1, angle = "all",
   
   if (raster::canProcessInMemory(out)) {
     
-    vMat <- .getValuesWindow(x, wsl = wsl, padValue = padValue, 
+    vMat <- getValuesWindow(x, wsl = wsl, padValue = padValue, 
                                   aroundTheGlobe = aroundTheGlobe)
     Hetx <- vMat
     

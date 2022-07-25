@@ -17,7 +17,20 @@
 
 ############################################################################################################################
 
-.getValuesWindow <- function(x, wsl, padValue, aroundTheGlobe, ...) {
+#' @name getValuesWindow
+#' @rdname getValuesWindow
+#' @title Get the values from a raster object centered at each pixel
+#' @description Modified R Code from raster package - getValuesFocal,
+#' to retrieve values of defined neighbourhood. Returns one row per pixel 
+#' (row containing pixel neighbourhood (wsl)
+#' @param x raster layer. Input raster layer for which 
+#' @param wsl integer. size of neighbourhood
+#' @param padValue atomic. If a pixel is on the edges of an image, what value should it be padded with.
+#' @param aroundTheGlobe logical. Does the image go around the globe.
+#' @return A matrix
+#' @export
+
+getValuesWindow <- function(x, wsl, padValue, aroundTheGlobe, ...) {
   
   message("Extracting values from raster file")
 

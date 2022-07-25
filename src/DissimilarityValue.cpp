@@ -151,7 +151,7 @@ NumericVector DissimilarityValue( NumericMatrix Hetx, List PMat,
             
             p.increment(); // update progress
             
-            DisMat(m,n) = xPMatSub(m,n) * abs(xVal[m] - xVal[n]);
+            DisMat(m,n) = xPMatSub(m,n) * fabs(xVal[m] - xVal[n]);
             
           }
         }

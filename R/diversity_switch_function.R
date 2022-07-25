@@ -92,13 +92,11 @@ contrast <- function(rank, delta, Hetx, vMat_big = NULL, SpatMat, nrp, narm, dis
 #' @rdname Diversity
 #' @export
 
-entropy <- function(rank, delta, Hetx, vMat_big = NULL, SpatMat, nrp, narm, display_progress, 
-                    parallelize = FALSE, ...) {
+entropy <- function(rank, delta, Hetx, vMat_big = NULL, SpatMat, nrp, narm, display_progress,  ...) {
   
   rank_delta <- paste(rank, delta, is.null(vMat_big))
   
-  if(parallelize == FALSE){
-  
+
   switch_function <- function(rank_delta) {
     
     switch(EXPR = rank_delta,
@@ -115,22 +113,6 @@ entropy <- function(rank, delta, Hetx, vMat_big = NULL, SpatMat, nrp, narm, disp
            "TRUE 2 FALSE" = .WeightedEntropySqrRankNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress),
            "FALSE 2 FALSE" = .WeightedEntropySqrValueNested(Hetx = Hetx, vMat_big = vMat_big, PMat = SpatMat, narm = narm, display_progress = display_progress)
     )
-  }
-  }
-  
-  else{
-  
-  switch_function <- function(rank_delta) {
-    
-    switch(EXPR = rank_delta,
-           "FALSE 0" = .EntropyParallel(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "TRUE 0" = .Entropy(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "TRUE 1" = .WeightedEntropyAbsRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "FALSE 1" = .WeightedEntropyAbsValueParallel(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "TRUE 2" = .WeightedEntropySqrRank(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress),
-           "FALSE 2" = .WeightedEntropySqrValueParallel(Hetx = Hetx, PMat = SpatMat, narm = narm, display_progress = display_progress)
-    )
-  }
   }
   
   v <- switch_function(rank_delta)

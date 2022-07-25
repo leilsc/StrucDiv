@@ -20,7 +20,7 @@ strucDivNest(
   na.handling = na.pass,
   padValue = NA,
   aroundTheGlobe = FALSE,
-  parallelize = FALSE,
+  ncores = 1,
   display_progress = FALSE,
   filename = "",
   ...
@@ -42,7 +42,7 @@ and larger than wslI.}
 Default is FALSE in which case the image is not cut into blocks.}
 
 \item{oLap}{an integer that defines the overlap between the blocks. It must
-be at least 2*(wslO-1) or bigger. Blocks can overlap by a maximum of half the 
+be at least wslI-1 or bigger. Blocks can overlap by a maximum of half the 
 rows of blocks in row-direction, and by half the columns of blocks in column-direction.}
 
 \item{priorB}{logical Should the blocks be used for prior estimates? 
@@ -91,8 +91,9 @@ set aroundTheGlobe = TRUE, and the input raster will be "glued together" from bo
 to calculate diversity without edge effects on the sides.
 Defaults to FALSE.}
 
-\item{parallelize}{logical. Set to TRUE to parallelize the computation on multiple cores.
-Default is FALSE. Please set to TRUE only for bigger problems.}
+\item{ncores}{integer. The number of cores the computation will be parallelized on.
+Parallelization is only available with blocks - both when they are used as prior, 
+and when they are simply used to cut the image.}
 
 \item{display_progress}{logical}
 

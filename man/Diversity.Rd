@@ -13,6 +13,7 @@ homogeneity(
   rank,
   delta,
   Hetx,
+  vMat_big = NULL,
   SpatMat,
   nrp,
   narm,
@@ -20,23 +21,53 @@ homogeneity(
   ...
 )
 
-dissimilarity(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
+dissimilarity(
+  rank,
+  delta,
+  Hetx,
+  vMat_big = NULL,
+  SpatMat,
+  nrp,
+  narm,
+  display_progress,
+  ...
+)
 
-contrast(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
+contrast(
+  rank,
+  delta,
+  Hetx,
+  vMat_big = NULL,
+  SpatMat,
+  nrp,
+  narm,
+  display_progress,
+  ...
+)
 
 entropy(
   rank,
   delta,
   Hetx,
+  vMat_big = NULL,
   SpatMat,
   nrp,
   narm,
   display_progress,
-  parallelize = FALSE,
   ...
 )
 
-entropyNorm(rank, delta, Hetx, SpatMat, nrp, narm, display_progress, ...)
+entropyNorm(
+  rank,
+  delta,
+  Hetx,
+  vMat_big = NULL,
+  SpatMat,
+  nrp,
+  narm,
+  display_progress,
+  ...
+)
 }
 \arguments{
 \item{rank}{logical. Should values be replaced with ranks in each co-occurrence 
@@ -48,6 +79,8 @@ The default value is 0. It can also take the values 1 for absolute value and
 
 \item{Hetx}{is the diversity matrix that is returned by an internal function
 to the \code{StrucDiv} function.}
+
+\item{vMat_big}{is a matrix. Default is NULL.}
 
 \item{SpatMat}{is the probability matrix that is returned by an internal function
 to the \code{StrucDiv} function.}
