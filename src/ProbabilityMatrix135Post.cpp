@@ -100,6 +100,8 @@ List ProbabilityMatrixDiagonal135Post(NumericMatrix vMat, NumericMatrix x, int d
   
   List outList(vMat.nrow());
   
+  NewProgressBar pb;
+  Progress p(vMat.nrow()*vMat.nrow(), display_progress, pb);
   
   NumericVector values_big = na_omit(x);
   NumericVector Values_big = sort_unique(values_big);
@@ -128,16 +130,10 @@ List ProbabilityMatrixDiagonal135Post(NumericMatrix vMat, NumericMatrix x, int d
   for( int i = 0; i < out2_big.nrow(); i++ ){
     for( int j = 0; j < out2_big.ncol(); j++ ){
       
-      // p.increment(); // update progress
-      
       out2_big(i,j) += out_big(i,j);
       
     }
   }
-  
-  // NewProgressBar pb;
-  
-  // Progress p(vMat.nrow()*vMat.nrow(), display_progress, pb);
   
   for(int t = 0; t < vMat.nrow(); t++) {
     
@@ -177,8 +173,6 @@ List ProbabilityMatrixDiagonal135Post(NumericMatrix vMat, NumericMatrix x, int d
     for( int i = 0; i < out2.nrow(); i++ ){
       for( int j = 0; j < out2.ncol(); j++ ){
         
-        // p.increment(); // update progress
-        
         out2(i,j) += out(i,j);
 
       }
@@ -205,7 +199,7 @@ List ProbabilityMatrixDiagonal135Post(NumericMatrix vMat, NumericMatrix x, int d
         
         out2_big2(i,j) += out2(i,j);
         out2_big2(i,j) = out2_big2(i,j)/(nrp + nrp_big);
-        
+        p.increment(); // update progress
       }
     }
     

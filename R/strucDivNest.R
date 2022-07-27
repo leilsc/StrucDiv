@@ -155,7 +155,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                          na.handling = na.pass, padValue = NA, 
                          aroundTheGlobe = FALSE, 
                          ncores = 1,
-                         display_progress = FALSE, 
+                         display_progress = TRUE, 
                          filename = "", ...) {
   
   #browser()
@@ -173,7 +173,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
   }
   
   if ( identical(na.handling, na.pass) && anyNA(raster::values(x)) ) {
-      warning("Raster layer contains missing values. Wherever there are missing values,
+    warning("Raster layer contains missing values. Wherever there are missing values,
               an NA will be returned. if you want to proceed without NAs, 
               set na.handling = na.omit.")
   }
@@ -238,7 +238,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     
     if (oLap < (wslI-1)) {
       stop("Overlap is too small. The overlap must be oLap >= wslI-1.")
-           
+      
     }
     
     if ( oLap > floor(dimB[1]/2) ) {
@@ -260,10 +260,10 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
   }
   
   if(priorB == FALSE & is.numeric(dimB[1])) {
-  
-  warning("Blocks are only used for parallelization. 
+    
+    warning("Blocks are only used for parallelization. 
           If you want to use blocks for prior information, set priorB = TRUE.")
-
+    
   }
   
   if(priorB == TRUE & (dimB == FALSE)[1]) {
@@ -278,7 +278,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
          please specify wslO, or specify dimB and oLap and set priorB = TRUE, or set domain = TRUE."
     )
   }
-   
+  
   if( is.null(wslO) & (dimB == FALSE)[1] & domain == FALSE ){
     
     warning("No prior information is provided, hence you are not using a nested-scales approach. 
@@ -287,422 +287,513 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
             or specify dimB and oLap and set priorB = TRUE, or set domain = TRUE.")
     
     out <- strucDiv(x = x, wsl = wslI, dist = dist, angle = angle,
-            rank = rank, fun = fun, delta = delta, 
-            na.handling = na.handling, padValue = padValue, 
-            aroundTheGlobe = aroundTheGlobe, filename = filename, 
-            display_progress = display_progress)
+                    rank = rank, fun = fun, delta = delta, 
+                    na.handling = na.handling, padValue = padValue, 
+                    aroundTheGlobe = aroundTheGlobe, filename = filename, 
+                    display_progress = display_progress)
     
   }
   
   else{ ## START checks of other arguments and do nesting
     
-  if (dist > min(dim(out)[1:2]) / 2 - 1) {
-    stop("Distance value is too big.")
-  }
-  
-  if (!(angle %in% c("horizontal", "vertical", "diagonal45", "diagonal135", "all"))) {
-    stop('Angle must be one of "horizontal", "vertical", "diagonal45", "diagonal135", or "all".')
-  }
-    
-  if(!is.logical(rank)){
-    stop("rank mjust be either TRUE or FALSE")
-  }
-  
-  if(!is.function(fun)){
-    stop("This diversity metric is not available.")
-  }
-  
-  if ( !(delta %in% c(0,1,2)) ) {
-    stop("Delta must be 0, 1, or 2.")
-  }
-    
-  if(!(is.numeric(padValue) | is.na(padValue))){
-    stop("padValue must be a number or NA.")
-  }
-    
-  filename <- glue::trim(filename)
-
-  if (raster::canProcessInMemory(x)) {
-    
-    if(!is.null(wslO)) {  ## SMALLER WINDOW NESTED IN A LARGER WINDOW
-    switch_angle <- function(angle) {
-      
-      switch(angle,
-             "horizontal" = .ProbabilityMatrixHorizontalNested(vMat = vMat, 
-                                                               vMat_big = vMat_big,
-                                                               d = dist,
-                                                               display_progress=FALSE),
-             "vertical" = .ProbabilityMatrixVerticalNested(vMat = vMat, 
-                                                           vMat_big = vMat_big, 
-                                                           d = dist,
-                                                           display_progress=FALSE),
-             "diagonal45" = .ProbabilityMatrixDiagonal45Nested(vMat = vMat, 
-                                                               vMat_big = vMat_big,
-                                                               d = dist,
-                                                               display_progress=FALSE),
-             "diagonal135" = .ProbabilityMatrixDiagonal135Nested(vMat = vMat, 
-                                                                 vMat_big = vMat_big,
-                                                                 d = dist,
-                                                                 display_progress=FALSE),
-             "all" = .ProbabilityMatrixAllNested(vMat = vMat, 
-                                                 vMat_big = vMat_big,
-                                                 d = dist,
-                                                 display_progress=FALSE),
-             .ProbabilityMatrixAllNested(vMat = vMat,
-                                                vMat_big = vMat_big,
-                                                d = dist,
-                                                display_progress=FALSE)
-      )
-      
+    if (dist > min(dim(out)[1:2]) / 2 - 1) {
+      stop("Distance value is too big.")
     }
     
-    vMat <- getValuesWindow(x, wsl = wslI, padValue = padValue, 
-                             aroundTheGlobe = aroundTheGlobe)
-    
-    suppressMessages( vMat_big <- getValuesWindow(x, wsl = wslO, padValue = padValue, 
-                                                   aroundTheGlobe = aroundTheGlobe)  )
-    
-    Hetx <- vMat
-    
-    suppressWarnings(
-      if( identical(na.handling, na.omit) && anyNA(raster::values(x)) ) {
-        narm <- 1
-      } 
-      else{
-        narm <- 0
-      }
-    )
-    
-    if (angle %in% c("horizontal", "vertical")) {
-      nrp <- 2*wslI*(wslI - dist)
-    }
-    if (angle %in% c("diagonal45", "diagonal135")) {
-      nrp <- (wslI - dist) * 2 *(wslI - dist)
-    }
-    if (angle == "all") {
-      nrp <- 4 * (wslI - dist) * (2 * wslI - dist)
+    if (!(angle %in% c("horizontal", "vertical", "diagonal45", "diagonal135", "all"))) {
+      stop('Angle must be one of "horizontal", "vertical", "diagonal45", "diagonal135", or "all".')
     }
     
-    SpatMat <- switch_angle(angle)
-    
-    v <- do.call(fun, list(rank = rank, Hetx = Hetx, vMat_big = vMat_big, SpatMat = SpatMat, delta = delta,
-                           nrp = nrp, narm = narm, display_progress = display_progress))
-    
-    out <- raster::setValues(out, v)
-    
+    if(!is.logical(rank)){
+      stop("rank mjust be either TRUE or FALSE")
     }
     
-    if(domain == TRUE){  ## USE THE WHOLE IMAGE AS A PRIOR
-      
-      vMat <- getValuesWindow(x, wsl = wslI, padValue = padValue, 
-                               aroundTheGlobe = aroundTheGlobe)
-      Hetx <- vMat
-      
-      suppressWarnings(
-        if( identical(na.handling, na.omit) && anyNA(raster::values(x)) ) {
-          narm <- 1
-        } 
-        else{
-          narm <- 0
-        }
-      )
-      
-      switch_angle <- function(angle) {
-        
-        switch(angle,
-               "horizontal" = .ProbabilityMatrixHorizontalPost(vMat = vMat, 
-                                                               x = xMat, d = dist, 
-                                                               nrp = nrp, nrp_big = nrp_big,
-                                                               display_progress=FALSE),
-               "vertical" = .ProbabilityMatrixVerticalPost(vMat = vMat, 
-                                                           x = xMat, d = dist, 
-                                                           nrp = nrp, nrp_big = nrp_big,
-                                                           display_progress=FALSE),
-               "diagonal45" = .ProbabilityMatrixDiagonal45Post(vMat = vMat, 
-                                                               x = xMat, d = dist, 
-                                                               nrp = nrp, nrp_big = nrp_big,
-                                                               display_progress=FALSE),
-               "diagonal135" = .ProbabilityMatrixDiagonal135Post(vMat = vMat, 
-                                                                 x = xMat, d = dist, 
-                                                                 nrp = nrp, nrp_big = nrp_big,
-                                                                 display_progress=FALSE),
-               "all" = .ProbabilityMatrixAllPost(vMat = vMat, 
-                                                 x = xMat, d = dist, 
-                                                 nrp = nrp, nrp_big = nrp_big,
-                                                 display_progress=FALSE),
-               .ProbabilityMatrixAllPost(vMat = vMat, 
-                                         x = xMat, d = dist, 
-                                         nrp = nrp, nrp_big = nrp_big,
-                                         display_progress=FALSE)
-        )
-        
-      }
-      
-      xMat <- matrix(raster::values(x), nrow(x), ncol(x), byrow = TRUE)
-      if (angle == "horizontal") {
-        nrp <- 2*wslI*(wslI - dist)
-        nrp_big <- 2*nrow(xMat)*(ncol(xMat) - dist)
-      }
-      if (angle == "vertical") {
-        nrp <- 2*wslI*(wslI - dist)
-        nrp_big <- 2*ncol(xMat)*(nrow(xMat) - dist)
-      }
-      if (angle %in% c("diagonal45", "diagonal135")) {
-        nrp <- (wslI - dist) * 2 *(wslI - dist)
-        nrp_big <- (nrow(xMat) - dist) * 2 *(ncol(xMat) - dist)
-      }
-      if (angle == "all") {
-        nrp <- 4 * (wslI - dist) * (2 * wslI - dist)
-        nrp_big <- 2*((nrow(xMat)-dist)*(2*ncol(xMat)-dist)+(ncol(xMat)-dist)*(2*nrow(xMat)-dist))
-      }
-      
-      SpatMat <- switch_angle(angle)
-
-      v <- do.call(fun, list(rank = rank, Hetx = Hetx, SpatMat = SpatMat, delta = delta,
-                             nrp = nrp, narm = narm, display_progress = display_progress))
-      
-      out <- raster::setValues(out, v)
-      
+    if(!is.function(fun)){
+      stop("This diversity metric is not available.")
     }
     
-    if( (dimB != FALSE)[1] ){
+    if ( !(delta %in% c(0,1,2)) ) {
+      stop("Delta must be 0, 1, or 2.")
+    }
+    
+    if(!(is.numeric(padValue) | is.na(padValue))){
+      stop("padValue must be a number or NA.")
+    }
+    
+    filename <- glue::trim(filename)
+    
+    if (raster::canProcessInMemory(x)) {
       
-      if( priorB == FALSE & is.null(wslO)){
-        
-        switch_angle <- function(angle) {
-          
-          switch(angle,
-                 "horizontal" = .ProbabilityMatrixHorizontalDynamic(vMat = vMat, d = dist, narm = narm),
-                 "vertical" = .ProbabilityMatrixVerticalDynamic(vMat = vMat, d = dist, narm = narm),
-                 "diagonal45" = .ProbabilityMatrixDiagonal45Dynamic(vMat = vMat, d = dist, narm = narm),
-                 "diagonal135" = .ProbabilityMatrixDiagonal135Dynamic(vMat = vMat, d = dist, narm = narm),
-                 "all" = .ProbabilityMatrixAllDynamic(vMat = vMat, d = dist, narm = narm),
-                 .ProbabilityMatrixHorizontalDynamic(vMat = vMat, d = dist, narm = narm)
-          )
-          
-        }
-        
-      }
-      if( priorB == FALSE & !is.null(wslO)) {
-        
+      if(!is.null(wslO)) {  ## SMALLER WINDOW NESTED IN A LARGER WINDOW
         switch_angle <- function(angle) {
           
           switch(angle,
                  "horizontal" = .ProbabilityMatrixHorizontalNested(vMat = vMat, 
                                                                    vMat_big = vMat_big,
                                                                    d = dist,
-                                                                   display_progress=FALSE),
+                                                                   display_progress=display_progress),
                  "vertical" = .ProbabilityMatrixVerticalNested(vMat = vMat, 
                                                                vMat_big = vMat_big, 
                                                                d = dist,
-                                                               display_progress=FALSE),
+                                                               display_progress=display_progress),
                  "diagonal45" = .ProbabilityMatrixDiagonal45Nested(vMat = vMat, 
                                                                    vMat_big = vMat_big,
                                                                    d = dist,
-                                                                   display_progress=FALSE),
+                                                                   display_progress=display_progress),
                  "diagonal135" = .ProbabilityMatrixDiagonal135Nested(vMat = vMat, 
                                                                      vMat_big = vMat_big,
                                                                      d = dist,
-                                                                     display_progress=FALSE),
+                                                                     display_progress=display_progress),
                  "all" = .ProbabilityMatrixAllNested(vMat = vMat, 
                                                      vMat_big = vMat_big,
                                                      d = dist,
-                                                     display_progress=FALSE),
+                                                     display_progress=display_progress),
                  .ProbabilityMatrixAllNested(vMat = vMat,
                                              vMat_big = vMat_big,
                                              d = dist,
-                                             display_progress=FALSE)
+                                             display_progress=display_progress)
           )
           
         }
         
+        vMat <- getValuesWindow(x, wsl = wslI, padValue = padValue, 
+                                aroundTheGlobe = aroundTheGlobe)
+        
+        suppressMessages( vMat_big <- getValuesWindow(x, wsl = wslO, padValue = padValue, 
+                                                      aroundTheGlobe = aroundTheGlobe)  )
+        
+        Hetx <- vMat
+        
+        suppressWarnings(
+          if( identical(na.handling, na.omit) && anyNA(raster::values(x)) ) {
+            narm <- 1
+          } 
+          else{
+            narm <- 0
+          }
+        )
+        
+        if (angle %in% c("horizontal", "vertical")) {
+          nrp <- 2*wslI*(wslI - dist)
+        }
+        if (angle %in% c("diagonal45", "diagonal135")) {
+          nrp <- (wslI - dist) * 2 *(wslI - dist)
+        }
+        if (angle == "all") {
+          nrp <- 4 * (wslI - dist) * (2 * wslI - dist)
+        }
+        
+        SpatMat <- switch_angle(angle)
+        
+        v <- do.call(fun, list(rank = rank, Hetx = Hetx, vMat_big = vMat_big, SpatMat = SpatMat, delta = delta,
+                               nrp = nrp, narm = narm, display_progress = display_progress))
+        
+        out <- raster::setValues(out, v)
+        
       }
       
-      if( priorB == TRUE ) {
+      if(domain == TRUE){  ## USE THE WHOLE IMAGE AS A PRIOR
+        
+        vMat <- getValuesWindow(x, wsl = wslI, padValue = padValue, 
+                                aroundTheGlobe = aroundTheGlobe)
+        Hetx <- vMat
+        
+        suppressWarnings(
+          if( identical(na.handling, na.omit) && anyNA(raster::values(x)) ) {
+            narm <- 1
+          } 
+          else{
+            narm <- 0
+          }
+        )
         
         switch_angle <- function(angle) {
           
           switch(angle,
                  "horizontal" = .ProbabilityMatrixHorizontalPost(vMat = vMat, 
-                                                                 x = blockrama, d = dist, 
+                                                                 x = xMat, d = dist, 
                                                                  nrp = nrp, nrp_big = nrp_big,
-                                                                 display_progress=FALSE),
+                                                                 display_progress=display_progress),
                  "vertical" = .ProbabilityMatrixVerticalPost(vMat = vMat, 
-                                                             x = blockrama, d = dist, 
+                                                             x = xMat, d = dist, 
                                                              nrp = nrp, nrp_big = nrp_big,
-                                                             display_progress=FALSE),
+                                                             display_progress=display_progress),
                  "diagonal45" = .ProbabilityMatrixDiagonal45Post(vMat = vMat, 
-                                                                 x = blockrama, d = dist, 
+                                                                 x = xMat, d = dist, 
                                                                  nrp = nrp, nrp_big = nrp_big,
-                                                                 display_progress=FALSE),
+                                                                 display_progress=display_progress),
                  "diagonal135" = .ProbabilityMatrixDiagonal135Post(vMat = vMat, 
-                                                                   x = blockrama, d = dist, 
+                                                                   x = xMat, d = dist, 
                                                                    nrp = nrp, nrp_big = nrp_big,
-                                                                   display_progress=FALSE),
+                                                                   display_progress=display_progress),
                  "all" = .ProbabilityMatrixAllPost(vMat = vMat, 
-                                                   x = blockrama, d = dist, 
+                                                   x = xMat, d = dist, 
                                                    nrp = nrp, nrp_big = nrp_big,
-                                                   display_progress=FALSE),
+                                                   display_progress=display_progress),
                  .ProbabilityMatrixAllPost(vMat = vMat, 
-                                           x = blockrama, d = dist, 
+                                           x = xMat, d = dist, 
                                            nrp = nrp, nrp_big = nrp_big,
-                                           display_progress=FALSE)
+                                           display_progress=display_progress)
           )
           
         }
         
+        xMat <- matrix(raster::values(x), nrow(x), ncol(x), byrow = TRUE)
+        if (angle == "horizontal") {
+          nrp <- 2*wslI*(wslI - dist)
+          nrp_big <- 2*nrow(xMat)*(ncol(xMat) - dist)
+        }
+        if (angle == "vertical") {
+          nrp <- 2*wslI*(wslI - dist)
+          nrp_big <- 2*ncol(xMat)*(nrow(xMat) - dist)
+        }
+        if (angle %in% c("diagonal45", "diagonal135")) {
+          nrp <- (wslI - dist) * 2 *(wslI - dist)
+          nrp_big <- (nrow(xMat) - dist) * 2 *(ncol(xMat) - dist)
+        }
+        if (angle == "all") {
+          nrp <- 4 * (wslI - dist) * (2 * wslI - dist)
+          nrp_big <- 2*((nrow(xMat)-dist)*(2*ncol(xMat)-dist)+(ncol(xMat)-dist)*(2*nrow(xMat)-dist))
+        }
+        
+        SpatMat <- switch_angle(angle)
+        
+        v <- do.call(fun, list(rank = rank, Hetx = Hetx, SpatMat = SpatMat, delta = delta,
+                               nrp = nrp, narm = narm, display_progress = display_progress))
+        
+        out <- raster::setValues(out, v)
         
       }
       
-      out <- raster::crop(x, raster::extent(x, 1, 1, 1, 1))
-      
-      if (angle %in% c("horizontal", "vertical")) {
-        nrp <- 2*wslI*(wslI - dist)
-      }
-      
-      if (angle %in% c("diagonal45", "diagonal135")) {
-        nrp <- (wslI - dist) * 2 *(wslI - dist)
-      }
-      
-      if (angle == "all") {
-        nrp <- 4 * (wslI - dist) * (2 * wslI - dist)
-      }
-      
-      wsl <- ifelse(is.null(wslO), wslI, wslO)
-      
-      wmx <- .WM(nrow = dimB[1], ncol = dimB[2], ul = oLap, nNA = floor(0.5*wsl))
-      
-      num <- setValues(out, values = NA)
-      denom <- setValues(out, values = NA)
-      
-      stepsize <- dimB[1]-oLap
-      rowtimes <- (nrow(x) - dimB[1]) / (dimB[1] - oLap) + 1
-      times <- rep(stepsize, rowtimes - 1)
-      RowIndex <- c(1, cumsum(times) + 1)
-      
-      stepsize <- dimB[2]-oLap
-      coltimes <- (ncol(x) - dimB[2]) / (dimB[2] - oLap) + 1
-      times <- rep(stepsize, coltimes - 1)
-      ColIndex <- c(1, cumsum(times) + 1)
-      
-      # pb = txtProgressBar(min = 0, max = length(RowIndex), initial = 0, style = 3)
-      
-      # block_layers <- list()
-      
-      rows <- length(RowIndex)
-      cl <- parallel::makeCluster(ncores)
-      doParallel::registerDoParallel(cl)  
-      
-      suppressWarnings(
-        out <- foreach( row.num = 1:rows, .packages = c("raster", "StrucDiv2") ) %dopar% {
-
-          for (j in 1:length(ColIndex)) {
-            block <- raster::getValuesBlock(x = x, row = RowIndex[row.num], nrows = dimB[1],
-                                            col = ColIndex[j], ncols = dimB[2], format = "matrix")
-            blockra <- raster::raster(block)
+      if( (dimB != FALSE)[1] ){
+        
+        if( priorB == FALSE & is.null(wslO)){
+          
+          switch_angle <- function(angle) {
             
-            if(priorB == TRUE){
-              
-              if (angle == "horizontal") {
-                nrp_big <- 2*nrow(blockra)*(ncol(blockra) - dist)
-              }
-              if (angle == "vertical") {
-                nrp_big <- 2*ncol(blockra)*(nrow(blockra) - dist)
-              }
-              if (angle %in% c("diagonal45", "diagonal135")) {
-                nrp_big <- (nrow(blockra) - dist) * 2 *(ncol(blockra) - dist)
-              }
-              if (angle == "all") {
-                nrp_big <- 2*((nrow(blockra)-dist)*(2*ncol(blockra)-dist)+(ncol(blockra)-dist)*(2*nrow(blockra)-dist))
-              }
-              
-            }
-            raster::extent(blockra) <- raster::extent(x, RowIndex[row.num], RowIndex[row.num] + dimB[1] - 1,
-                                                      ColIndex[j], ColIndex[j] + dimB[2] - 1)
-            raster::crs(blockra) <- raster::crs(x)
-            raster::res(blockra) <- raster::res(x)
-            
-            vMat_big = NULL
-            
-            if(!is.null(wslO)) {
-              suppressMessages( vMat_big <- StrucDiv2::getValuesWindow(blockra, wsl = wslO, padValue = NA,
-                                                             aroundTheGlobe = aroundTheGlobe) )
-            }
-            
-            vMat <- StrucDiv2::getValuesWindow(blockra, wsl = wslI, padValue = NA, 
-                                    aroundTheGlobe = aroundTheGlobe)
-            Hetx <- vMat
-            
-            suppressWarnings(
-              if( identical(na.handling, na.omit) && anyNA(raster::values(x)) ) {
-                narm <- 1
-              }
-              else{
-                narm <- 0
-              }
+            switch(angle,
+                   "horizontal" = .ProbabilityMatrixHorizontalDynamic(vMat = vMat, d = dist, narm = narm,
+                                                                      display_progress = display_progress),
+                   "vertical" = .ProbabilityMatrixVerticalDynamic(vMat = vMat, d = dist, narm = narm,
+                                                                  display_progress = display_progress),
+                   "diagonal45" = .ProbabilityMatrixDiagonal45Dynamic(vMat = vMat, d = dist, narm = narm,
+                                                                      display_progress = display_progress),
+                   "diagonal135" = .ProbabilityMatrixDiagonal135Dynamic(vMat = vMat, d = dist, narm = narm,
+                                                                        display_progress = display_progress),
+                   "all" = .ProbabilityMatrixAllDynamic(vMat = vMat, d = dist, narm = narm,
+                                                        display_progress = display_progress),
+                   .ProbabilityMatrixHorizontalDynamic(vMat = vMat, d = dist, narm = narm,
+                                                       display_progress = display_progress)
             )
             
-            blockrama <- matrix(raster::values(blockra), nrow(blockra), ncol(blockra), byrow = TRUE)
-            
-            SpatMat <- switch_angle(angle)
-            
-            sdiv <- do.call(fun, list(rank = rank, Hetx = Hetx, vMat_big = vMat_big, SpatMat = SpatMat, delta = delta,
-                                      nrp = nrp, narm = narm, display_progress = FALSE))
-            
-            if(anyNA(raster::values(blockra)) && priorB == TRUE && narm == 0) {
-              sdiv <- NA
-              warning("At least one block contains missing values. You may want to consider the argument 'na.handling = na.omit'.")
-            }
-            
-            # multiply each block with the spatial weights matrix
-            sdiv <- matrix(sdiv, dimB[1], dimB[2], byrow = TRUE)
-            wdiv <- sdiv * wmx
-            
-            # rasterize weighted blocks
-            wdiv <- raster::raster(wdiv)
-            # raster::extent(wdiv) <- raster::extent(x, RowIndex[i], RowIndex[i] + dimB[1] - 1,
-            #                                        ColIndex[j], ColIndex[j] + dimB[2] - 1)
-            # raster::crs(wdiv) <- raster::crs(x)
-            # raster::res(wdiv) <- raster::res(x)
-            
-            wdiv <- setValues(blockra, values = values(wdiv))
-            
-            wmr <- raster(wmx) # rasterize weights matrix so we can create denominator layer
-            WMRext <- setValues(blockra, values = values(wmr)) # each block gets a weights matrix layer
-            # that has the same extent, i.e. is in the same place as the block
-            
-            # create numerator - take the sum of overlapping weighted blocks (i.e. take the sum where they overlap)
-            num <- raster::mosaic(num, wdiv, fun = sum)
-            # create denominator - take the sum of overlapping weights (i.e. take the sum where they overlap)
-            denom <- raster::mosaic(denom, WMRext, fun = sum)
-            
-            # create final raster layer
           }
-                          
-            list(num = num, denom = denom)
-            
-          # setTxtProgressBar(pb,i)
+          
         }
-      )
+        if( priorB == FALSE & !is.null(wslO)) {
+          
+          switch_angle <- function(angle) {
+            
+            switch(angle,
+                   "horizontal" = .ProbabilityMatrixHorizontalNested(vMat = vMat, 
+                                                                     vMat_big = vMat_big,
+                                                                     d = dist,
+                                                                     display_progress=display_progress),
+                   "vertical" = .ProbabilityMatrixVerticalNested(vMat = vMat, 
+                                                                 vMat_big = vMat_big, 
+                                                                 d = dist,
+                                                                 display_progress=display_progress),
+                   "diagonal45" = .ProbabilityMatrixDiagonal45Nested(vMat = vMat, 
+                                                                     vMat_big = vMat_big,
+                                                                     d = dist,
+                                                                     display_progress=display_progress),
+                   "diagonal135" = .ProbabilityMatrixDiagonal135Nested(vMat = vMat, 
+                                                                       vMat_big = vMat_big,
+                                                                       d = dist,
+                                                                       display_progress=display_progress),
+                   "all" = .ProbabilityMatrixAllNested(vMat = vMat, 
+                                                       vMat_big = vMat_big,
+                                                       d = dist,
+                                                       display_progress=display_progress),
+                   .ProbabilityMatrixAllNested(vMat = vMat,
+                                               vMat_big = vMat_big,
+                                               d = dist,
+                                               display_progress=display_progress)
+            )
+            
+          }
+          
+        }
+        
+        if( priorB == TRUE ) {
+          
+          switch_angle <- function(angle) {
+            
+            switch(angle,
+                   "horizontal" = .ProbabilityMatrixHorizontalPost(vMat = vMat, 
+                                                                   x = blockrama, d = dist, 
+                                                                   nrp = nrp, nrp_big = nrp_big,
+                                                                   display_progress=FALSE),
+                   "vertical" = .ProbabilityMatrixVerticalPost(vMat = vMat, 
+                                                               x = blockrama, d = dist, 
+                                                               nrp = nrp, nrp_big = nrp_big,
+                                                               display_progress=FALSE),
+                   "diagonal45" = .ProbabilityMatrixDiagonal45Post(vMat = vMat, 
+                                                                   x = blockrama, d = dist, 
+                                                                   nrp = nrp, nrp_big = nrp_big,
+                                                                   display_progress=FALSE),
+                   "diagonal135" = .ProbabilityMatrixDiagonal135Post(vMat = vMat, 
+                                                                     x = blockrama, d = dist, 
+                                                                     nrp = nrp, nrp_big = nrp_big,
+                                                                     display_progress=FALSE),
+                   "all" = .ProbabilityMatrixAllPost(vMat = vMat, 
+                                                     x = blockrama, d = dist, 
+                                                     nrp = nrp, nrp_big = nrp_big,
+                                                     display_progress=FALSE),
+                   .ProbabilityMatrixAllPost(vMat = vMat, 
+                                             x = blockrama, d = dist, 
+                                             nrp = nrp, nrp_big = nrp_big,
+                                             display_progress=FALSE)
+            )
+            
+          }
+          
+          
+        }
+        
+        out <- raster::crop(x, raster::extent(x, 1, 1, 1, 1))
+        
+        if (angle %in% c("horizontal", "vertical")) {
+          nrp <- 2*wslI*(wslI - dist)
+        }
+        
+        if (angle %in% c("diagonal45", "diagonal135")) {
+          nrp <- (wslI - dist) * 2 *(wslI - dist)
+        }
+        
+        if (angle == "all") {
+          nrp <- 4 * (wslI - dist) * (2 * wslI - dist)
+        }
+        
+        wsl <- ifelse(is.null(wslO), wslI, wslO)
+        
+        wmx <- .WM(nrow = dimB[1], ncol = dimB[2], ul = oLap, nNA = floor(0.5*wsl))
+        
+        num <- setValues(out, values = NA)
+        denom <- setValues(out, values = NA)
+        
+        stepsize <- dimB[1]-oLap
+        rowtimes <- (nrow(x) - dimB[1]) / (dimB[1] - oLap) + 1
+        times <- rep(stepsize, rowtimes - 1)
+        RowIndex <- c(1, cumsum(times) + 1)
+        
+        stepsize <- dimB[2]-oLap
+        coltimes <- (ncol(x) - dimB[2]) / (dimB[2] - oLap) + 1
+        times <- rep(stepsize, coltimes - 1)
+        ColIndex <- c(1, cumsum(times) + 1)
+        
+        rows <- length(RowIndex)
+        
+        cl <- parallel::makePSOCKcluster(ncores)
+        registerDoSNOW(cl)
+        
+        if(display_progress){
+          pb <- txtProgressBar(max=rows, style=3)
+          progress <- function(n) setTxtProgressBar(pb, n)
+          opts <- list(progress=progress)
+          suppressWarnings(
+            out <- foreach( row.num = 1:rows, .packages = c("raster", "StrucDiv2"),
+                            .options.snow=opts) %dopar% {
+                              
+                              for (j in 1:length(ColIndex)) {
+                                block <- raster::getValuesBlock(x = x, row = RowIndex[row.num], nrows = dimB[1],
+                                                                col = ColIndex[j], ncols = dimB[2], format = "matrix")
+                                blockra <- raster::raster(block)
+                                
+                                if(priorB == TRUE){
+                                  
+                                  if (angle == "horizontal") {
+                                    nrp_big <- 2*nrow(blockra)*(ncol(blockra) - dist)
+                                  }
+                                  if (angle == "vertical") {
+                                    nrp_big <- 2*ncol(blockra)*(nrow(blockra) - dist)
+                                  }
+                                  if (angle %in% c("diagonal45", "diagonal135")) {
+                                    nrp_big <- (nrow(blockra) - dist) * 2 *(ncol(blockra) - dist)
+                                  }
+                                  if (angle == "all") {
+                                    nrp_big <- 2*((nrow(blockra)-dist)*(2*ncol(blockra)-dist)+(ncol(blockra)-dist)*(2*nrow(blockra)-dist))
+                                  }
+                                  
+                                }
+                                raster::extent(blockra) <- raster::extent(x, RowIndex[row.num], RowIndex[row.num] + dimB[1] - 1,
+                                                                          ColIndex[j], ColIndex[j] + dimB[2] - 1)
+                                raster::crs(blockra) <- raster::crs(x)
+                                raster::res(blockra) <- raster::res(x)
+                                
+                                vMat_big = NULL
+                                
+                                if(!is.null(wslO)) {
+                                  suppressMessages( vMat_big <- StrucDiv2::getValuesWindow(blockra, wsl = wslO, padValue = NA,
+                                                                                           aroundTheGlobe = aroundTheGlobe) )
+                                }
+                                
+                                vMat <- StrucDiv2::getValuesWindow(blockra, wsl = wslI, padValue = NA, 
+                                                                   aroundTheGlobe = aroundTheGlobe)
+                                Hetx <- vMat
+                                
+                                suppressWarnings(
+                                  if( identical(na.handling, na.omit) && anyNA(raster::values(x)) ) {
+                                    narm <- 1
+                                  }
+                                  else{
+                                    narm <- 0
+                                  }
+                                )
+                                
+                                blockrama <- matrix(raster::values(blockra), nrow(blockra), ncol(blockra), byrow = TRUE)
+                                
+                                SpatMat <- switch_angle(angle)
+                                
+                                sdiv <- do.call(fun, list(rank = rank, Hetx = Hetx, vMat_big = vMat_big, SpatMat = SpatMat, delta = delta,
+                                                          nrp = nrp, narm = narm, display_progress = FALSE))
+                                
+                                if(anyNA(raster::values(blockra)) && priorB == TRUE && narm == 0) {
+                                  sdiv <- NA
+                                  warning("At least one block contains missing values. You may want to consider the argument 'na.handling = na.omit'.")
+                                }
+                                
+                                # multiply each block with the spatial weights matrix
+                                sdiv <- matrix(sdiv, dimB[1], dimB[2], byrow = TRUE)
+                                wdiv <- sdiv * wmx
+                                
+                                # rasterize weighted blocks
+                                wdiv <- raster::raster(wdiv)
+                                wdiv <- setValues(blockra, values = values(wdiv))
+                                
+                                wmr <- raster(wmx) # rasterize weights matrix so we can create denominator layer
+                                WMRext <- setValues(blockra, values = values(wmr)) # each block gets a weights matrix layer
+                                # that has the same extent, i.e. is in the same place as the block
+                                
+                                # create numerator - take the sum of overlapping weighted blocks (i.e. take the sum where they overlap)
+                                num <- raster::mosaic(num, wdiv, fun = sum)
+                                # create denominator - take the sum of overlapping weights (i.e. take the sum where they overlap)
+                                denom <- raster::mosaic(denom, WMRext, fun = sum)
+                                
+                                # create final raster layer
+                              }
+                              
+                              list(num = num, denom = denom)
+                              
+                            }
+          )
+          close(pb)
+        }
+        
+        else{
+          suppressWarnings(
+            out <- foreach( row.num = 1:rows, .packages = c("raster", "StrucDiv2") ) %dopar% {
+                              
+                              for (j in 1:length(ColIndex)) {
+                                block <- raster::getValuesBlock(x = x, row = RowIndex[row.num], nrows = dimB[1],
+                                                                col = ColIndex[j], ncols = dimB[2], format = "matrix")
+                                blockra <- raster::raster(block)
+                                
+                                if(priorB == TRUE){
+                                  
+                                  if (angle == "horizontal") {
+                                    nrp_big <- 2*nrow(blockra)*(ncol(blockra) - dist)
+                                  }
+                                  if (angle == "vertical") {
+                                    nrp_big <- 2*ncol(blockra)*(nrow(blockra) - dist)
+                                  }
+                                  if (angle %in% c("diagonal45", "diagonal135")) {
+                                    nrp_big <- (nrow(blockra) - dist) * 2 *(ncol(blockra) - dist)
+                                  }
+                                  if (angle == "all") {
+                                    nrp_big <- 2*((nrow(blockra)-dist)*(2*ncol(blockra)-dist)+(ncol(blockra)-dist)*(2*nrow(blockra)-dist))
+                                  }
+                                  
+                                }
+                                raster::extent(blockra) <- raster::extent(x, RowIndex[row.num], RowIndex[row.num] + dimB[1] - 1,
+                                                                          ColIndex[j], ColIndex[j] + dimB[2] - 1)
+                                raster::crs(blockra) <- raster::crs(x)
+                                raster::res(blockra) <- raster::res(x)
+                                
+                                vMat_big = NULL
+                                
+                                if(!is.null(wslO)) {
+                                  suppressMessages( vMat_big <- StrucDiv2::getValuesWindow(blockra, wsl = wslO, padValue = NA,
+                                                                                           aroundTheGlobe = aroundTheGlobe) )
+                                }
+                                
+                                vMat <- StrucDiv2::getValuesWindow(blockra, wsl = wslI, padValue = NA, 
+                                                                   aroundTheGlobe = aroundTheGlobe)
+                                Hetx <- vMat
+                                
+                                suppressWarnings(
+                                  if( identical(na.handling, na.omit) && anyNA(raster::values(x)) ) {
+                                    narm <- 1
+                                  }
+                                  else{
+                                    narm <- 0
+                                  }
+                                )
+                                
+                                blockrama <- matrix(raster::values(blockra), nrow(blockra), ncol(blockra), byrow = TRUE)
+                                
+                                SpatMat <- switch_angle(angle)
+                                
+                                sdiv <- do.call(fun, list(rank = rank, Hetx = Hetx, vMat_big = vMat_big, SpatMat = SpatMat, delta = delta,
+                                                          nrp = nrp, narm = narm, display_progress = FALSE))
+                                
+                                if(anyNA(raster::values(blockra)) && priorB == TRUE && narm == 0) {
+                                  sdiv <- NA
+                                  warning("At least one block contains missing values. You may want to consider the argument 'na.handling = na.omit'.")
+                                }
+                                
+                                # multiply each block with the spatial weights matrix
+                                sdiv <- matrix(sdiv, dimB[1], dimB[2], byrow = TRUE)
+                                wdiv <- sdiv * wmx
+                                
+                                # rasterize weighted blocks
+                                wdiv <- raster::raster(wdiv)
+                                wdiv <- setValues(blockra, values = values(wdiv))
+                                
+                                wmr <- raster(wmx) # rasterize weights matrix so we can create denominator layer
+                                WMRext <- setValues(blockra, values = values(wmr)) # each block gets a weights matrix layer
+                                # that has the same extent, i.e. is in the same place as the block
+                                
+                                # create numerator - take the sum of overlapping weighted blocks (i.e. take the sum where they overlap)
+                                num <- raster::mosaic(num, wdiv, fun = sum)
+                                # create denominator - take the sum of overlapping weights (i.e. take the sum where they overlap)
+                                denom <- raster::mosaic(denom, WMRext, fun = sum)
+                                
+                                # create final raster layer
+                              }
+                              
+                              list(num = num, denom = denom)
+                              
+                            }
+          )
+          
+        }
+        
+        parallel::stopCluster(cl)
+        
+        num <- raster::mosaic(out[[1]]$num, out[[2]]$num, fun = sum)
+        denom <- raster::mosaic(out[[1]]$denom, out[[2]]$denom, fun = sum)
+        
+        out <- num/denom
+        
+        return(out)
+        
+      } ## END of if statement for BLOCK
       
-      parallel::stopCluster(cl)
       
-      num <- raster::mosaic(out[[1]]$num, out[[2]]$num, fun = sum)
-      denom <- raster::mosaic(out[[1]]$denom, out[[2]]$denom, fun = sum)
-      
-      out <- num/denom
-      
-      # close(pb)
-      
-      return(out)
-      
-    } ## END of if statement for BLOCK
+    } else {
+      stop("Cannot proccess in memory.")
+    }
     
-    
-  } else {
-    stop("Cannot proccess in memory.")
-  }
-  
   }
   
   if (filename != "") {
@@ -712,4 +803,4 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
   return(out)
   
 }
-  
+

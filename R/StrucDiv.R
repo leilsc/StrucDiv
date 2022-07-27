@@ -185,12 +185,22 @@ strucDiv <- function(x, wsl, dist = 1, angle = "all",
     switch_angle <- function(angle) {
       
       switch(angle,
-             "horizontal" = .ProbabilityMatrixHorizontalDynamic(vMat = vMat, d = dist, narm = narm),
-             "vertical" = .ProbabilityMatrixVerticalDynamic(vMat = vMat, d = dist, narm = narm),
-             "diagonal45" = .ProbabilityMatrixDiagonal45Dynamic(vMat = vMat, d = dist, narm = narm),
-             "diagonal135" = .ProbabilityMatrixDiagonal135Dynamic(vMat = vMat, d = dist, narm = narm),
-             "all" = .ProbabilityMatrixAllDynamic(vMat = vMat, d = dist, narm = narm),
-             .ProbabilityMatrixHorizontalDynamic(vMat = vMat, d = dist, narm = narm)
+             "horizontal" = .ProbabilityMatrixHorizontalDynamic(vMat = vMat, d = dist, 
+                                                                narm = narm, 
+                                                                display_progress = display_progress),
+             "vertical" = .ProbabilityMatrixVerticalDynamic(vMat = vMat, d = dist, 
+                                                            narm = narm,
+                                                            display_progress = display_progress),
+             "diagonal45" = .ProbabilityMatrixDiagonal45Dynamic(vMat = vMat, d = dist, 
+                                                                narm = narm,
+                                                                display_progress = display_progress),
+             "diagonal135" = .ProbabilityMatrixDiagonal135Dynamic(vMat = vMat, d = dist, 
+                                                                  narm = narm,
+                                                                  display_progress = display_progress),
+             "all" = .ProbabilityMatrixAllDynamic(vMat = vMat, d = dist, narm = narm,
+                                                  display_progress = display_progress),
+             .ProbabilityMatrixHorizontalDynamic(vMat = vMat, d = dist, narm = narm,
+                                                 display_progress = display_progress)
       )
       
     }
