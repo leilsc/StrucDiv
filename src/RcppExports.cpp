@@ -34,6 +34,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ContrastRankRef
+double ContrastRankRef(NumericMatrix PMat);
+RcppExport SEXP _StrucDiv2_ContrastRankRef(SEXP PMatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    rcpp_result_gen = Rcpp::wrap(ContrastRankRef(PMat));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ContrastValue
 NumericVector ContrastValue(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_ContrastValue(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -60,6 +71,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(ContrastValueNested(Hetx, vMat_big, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ContrastValueRef
+double ContrastValueRef(NumericMatrix PMat);
+RcppExport SEXP _StrucDiv2_ContrastValueRef(SEXP PMatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    rcpp_result_gen = Rcpp::wrap(ContrastValueRef(PMat));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -92,6 +114,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// DissimilarityRankRef
+double DissimilarityRankRef(NumericMatrix PMat);
+RcppExport SEXP _StrucDiv2_DissimilarityRankRef(SEXP PMatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    rcpp_result_gen = Rcpp::wrap(DissimilarityRankRef(PMat));
+    return rcpp_result_gen;
+END_RCPP
+}
 // DissimilarityValue
 NumericVector DissimilarityValue(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_DissimilarityValue(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -118,6 +151,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(DissimilarityValueNested(Hetx, vMat_big, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// DissimilarityValueRef
+double DissimilarityValueRef(NumericMatrix PMat);
+RcppExport SEXP _StrucDiv2_DissimilarityValueRef(SEXP PMatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    rcpp_result_gen = Rcpp::wrap(DissimilarityValueRef(PMat));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -164,6 +208,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// EntropyRef
+double EntropyRef(NumericMatrix PMat);
+RcppExport SEXP _StrucDiv2_EntropyRef(SEXP PMatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    rcpp_result_gen = Rcpp::wrap(EntropyRef(PMat));
+    return rcpp_result_gen;
+END_RCPP
+}
 // HomogeneityRank
 NumericVector HomogeneityRank(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_HomogeneityRank(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -190,6 +245,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(HomogeneityRankNested(Hetx, vMat_big, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// HomogeneityRankRef
+double HomogeneityRankRef(NumericMatrix PMat);
+RcppExport SEXP _StrucDiv2_HomogeneityRankRef(SEXP PMatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    rcpp_result_gen = Rcpp::wrap(HomogeneityRankRef(PMat));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -222,6 +288,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// HomogeneityValueRef
+double HomogeneityValueRef(NumericMatrix PMat);
+RcppExport SEXP _StrucDiv2_HomogeneityValueRef(SEXP PMatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    rcpp_result_gen = Rcpp::wrap(HomogeneityValueRef(PMat));
+    return rcpp_result_gen;
+END_RCPP
+}
 // NormalizedEntropy
 NumericVector NormalizedEntropy(NumericMatrix Hetx, List PMat, int nrp, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_NormalizedEntropy(SEXP HetxSEXP, SEXP PMatSEXP, SEXP nrpSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -250,6 +327,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(NormalizedEntropyNested(Hetx, vMat_big, PMat, nrp, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ProbabilityMatrixHorizontal
+NumericMatrix ProbabilityMatrixHorizontal(NumericMatrix xMat, int d, NumericVector Values);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixHorizontal(SEXP xMatSEXP, SEXP dSEXP, SEXP ValuesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type xMat(xMatSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type Values(ValuesSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixHorizontal(xMat, d, Values));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -294,6 +384,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type nrp_big(nrp_bigSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixHorizontalPost(vMat, x, d, nrp, nrp_big, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ProbabilityMatrixDiagonal135
+NumericMatrix ProbabilityMatrixDiagonal135(NumericMatrix xMat, int d, NumericVector Values);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixDiagonal135(SEXP xMatSEXP, SEXP dSEXP, SEXP ValuesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type xMat(xMatSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type Values(ValuesSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixDiagonal135(xMat, d, Values));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -398,6 +501,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ProbabilityMatrixVertical
+NumericMatrix ProbabilityMatrixVertical(NumericMatrix xMat, int d, NumericVector Values);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixVertical(SEXP xMatSEXP, SEXP dSEXP, SEXP ValuesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type xMat(xMatSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type Values(ValuesSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixVertical(xMat, d, Values));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ProbabilityMatrixVerticalDynamic
 List ProbabilityMatrixVerticalDynamic(NumericMatrix vMat, int d, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_ProbabilityMatrixVerticalDynamic(SEXP vMatSEXP, SEXP dSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -439,6 +555,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type nrp_big(nrp_bigSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixVerticalPost(vMat, x, d, nrp, nrp_big, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ProbabilityMatrixAll
+NumericMatrix ProbabilityMatrixAll(NumericMatrix xMat, int d, NumericVector Values);
+RcppExport SEXP _StrucDiv2_ProbabilityMatrixAll(SEXP xMatSEXP, SEXP dSEXP, SEXP ValuesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type xMat(xMatSEXP);
+    Rcpp::traits::input_parameter< int >::type d(dSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type Values(ValuesSEXP);
+    rcpp_result_gen = Rcpp::wrap(ProbabilityMatrixAll(xMat, d, Values));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -515,6 +644,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// WeightedEntropyAbsRankRef
+double WeightedEntropyAbsRankRef(NumericMatrix PMat);
+RcppExport SEXP _StrucDiv2_WeightedEntropyAbsRankRef(SEXP PMatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    rcpp_result_gen = Rcpp::wrap(WeightedEntropyAbsRankRef(PMat));
+    return rcpp_result_gen;
+END_RCPP
+}
 // WeightedEntropyAbsValue
 NumericVector WeightedEntropyAbsValue(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_WeightedEntropyAbsValue(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -541,6 +681,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
     rcpp_result_gen = Rcpp::wrap(WeightedEntropyAbsValueNested(Hetx, vMat_big, PMat, narm, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// WeightedEntropyAbsValueRef
+double WeightedEntropyAbsValueRef(NumericMatrix PMat);
+RcppExport SEXP _StrucDiv2_WeightedEntropyAbsValueRef(SEXP PMatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    rcpp_result_gen = Rcpp::wrap(WeightedEntropyAbsValueRef(PMat));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -573,6 +724,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// WeightedEntropySqrRankRef
+double WeightedEntropySqrRankRef(NumericMatrix PMat);
+RcppExport SEXP _StrucDiv2_WeightedEntropySqrRankRef(SEXP PMatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    rcpp_result_gen = Rcpp::wrap(WeightedEntropySqrRankRef(PMat));
+    return rcpp_result_gen;
+END_RCPP
+}
 // WeightedEntropySqrValue
 NumericVector WeightedEntropySqrValue(NumericMatrix Hetx, List PMat, bool narm, bool display_progress);
 RcppExport SEXP _StrucDiv2_WeightedEntropySqrValue(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
@@ -602,6 +764,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// WeightedEntropySqrValueRef
+double WeightedEntropySqrValueRef(NumericMatrix PMat);
+RcppExport SEXP _StrucDiv2_WeightedEntropySqrValueRef(SEXP PMatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    rcpp_result_gen = Rcpp::wrap(WeightedEntropySqrValueRef(PMat));
+    return rcpp_result_gen;
+END_RCPP
+}
 // do_focal_get
 NumericVector do_focal_get(NumericMatrix d, NumericVector dim, NumericVector ngb);
 RcppExport SEXP _StrucDiv2_do_focal_get(SEXP dSEXP, SEXP dimSEXP, SEXP ngbSEXP) {
@@ -619,24 +792,33 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_StrucDiv2_ContrastRank", (DL_FUNC) &_StrucDiv2_ContrastRank, 4},
     {"_StrucDiv2_ContrastRankNested", (DL_FUNC) &_StrucDiv2_ContrastRankNested, 5},
+    {"_StrucDiv2_ContrastRankRef", (DL_FUNC) &_StrucDiv2_ContrastRankRef, 1},
     {"_StrucDiv2_ContrastValue", (DL_FUNC) &_StrucDiv2_ContrastValue, 4},
     {"_StrucDiv2_ContrastValueNested", (DL_FUNC) &_StrucDiv2_ContrastValueNested, 5},
+    {"_StrucDiv2_ContrastValueRef", (DL_FUNC) &_StrucDiv2_ContrastValueRef, 1},
     {"_StrucDiv2_DissimilarityRank", (DL_FUNC) &_StrucDiv2_DissimilarityRank, 4},
     {"_StrucDiv2_DissimilarityRankNested", (DL_FUNC) &_StrucDiv2_DissimilarityRankNested, 5},
+    {"_StrucDiv2_DissimilarityRankRef", (DL_FUNC) &_StrucDiv2_DissimilarityRankRef, 1},
     {"_StrucDiv2_DissimilarityValue", (DL_FUNC) &_StrucDiv2_DissimilarityValue, 4},
     {"_StrucDiv2_DissimilarityValueNested", (DL_FUNC) &_StrucDiv2_DissimilarityValueNested, 5},
+    {"_StrucDiv2_DissimilarityValueRef", (DL_FUNC) &_StrucDiv2_DissimilarityValueRef, 1},
     {"_StrucDiv2_Entropy", (DL_FUNC) &_StrucDiv2_Entropy, 4},
     {"_StrucDiv2_EntropyNested", (DL_FUNC) &_StrucDiv2_EntropyNested, 5},
     {"_StrucDiv2_EntropyParallel", (DL_FUNC) &_StrucDiv2_EntropyParallel, 4},
+    {"_StrucDiv2_EntropyRef", (DL_FUNC) &_StrucDiv2_EntropyRef, 1},
     {"_StrucDiv2_HomogeneityRank", (DL_FUNC) &_StrucDiv2_HomogeneityRank, 4},
     {"_StrucDiv2_HomogeneityRankNested", (DL_FUNC) &_StrucDiv2_HomogeneityRankNested, 5},
+    {"_StrucDiv2_HomogeneityRankRef", (DL_FUNC) &_StrucDiv2_HomogeneityRankRef, 1},
     {"_StrucDiv2_HomogeneityValue", (DL_FUNC) &_StrucDiv2_HomogeneityValue, 4},
     {"_StrucDiv2_HomogeneityValueNested", (DL_FUNC) &_StrucDiv2_HomogeneityValueNested, 5},
+    {"_StrucDiv2_HomogeneityValueRef", (DL_FUNC) &_StrucDiv2_HomogeneityValueRef, 1},
     {"_StrucDiv2_NormalizedEntropy", (DL_FUNC) &_StrucDiv2_NormalizedEntropy, 5},
     {"_StrucDiv2_NormalizedEntropyNested", (DL_FUNC) &_StrucDiv2_NormalizedEntropyNested, 6},
+    {"_StrucDiv2_ProbabilityMatrixHorizontal", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontal, 3},
     {"_StrucDiv2_ProbabilityMatrixHorizontalDynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontalDynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixHorizontalNested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontalNested, 4},
     {"_StrucDiv2_ProbabilityMatrixHorizontalPost", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontalPost, 6},
+    {"_StrucDiv2_ProbabilityMatrixDiagonal135", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal135, 3},
     {"_StrucDiv2_ProbabilityMatrixDiagonal135Dynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal135Dynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixDiagonal135Nested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal135Nested, 4},
     {"_StrucDiv2_ProbabilityMatrixDiagonal135Post", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal135Post, 6},
@@ -644,20 +826,26 @@ static const R_CallMethodDef CallEntries[] = {
     {"_StrucDiv2_ProbabilityMatrixDiagonal45Dynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal45Dynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixDiagonal45Nested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal45Nested, 4},
     {"_StrucDiv2_ProbabilityMatrixDiagonal45Post", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixDiagonal45Post, 6},
+    {"_StrucDiv2_ProbabilityMatrixVertical", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixVertical, 3},
     {"_StrucDiv2_ProbabilityMatrixVerticalDynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixVerticalDynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixVerticalNested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixVerticalNested, 4},
     {"_StrucDiv2_ProbabilityMatrixVerticalPost", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixVerticalPost, 6},
+    {"_StrucDiv2_ProbabilityMatrixAll", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAll, 3},
     {"_StrucDiv2_ProbabilityMatrixAllDynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllDynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixAllNested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllNested, 4},
     {"_StrucDiv2_ProbabilityMatrixAllPost", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixAllPost, 6},
     {"_StrucDiv2_WeightedEntropyAbsRank", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsRank, 4},
     {"_StrucDiv2_WeightedEntropyAbsRankNested", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsRankNested, 5},
+    {"_StrucDiv2_WeightedEntropyAbsRankRef", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsRankRef, 1},
     {"_StrucDiv2_WeightedEntropyAbsValue", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsValue, 4},
     {"_StrucDiv2_WeightedEntropyAbsValueNested", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsValueNested, 5},
+    {"_StrucDiv2_WeightedEntropyAbsValueRef", (DL_FUNC) &_StrucDiv2_WeightedEntropyAbsValueRef, 1},
     {"_StrucDiv2_WeightedEntropySqrRank", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrRank, 4},
     {"_StrucDiv2_WeightedEntropySqrRankNested", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrRankNested, 5},
+    {"_StrucDiv2_WeightedEntropySqrRankRef", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrRankRef, 1},
     {"_StrucDiv2_WeightedEntropySqrValue", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrValue, 4},
     {"_StrucDiv2_WeightedEntropySqrValueNested", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrValueNested, 5},
+    {"_StrucDiv2_WeightedEntropySqrValueRef", (DL_FUNC) &_StrucDiv2_WeightedEntropySqrValueRef, 1},
     {"_StrucDiv2_do_focal_get", (DL_FUNC) &_StrucDiv2_do_focal_get, 3},
     {NULL, NULL, 0}
 };
