@@ -110,7 +110,7 @@ strucDivDom <- function(x, dist = 1, angle = "all",
                                                            Values = values),
              "all" = .ProbabilityMatrixAll(xMat = vMat, d = dist, 
                                            Values = values),
-             .ProbabilityMatrixHorizontal(xMat = vMat, d = dist, 
+             .ProbabilityMatrixAll(xMat = vMat, d = dist, 
                                           Values = values)
       )
       

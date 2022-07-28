@@ -199,7 +199,7 @@ strucDiv <- function(x, wsl, dist = 1, angle = "all",
                                                                   display_progress = display_progress),
              "all" = .ProbabilityMatrixAllDynamic(vMat = vMat, d = dist, narm = narm,
                                                   display_progress = display_progress),
-             .ProbabilityMatrixHorizontalDynamic(vMat = vMat, d = dist, narm = narm,
+             .ProbabilityMatrixAllDynamic(vMat = vMat, d = dist, narm = narm,
                                                  display_progress = display_progress)
       )
       
