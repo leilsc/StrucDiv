@@ -140,7 +140,7 @@ List ProbabilityMatrixAllNested(NumericMatrix vMat, NumericMatrix vMat_big,
     // colnames(bla) = character;
     // rownames(bla) = character;
       
-    if( (Values.length() == 0) | (Values_big.length() == 0) ) continue;
+    if( (Values.length() == 0) || (Values_big.length() == 0) ) continue;
     
     // allocate the matrix we will return
     NumericMatrix out(Values.length(), Values.length());
@@ -151,25 +151,25 @@ List ProbabilityMatrixAllNested(NumericMatrix vMat, NumericMatrix vMat_big,
           for(int j = 0; j < out.ncol(); j++){
             
             if(b < xMat.ncol() - d){
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a, b+d)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a, b+d)){
                 out(i,j) += 1;
               }
             }
             
             if( (b >= d) & (a < xMat.nrow() - d) ){
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b-d)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b-d)){
                 out(i,j) += 1;
               }
             }
             
             if(a < xMat.nrow() - d){
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b)){
                 out(i,j) += 1;
               }
             }
             
             if( (b < xMat.ncol() - d) & (a < xMat.nrow() - d) ){
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b+d)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b+d)){
                 out(i,j) += 1;
               }
             }
@@ -206,25 +206,25 @@ List ProbabilityMatrixAllNested(NumericMatrix vMat, NumericMatrix vMat_big,
             
             
             if(b < xMat_big.ncol() - d){
-              if(Values_big(i) == xMat_big(a,b) & Values_big(j) == xMat_big(a, b+d)){
+              if(Values_big(i) == xMat_big(a,b) && Values_big(j) == xMat_big(a, b+d)){
                 out_big(i,j) += 1;
               }
             }
             
             if( (b >= d) & (a < xMat_big.nrow() - d) ){
-              if(Values_big(i) == xMat_big(a,b) & Values_big(j) == xMat_big(a+d, b-d)){
+              if(Values_big(i) == xMat_big(a,b) && Values_big(j) == xMat_big(a+d, b-d)){
                 out_big(i,j) += 1;
               }
             }
             
             if(a < xMat_big.nrow() - d){
-              if(Values_big(i) == xMat_big(a,b) & Values_big(j) == xMat_big(a+d, b)){
+              if(Values_big(i) == xMat_big(a,b) && Values_big(j) == xMat_big(a+d, b)){
                 out_big(i,j) += 1;
               }
             }
             
             if( (b < xMat_big.ncol() - d) & (a < xMat_big.nrow() - d) ){
-              if(Values_big(i) == xMat_big(a,b) & Values_big(j) == xMat_big(a+d, b+d)){
+              if(Values_big(i) == xMat_big(a,b) && Values_big(j) == xMat_big(a+d, b+d)){
                 out_big(i,j) += 1;
               }
             }

@@ -115,25 +115,25 @@ List ProbabilityMatrixAllPost(NumericMatrix vMat, NumericMatrix x, int d,
         for(int j = 0; j < out_big.ncol(); j++){
           
           if(b < x.ncol() - d){
-            if(Values_big(i) == x(a,b) & Values_big(j) == x(a, b+d)){
+            if(Values_big(i) == x(a,b) && Values_big(j) == x(a, b+d)){
               out_big(i,j) += 1;
             }
           }
           
           if( (b >= d) & (a < x.nrow() - d) ){
-            if(Values_big(i) == x(a,b) & Values_big(j) == x(a+d, b-d)){
+            if(Values_big(i) == x(a,b) && Values_big(j) == x(a+d, b-d)){
               out_big(i,j) += 1;
             }
           }
           
           if(a < x.nrow() - d){
-            if(Values_big(i) == x(a,b) & Values_big(j) == x(a+d, b)){
+            if(Values_big(i) == x(a,b) && Values_big(j) == x(a+d, b)){
               out_big(i,j) += 1;
             }
           }
           
           if( (b < x.ncol() - d) & (a < x.nrow() - d) ){
-            if(Values_big(i) == x(a,b) & Values_big(j) == x(a+d, b+d)){
+            if(Values_big(i) == x(a,b) && Values_big(j) == x(a+d, b+d)){
               out_big(i,j) += 1;
             }
           }
@@ -170,25 +170,25 @@ List ProbabilityMatrixAllPost(NumericMatrix vMat, NumericMatrix x, int d,
           for(int b = 0; b < xMat.ncol(); b++){
             
             if(b < xMat.ncol() - d){
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a, b+d)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a, b+d)){
                 out(i,j) += 1;
               }
             }
             
             if( (b >= d) & (a < xMat.nrow() - d) ){
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b-d)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b-d)){
                 out(i,j) += 1;
               }
             }
             
             if(a < xMat.nrow() - d){
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b)){
                 out(i,j) += 1;
               }
             }
             
             if( (b < xMat.ncol() - d) & (a < xMat.nrow() - d) ){
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b+d)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b+d)){
                 out(i,j) += 1;
               }
             }

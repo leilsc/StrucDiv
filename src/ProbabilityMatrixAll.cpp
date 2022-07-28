@@ -16,25 +16,25 @@ NumericMatrix ProbabilityMatrixAll(NumericMatrix xMat, int d, NumericVector Valu
         for(int b = 0; b < xMat.ncol(); b++){
           
           if(b < xMat.ncol() - d){
-            if(Values(i) == xMat(a,b) & Values(j) == xMat(a, b+d)){
+            if(Values(i) == xMat(a,b) && Values(j) == xMat(a, b+d)){
               out(i,j) += 1;
             }
           }
           
           if( (b >= d) & (a < xMat.nrow() - d) ){
-            if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b-d)){
+            if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b-d)){
               out(i,j) += 1;
             }
           }
           
           if(a < xMat.nrow() - d){
-            if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b)){
+            if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b)){
               out(i,j) += 1;
             }
           }
           
           if( (b < xMat.ncol() - d) & (a < xMat.nrow() - d) ){
-            if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b+d)){
+            if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b+d)){
               out(i,j) += 1;
             }
           }

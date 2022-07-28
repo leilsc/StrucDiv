@@ -134,7 +134,7 @@ List ProbabilityMatrixVerticalNested(NumericMatrix vMat, NumericMatrix vMat_big,
     
     LogicalVector v_big = is_na(rowvec_big);
     
-    if( (Values.length() == 0) | (Values_big.length() == 0) ) continue;
+    if( (Values.length() == 0) || (Values_big.length() == 0) ) continue;
     
 
     // allocate the matrix we will return
@@ -146,7 +146,7 @@ List ProbabilityMatrixVerticalNested(NumericMatrix vMat, NumericMatrix vMat_big,
           for(int b = 0; b < xMat.ncol(); b++){
             if(a < xMat.nrow() - d){
 
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b)){
                 out(i,j) += 1;
 
               }
@@ -181,7 +181,7 @@ List ProbabilityMatrixVerticalNested(NumericMatrix vMat, NumericMatrix vMat_big,
           for(int b = 0; b < xMat_big.ncol(); b++){
             if(a < xMat_big.nrow() - d){
               
-              if(Values_big(i) == xMat_big(a,b) & Values_big(j) == xMat_big(a+d, b)){
+              if(Values_big(i) == xMat_big(a,b) && Values_big(j) == xMat_big(a+d, b)){
                 out_big(i,j) += 1;
                 
               }

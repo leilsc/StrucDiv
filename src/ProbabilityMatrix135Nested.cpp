@@ -137,7 +137,7 @@ List ProbabilityMatrixDiagonal135Nested(NumericMatrix vMat, NumericMatrix vMat_b
     // colnames(bla) = character;
     // rownames(bla) = character;
     
-    if( (Values.length() == 0) | (Values_big.length() == 0) ) continue;
+    if( (Values.length() == 0) || (Values_big.length() == 0) ) continue;
     
    
     
@@ -150,7 +150,7 @@ List ProbabilityMatrixDiagonal135Nested(NumericMatrix vMat, NumericMatrix vMat_b
           for(int b = 0; b < xMat.ncol(); b++){
             if( (b < xMat.ncol() - d) & (a < xMat.nrow() - d) ){
 
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b+d)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b+d)){
                 out(i,j) += 1;
 
               }
@@ -186,7 +186,7 @@ List ProbabilityMatrixDiagonal135Nested(NumericMatrix vMat, NumericMatrix vMat_b
           for(int b = 0; b < xMat_big.ncol(); b++){
             if( (b < xMat_big.ncol() - d) & (a < xMat_big.nrow() - d) ){
               
-              if(Values_big(i) == xMat_big(a,b) & Values_big(j) == xMat_big(a+d, b+d)){
+              if(Values_big(i) == xMat_big(a,b) && Values_big(j) == xMat_big(a+d, b+d)){
                 out_big(i,j) += 1;
                 
               }

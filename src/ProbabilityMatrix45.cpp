@@ -15,7 +15,7 @@ NumericMatrix ProbabilityMatrixDiagonal45(NumericMatrix xMat, int d, NumericVect
         for(int b = 0; b < xMat.ncol(); b++){
           if( (b >= d) & (a < xMat.nrow() - d) ){
             
-            if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b-d)){
+            if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b-d)){
               out(i,j) += 1;
               
             }

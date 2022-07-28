@@ -118,7 +118,7 @@ List ProbabilityMatrixVerticalPost(NumericMatrix vMat, NumericMatrix x, int d,
           
           if(a < x.nrow() - d){
             
-            if(Values_big(i) == x(a,b) & Values_big(j) == x(a+d, b)){
+            if(Values_big(i) == x(a,b) && Values_big(j) == x(a+d, b)){
               out_big(i,j) += 1;
               
             }
@@ -161,7 +161,7 @@ List ProbabilityMatrixVerticalPost(NumericMatrix vMat, NumericMatrix x, int d,
           for(int b = 0; b < xMat.ncol(); b++){
             if(a < xMat.nrow() - d){
               
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b)){
                 out(i,j) += 1;
                 
               }

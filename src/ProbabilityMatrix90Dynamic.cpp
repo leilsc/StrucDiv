@@ -132,7 +132,7 @@ List ProbabilityMatrixVerticalDynamic(NumericMatrix vMat, int d, bool narm,
           for(int b = 0; b < xMat.ncol(); b++){
             if(a < xMat.nrow() - d){
 
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b)){
                 out(i,j) += 1;
 
               }

@@ -132,7 +132,7 @@ List ProbabilityMatrixHorizontalNested(NumericMatrix vMat, NumericMatrix vMat_bi
     
     LogicalVector v_big = is_na(rowvec_big);
     
-    if( (Values.length() == 0) | (Values_big.length() == 0) ) continue;
+    if( (Values.length() == 0) || (Values_big.length() == 0) ) continue;
 
     // allocate the matrix we will return
     NumericMatrix out(Values.length(), Values.length());
@@ -144,7 +144,7 @@ List ProbabilityMatrixHorizontalNested(NumericMatrix vMat, NumericMatrix vMat_bi
             
             if(b < xMat.ncol() - d){
 
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a, b+d)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a, b+d)){
                 out(i,j) += 1;
 
               }
@@ -181,7 +181,7 @@ List ProbabilityMatrixHorizontalNested(NumericMatrix vMat, NumericMatrix vMat_bi
           
           if(b < xMat_big.ncol() - d){
             
-            if(Values_big(i) == xMat_big(a,b) & Values_big(j) == xMat_big(a, b+d)){
+            if(Values_big(i) == xMat_big(a,b) && Values_big(j) == xMat_big(a, b+d)){
               out_big(i,j) += 1;
               
             }

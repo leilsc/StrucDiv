@@ -115,7 +115,7 @@ List ProbabilityMatrixDiagonal135Post(NumericMatrix vMat, NumericMatrix x, int d
           
           if( (b < x.ncol() - d) & (a < x.nrow() - d) ){
             
-            if(Values_big(i) == x(a,b) & Values_big(j) == x(a+d, b+d)){
+            if(Values_big(i) == x(a,b) && Values_big(j) == x(a+d, b+d)){
               out_big(i,j) += 1;
               
             }
@@ -158,7 +158,7 @@ List ProbabilityMatrixDiagonal135Post(NumericMatrix vMat, NumericMatrix x, int d
           for(int b = 0; b < xMat.ncol(); b++){
             if( (b < xMat.ncol() - d) & (a < xMat.nrow() - d) ){
               
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b+d)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b+d)){
                 out(i,j) += 1;
                 
               }
