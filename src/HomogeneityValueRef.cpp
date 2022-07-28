@@ -2,13 +2,12 @@
 using namespace Rcpp ;
 
 // [[Rcpp::export(name = ".HomogeneityValueRef")]]
-double HomogeneityValueRef( NumericMatrix PMat ){
+double HomogeneityValueRef( NumericMatrix PMat, NumericVector xVal ){
   
   double out;
   
   CharacterVector xrows = rownames(PMat);
   CharacterVector xVals = rownames(PMat);
-  NumericVector xVal = rownames(PMat);
   std::transform(xrows.begin(), xrows.end(), xVals.begin(), std::atoi);
   
   NumericMatrix HoMat(PMat.nrow(), PMat.ncol());

@@ -33,13 +33,13 @@
 #' @importFrom raster raster
 #' @export
 
-homogeneity_ref <- function(rank, delta, PMat) {
+homogeneity_ref <- function(rank, delta, PMat, xVal) {
   
   switch_function <- function(rank) {
     
     switch(EXPR = paste(rank),
            "TRUE" = .HomogeneityRankRef(PMat = PMat),
-           "FALSE" = .HomogeneityValueRef(PMat = PMat)
+           "FALSE" = .HomogeneityValueRef(PMat = PMat, xVal = xVal)
     )
   }
   
@@ -52,13 +52,13 @@ homogeneity_ref <- function(rank, delta, PMat) {
 #' @export
 
 
-dissimilarity_ref <- function(rank, delta, PMat) {
+dissimilarity_ref <- function(rank, delta, PMat, xVal) {
   
   switch_function <- function(rank) {
     
     switch(EXPR = paste(rank),
            "TRUE" = .DissimilarityRankRef(PMat = PMat),
-           "FALSE" = .DissimilarityValueRef(PMat = PMat)
+           "FALSE" = .DissimilarityValueRef(PMat = PMat, xVal = xVal)
     )
   }
   
@@ -70,13 +70,13 @@ dissimilarity_ref <- function(rank, delta, PMat) {
 #' @rdname Diversity_ref
 #' @export
 
-contrast_ref <- function(rank, delta, PMat) {
+contrast_ref <- function(rank, delta, PMat, xVal) {
   
   switch_function <- function(rank) {
     
     switch(EXPR = paste(rank),
            "TRUE" = .ContrastRankRef(PMat = PMat),
-           "FALSE" = .ContrastValueRef(PMat = PMat)    )
+           "FALSE" = .ContrastValueRef(PMat = PMat, xVal = xVal)    )
   }
   
   v <- switch_function(rank)
@@ -87,7 +87,7 @@ contrast_ref <- function(rank, delta, PMat) {
 #' @rdname Diversity_ref
 #' @export
 
-entropy_ref <- function(rank, delta, PMat) {
+entropy_ref <- function(rank, delta, PMat, xVal) {
   
   rank_delta <- paste(rank, delta)
   
@@ -95,12 +95,12 @@ entropy_ref <- function(rank, delta, PMat) {
   switch_function <- function(rank_delta) {
     
     switch(EXPR = rank_delta,
-           "FALSE 0" = .EntropyRef(PMat = PMat),
-           "TRUE 0" = .EntropyRef(PMat = PMat),
+           "FALSE 0" = .EntropyRef(PMat = PMat, xVal = xVal),
+           "TRUE 0" = .EntropyRef(PMat = PMat, xVal = xVal),
            "TRUE 1" = .WeightedEntropyAbsRankRef(PMat = PMat),
-           "FALSE 1" = .WeightedEntropyAbsValueRef(PMat = PMat),
+           "FALSE 1" = .WeightedEntropyAbsValueRef(PMat = PMat, xVal = xVal),
            "TRUE 2" = .WeightedEntropySqrRankRef(PMat = PMat),
-           "FALSE 2" = .WeightedEntropySqrValueRef(PMat = PMat)
+           "FALSE 2" = .WeightedEntropySqrValueRef(PMat = PMat, xVal = xVal)
             )
   }
   

@@ -2,13 +2,12 @@
 using namespace Rcpp ;
 
 // [[Rcpp::export(name = ".WeightedEntropyAbsValueRef")]]
-double WeightedEntropyAbsValueRef( NumericMatrix PMat ){
+double WeightedEntropyAbsValueRef( NumericMatrix PMat, NumericVector xVal ){
   
   double out;
   
   CharacterVector xrows = rownames(PMat);
   CharacterVector xVals = rownames(PMat);
-  NumericVector xVal = rownames(PMat);
   std::transform(xrows.begin(), xrows.end(), xVals.begin(), std::atoi);
   
   NumericMatrix EntMat(PMat.nrow(), PMat.ncol());

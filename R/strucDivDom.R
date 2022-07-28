@@ -120,7 +120,8 @@ strucDivDom <- function(x, dist = 1, angle = "all",
     rownames(SpatMat) = values
     colnames(SpatMat) = values
     
-    v <- do.call(fun, list(rank = rank, PMat = SpatMat, delta = delta))
+    v <- do.call(fun, list(rank = rank, xVal = values, 
+                           PMat = SpatMat, delta = delta))
 
   }
  

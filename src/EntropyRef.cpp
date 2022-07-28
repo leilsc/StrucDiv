@@ -2,13 +2,12 @@
 using namespace Rcpp ;
 
 // [[Rcpp::export(name = ".EntropyRef")]]
-double EntropyRef( NumericMatrix PMat ){
+double EntropyRef( NumericMatrix PMat, NumericVector xVal ){
   
   double out;
   
   CharacterVector xrows = rownames(PMat);
   CharacterVector xVals = rownames(PMat);
-  NumericVector xVal = rownames(PMat);
   std::transform(xrows.begin(), xrows.end(), xVals.begin(), std::atoi);
   
   NumericMatrix EntMat(PMat.nrow(), PMat.ncol());

@@ -2,13 +2,12 @@
 using namespace Rcpp ;
 
 // [[Rcpp::export(name = ".ContrastValueRef")]]
-double ContrastValueRef( NumericMatrix PMat ){
+double ContrastValueRef( NumericMatrix PMat, NumericVector xVal ){
   
   double out;
   
   CharacterVector xrows = rownames(PMat);
   CharacterVector xVals = rownames(PMat);
-  NumericVector xVal = rownames(PMat);
   std::transform(xrows.begin(), xrows.end(), xVals.begin(), std::atoi);
   
   NumericMatrix ConMat(PMat.nrow(), PMat.ncol());
