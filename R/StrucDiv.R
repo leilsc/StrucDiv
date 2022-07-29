@@ -1,5 +1,5 @@
-#' @name strucDiv
-#' @rdname strucDiv
+#' @name StrucDiv
+#' @rdname StrucDiv
 #' @title Quantify Spatial Structural Diversity in an Arbitrary Raster Layer 
 #' @description
 #' This is a wrapper function that returns a 'spatial structural diversity map' 
@@ -111,30 +111,41 @@
 #' @export
 #' @useDynLib StrucDiv2, .registration=TRUE
 
-strucDiv <- function(x, wsl, dist = 1, angle = "all",
-                     rank = FALSE, fun, delta = 0, 
+StrucDiv <- function(x, wsl, dist = 1, angle = c("all", "horizontal", "vertical", "diagonal45", "diagonal135"),
+                     rank = FALSE, fun, delta = c('0', '1', '2'), 
                      na.handling = na.pass, padValue = NA, 
                      aroundTheGlobe = FALSE, filename = "", display_progress = TRUE, ...) {
   
   dotArgs <- list(...)
+  
+  angle <- match.arg(angle)  
+  delta <- match.arg(delta)
+  
+  if(!is.function(na.handling)){
+    stop("na.handling must be either 'na.omit' or 'na.pass'")
+  }
+  
+  if(!(identical(na.handling, na.pass) | identical(na.handling, na.omit))){
+    stop("na.handling must be either 'na.omit' or 'na.pass'")
+  }
   
   if(isTRUE(aroundTheGlobe) & !isTRUE(.isGlobalLonLat(x))){
     warning("The raster image does not go around the globe.")
   }
   
   suppressWarnings(
-    if ( identical(na.handling, na.pass) && anyNA(raster::values(x)) ) {
+    if (identical(na.handling, na.pass) && anyNA(raster::values(x)) ) {
       warning("Raster layer contains missing values. Wherever there are missing values,
-             an NA will be returned. if you want to proceed without NAs, 
-             set na.handling = na.omit.")
+              an NA will be returned. if you want to proceed without NAs, 
+              set 'na.handling = na.omit'.")
     }
-  )
+      )
   
   out <- raster::raster(x)
   
   stopifnot(raster::hasValues(x))
   
-  if (wsl == 0) {
+  if (wsl <= 0) {
     stop("Window side length must be > 0.")
   }
   if (wsl %% 2 == 0) {
@@ -148,24 +159,33 @@ strucDiv <- function(x, wsl, dist = 1, angle = "all",
     stop("Distance value is too big.")
   }
   
-  if (!(angle %in% c("horizontal", "vertical", "diagonal45", "diagonal135", "all"))) {
+  if (angle != match.arg(angle)) {
     stop('Angle must be one of "horizontal", "vertical", "diagonal45", "diagonal135", or "all".')
+  }  
+  
+  if (delta != match.arg(delta)) {
+    stop('Angle must be one of "0", "1", or "2".')
   }
   
   if(!is.function(fun)){
     stop("This diversity metric is not available.")
   }
   
-  if ( !(delta %in% c(0,1,2)) ) {
-    stop("Delta must be 0, 1, or 2.")
+  if(!(identical(fun, entropy) | identical(fun, entropyNorm) | identical(fun, contrast) | identical(fun, dissimilarity) | identical(fun, homogeneity))){
+    stop("fun must be one of entropy, entropyNorm, contrast, dissimilarity or homogeneity.")
   }
-  
-  filename <- glue::trim(filename)
   
   if (raster::canProcessInMemory(out)) {
     
-    vMat <- getValuesWindow(x, wsl = wsl, padValue = padValue, 
-                                  aroundTheGlobe = aroundTheGlobe)
+    if(verbose == TRUE) {
+      vMat <- .getValuesWindow(x, wsl = wsl, padValue = padValue, 
+                               aroundTheGlobe = aroundTheGlobe)
+    }
+    else{
+      suppressMessages(vMat <- .getValuesWindow(x, wsl = wsl, padValue = padValue, 
+                                                aroundTheGlobe = aroundTheGlobe))
+    }
+    
     Hetx <- vMat
     
     suppressWarnings(
@@ -177,7 +197,7 @@ strucDiv <- function(x, wsl, dist = 1, angle = "all",
       else{
         
         narm <- 0
-      
+        
       }
     )
     
@@ -185,22 +205,18 @@ strucDiv <- function(x, wsl, dist = 1, angle = "all",
     switch_angle <- function(angle) {
       
       switch(angle,
-             "horizontal" = .ProbabilityMatrixHorizontalDynamic(vMat = vMat, d = dist, 
-                                                                narm = narm, 
-                                                                display_progress = display_progress),
-             "vertical" = .ProbabilityMatrixVerticalDynamic(vMat = vMat, d = dist, 
-                                                            narm = narm,
-                                                            display_progress = display_progress),
-             "diagonal45" = .ProbabilityMatrixDiagonal45Dynamic(vMat = vMat, d = dist, 
-                                                                narm = narm,
-                                                                display_progress = display_progress),
-             "diagonal135" = .ProbabilityMatrixDiagonal135Dynamic(vMat = vMat, d = dist, 
-                                                                  narm = narm,
-                                                                  display_progress = display_progress),
+             "horizontal" = .ProbabilityMatrixHorizontalDynamic(vMat = vMat, d = dist, narm = narm,
+                                                                display_progress = verbose),
+             "vertical" = .ProbabilityMatrixVerticalDynamic(vMat = vMat, d = dist, narm = narm,
+                                                            display_progress = verbose),
+             "diagonal45" = .ProbabilityMatrixDiagonal45Dynamic(vMat = vMat, d = dist, narm = narm,
+                                                                display_progress = verbose),
+             "diagonal135" = .ProbabilityMatrixDiagonal135Dynamic(vMat = vMat, d = dist, narm = narm,
+                                                                  display_progress = verbose),
              "all" = .ProbabilityMatrixAllDynamic(vMat = vMat, d = dist, narm = narm,
-                                                  display_progress = display_progress),
+                                                  display_progress = verbose),
              .ProbabilityMatrixAllDynamic(vMat = vMat, d = dist, narm = narm,
-                                                 display_progress = display_progress)
+                                          display_progress = verbose)
       )
       
     }
@@ -220,7 +236,7 @@ strucDiv <- function(x, wsl, dist = 1, angle = "all",
     }
     
     v <- do.call(fun, list(rank = rank, Hetx = Hetx, SpatMat = SpatMat, delta = delta,
-                           nrp = nrp, narm = narm, display_progress = display_progress))
+                           nrp = nrp, narm = narm, display_progress = verbose))
     
     out <- raster::setValues(out, v)
     return(out)
@@ -230,7 +246,7 @@ strucDiv <- function(x, wsl, dist = 1, angle = "all",
     }
     
   } else {
-    stop("Cannot process in memory.")
+    stop("Cannot proccess in memory.")
   }
   
-}
+    }
