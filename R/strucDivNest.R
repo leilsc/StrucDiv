@@ -98,7 +98,7 @@
 #' @param ncores integer. The number of cores the computation will be parallelized on.
 #' Parallelization is only available with blocks - both when they are used as prior, 
 #' and when they are simply used to cut the image.
-#' @param display_progress logical. If \code{display_progress = TRUE}, a progress bar will be visible.
+#' @param verbose logical. If \code{verbose = TRUE}, a progress bar will be visible.
 #' @param filename character. If the output raster should be written to a file, define file name (optional).
 #' @param ... possible further arguments.
 #' @importFrom raster raster
@@ -155,15 +155,12 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                          na.handling = na.pass, padValue = NA, 
                          aroundTheGlobe = FALSE, 
                          ncores = 1,
-                         display_progress = TRUE, 
+                         verbose = TRUE, 
                          filename = "", ...) {
   
   #browser()
   
   dotArgs <- list(...)
-  
-  angle <- match.arg(angle)  
-  delta <- match.arg(delta)
   
   if(!is.function(na.handling)){
     stop("na.handling must be either 'na.omit' or 'na.pass'")
@@ -297,7 +294,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                     rank = rank, fun = fun, delta = delta, 
                     na.handling = na.handling, padValue = padValue, 
                     aroundTheGlobe = aroundTheGlobe, filename = filename, 
-                    display_progress = display_progress)
+                    verbose = verbose)
     
   }
   
@@ -307,7 +304,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       stop("Distance value is too big.")
     }
     
-    if (angle != match.arg(angle)) {
+    if (!(angle %in% c("horizontal", "vertical", "diagonal45", "diagonal135", "all"))) {
       stop('Angle must be one of "horizontal", "vertical", "diagonal45", "diagonal135", or "all".')
     }  
     
@@ -323,7 +320,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       stop("fun must be one of entropy, entropyNorm, contrast, dissimilarity or homogeneity.")
     }
     
-    if (delta != match.arg(delta)) {
+    if ( !(delta %in% c(0,1,2)) ) {
       stop('Angle must be one of "0", "1", or "2".')
     }
     
@@ -342,27 +339,27 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                  "horizontal" = .ProbabilityMatrixHorizontalNested(vMat = vMat, 
                                                                    vMat_big = vMat_big,
                                                                    d = dist,
-                                                                   display_progress=display_progress),
+                                                                   display_progress=verbose),
                  "vertical" = .ProbabilityMatrixVerticalNested(vMat = vMat, 
                                                                vMat_big = vMat_big, 
                                                                d = dist,
-                                                               display_progress=display_progress),
+                                                               display_progress=verbose),
                  "diagonal45" = .ProbabilityMatrixDiagonal45Nested(vMat = vMat, 
                                                                    vMat_big = vMat_big,
                                                                    d = dist,
-                                                                   display_progress=display_progress),
+                                                                   display_progress=verbose),
                  "diagonal135" = .ProbabilityMatrixDiagonal135Nested(vMat = vMat, 
                                                                      vMat_big = vMat_big,
                                                                      d = dist,
-                                                                     display_progress=display_progress),
+                                                                     display_progress=verbose),
                  "all" = .ProbabilityMatrixAllNested(vMat = vMat, 
                                                      vMat_big = vMat_big,
                                                      d = dist,
-                                                     display_progress=display_progress),
+                                                     display_progress=verbose),
                  .ProbabilityMatrixAllNested(vMat = vMat,
                                              vMat_big = vMat_big,
                                              d = dist,
-                                             display_progress=display_progress)
+                                             display_progress=verbose)
           )
           
         }
@@ -397,7 +394,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
         SpatMat <- switch_angle(angle)
         
         v <- do.call(fun, list(rank = rank, Hetx = Hetx, vMat_big = vMat_big, SpatMat = SpatMat, delta = delta,
-                               nrp = nrp, narm = narm, display_progress = display_progress))
+                               nrp = nrp, narm = narm, display_progress = verbose))
         
         out <- raster::setValues(out, v)
         
@@ -424,27 +421,27 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                  "horizontal" = .ProbabilityMatrixHorizontalPost(vMat = vMat, 
                                                                  x = xMat, d = dist, 
                                                                  nrp = nrp, nrp_big = nrp_big,
-                                                                 display_progress=display_progress),
+                                                                 display_progress=verbose),
                  "vertical" = .ProbabilityMatrixVerticalPost(vMat = vMat, 
                                                              x = xMat, d = dist, 
                                                              nrp = nrp, nrp_big = nrp_big,
-                                                             display_progress=display_progress),
+                                                             display_progress=verbose),
                  "diagonal45" = .ProbabilityMatrixDiagonal45Post(vMat = vMat, 
                                                                  x = xMat, d = dist, 
                                                                  nrp = nrp, nrp_big = nrp_big,
-                                                                 display_progress=display_progress),
+                                                                 display_progress=verbose),
                  "diagonal135" = .ProbabilityMatrixDiagonal135Post(vMat = vMat, 
                                                                    x = xMat, d = dist, 
                                                                    nrp = nrp, nrp_big = nrp_big,
-                                                                   display_progress=display_progress),
+                                                                   display_progress=verbose),
                  "all" = .ProbabilityMatrixAllPost(vMat = vMat, 
                                                    x = xMat, d = dist, 
                                                    nrp = nrp, nrp_big = nrp_big,
-                                                   display_progress=display_progress),
+                                                   display_progress=verbose),
                  .ProbabilityMatrixAllPost(vMat = vMat, 
                                            x = xMat, d = dist, 
                                            nrp = nrp, nrp_big = nrp_big,
-                                           display_progress=display_progress)
+                                           display_progress=verbose)
           )
           
         }
@@ -470,7 +467,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
         SpatMat <- switch_angle(angle)
         
         v <- do.call(fun, list(rank = rank, Hetx = Hetx, SpatMat = SpatMat, delta = delta,
-                               nrp = nrp, narm = narm, display_progress = display_progress))
+                               nrp = nrp, narm = narm, display_progress = verbose))
         
         out <- raster::setValues(out, v)
         
@@ -484,17 +481,17 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
             
             switch(angle,
                    "horizontal" = .ProbabilityMatrixHorizontalDynamic(vMat = vMat, d = dist, narm = narm,
-                                                                      display_progress = display_progress),
+                                                                      display_progress = verbose),
                    "vertical" = .ProbabilityMatrixVerticalDynamic(vMat = vMat, d = dist, narm = narm,
-                                                                  display_progress = display_progress),
+                                                                  display_progress = verbose),
                    "diagonal45" = .ProbabilityMatrixDiagonal45Dynamic(vMat = vMat, d = dist, narm = narm,
-                                                                      display_progress = display_progress),
+                                                                      display_progress = verbose),
                    "diagonal135" = .ProbabilityMatrixDiagonal135Dynamic(vMat = vMat, d = dist, narm = narm,
-                                                                        display_progress = display_progress),
+                                                                        display_progress = verbose),
                    "all" = .ProbabilityMatrixAllDynamic(vMat = vMat, d = dist, narm = narm,
-                                                        display_progress = display_progress),
+                                                        display_progress = verbose),
                    .ProbabilityMatrixAllDynamic(vMat = vMat, d = dist, narm = narm,
-                                                       display_progress = display_progress)
+                                                       display_progress = verbose)
             )
             
           }
@@ -508,27 +505,27 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                    "horizontal" = .ProbabilityMatrixHorizontalNested(vMat = vMat, 
                                                                      vMat_big = vMat_big,
                                                                      d = dist,
-                                                                     display_progress=display_progress),
+                                                                     display_progress=verbose),
                    "vertical" = .ProbabilityMatrixVerticalNested(vMat = vMat, 
                                                                  vMat_big = vMat_big, 
                                                                  d = dist,
-                                                                 display_progress=display_progress),
+                                                                 display_progress=verbose),
                    "diagonal45" = .ProbabilityMatrixDiagonal45Nested(vMat = vMat, 
                                                                      vMat_big = vMat_big,
                                                                      d = dist,
-                                                                     display_progress=display_progress),
+                                                                     display_progress=verbose),
                    "diagonal135" = .ProbabilityMatrixDiagonal135Nested(vMat = vMat, 
                                                                        vMat_big = vMat_big,
                                                                        d = dist,
-                                                                       display_progress=display_progress),
+                                                                       display_progress=verbose),
                    "all" = .ProbabilityMatrixAllNested(vMat = vMat, 
                                                        vMat_big = vMat_big,
                                                        d = dist,
-                                                       display_progress=display_progress),
+                                                       display_progress=verbose),
                    .ProbabilityMatrixAllNested(vMat = vMat,
                                                vMat_big = vMat_big,
                                                d = dist,
-                                               display_progress=display_progress)
+                                               display_progress=verbose)
             )
             
           }
@@ -607,7 +604,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
         cl <- parallel::makePSOCKcluster(ncores)
         registerDoSNOW(cl)
         
-        if(display_progress){
+        if(verbose){
           pb <- txtProgressBar(max=rows, style=3)
           progress <- function(n) setTxtProgressBar(pb, n)
           opts <- list(progress=progress)

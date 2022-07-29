@@ -1,5 +1,5 @@
-#' @name StrucDiv
-#' @rdname StrucDiv
+#' @name strucDiv
+#' @rdname strucDiv
 #' @title Quantify Spatial Structural Diversity in an Arbitrary Raster Layer 
 #' @description
 #' This is a wrapper function that returns a 'spatial structural diversity map' 
@@ -65,7 +65,7 @@
 #' set \code{aroundTheGlobe = TRUE}, and the input raster will be 'glued together' from both sides
 #' to calculate structural diversity without edge effects.
 #' Defaults to \code{FALSE}.
-#' @param display_progress logical. If \code{display_progress = TRUE}, a progress bar will be visible.
+#' @param verbose logical. If \code{verbose = TRUE}, a progress bar will be visible.
 #' @param filename character. If the output raster should be written to a file, define file name (optional).
 #' @param ... possible further arguments.
 #' @importFrom raster raster
@@ -111,15 +111,12 @@
 #' @export
 #' @useDynLib StrucDiv2, .registration=TRUE
 
-StrucDiv <- function(x, wsl, dist = 1, angle = c("all", "horizontal", "vertical", "diagonal45", "diagonal135"),
-                     rank = FALSE, fun, delta = c('0', '1', '2'), 
+strucDiv <- function(x, wsl, dist = 1, angle = "all",
+                     rank = FALSE, fun, delta = 0, 
                      na.handling = na.pass, padValue = NA, 
-                     aroundTheGlobe = FALSE, filename = "", display_progress = TRUE, ...) {
+                     aroundTheGlobe = FALSE, filename = "", verbose = TRUE, ...) {
   
   dotArgs <- list(...)
-  
-  angle <- match.arg(angle)  
-  delta <- match.arg(delta)
   
   if(!is.function(na.handling)){
     stop("na.handling must be either 'na.omit' or 'na.pass'")
@@ -159,11 +156,11 @@ StrucDiv <- function(x, wsl, dist = 1, angle = c("all", "horizontal", "vertical"
     stop("Distance value is too big.")
   }
   
-  if (angle != match.arg(angle)) {
+  if (!(angle %in% c("horizontal", "vertical", "diagonal45", "diagonal135", "all"))) {
     stop('Angle must be one of "horizontal", "vertical", "diagonal45", "diagonal135", or "all".')
   }  
   
-  if (delta != match.arg(delta)) {
+  if ( !(delta %in% c(0,1,2)) ) {
     stop('Angle must be one of "0", "1", or "2".')
   }
   
@@ -178,11 +175,11 @@ StrucDiv <- function(x, wsl, dist = 1, angle = c("all", "horizontal", "vertical"
   if (raster::canProcessInMemory(out)) {
     
     if(verbose == TRUE) {
-      vMat <- .getValuesWindow(x, wsl = wsl, padValue = padValue, 
+      vMat <- getValuesWindow(x, wsl = wsl, padValue = padValue, 
                                aroundTheGlobe = aroundTheGlobe)
     }
     else{
-      suppressMessages(vMat <- .getValuesWindow(x, wsl = wsl, padValue = padValue, 
+      suppressMessages(vMat <- getValuesWindow(x, wsl = wsl, padValue = padValue, 
                                                 aroundTheGlobe = aroundTheGlobe))
     }
     
