@@ -162,6 +162,13 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
   
   dotArgs <- list(...)
   
+  angle <- match.arg(angle)  
+  delta <- match.arg(delta)
+  
+  if(!is.function(na.handling)){
+    stop("na.handling must be either 'na.omit' or 'na.pass'")
+  }
+  
   ## General warnings and errors!
   
   if(!is.logical(aroundTheGlobe)){
@@ -200,12 +207,12 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
   if (wslI > min(dim(out)[1:2])) {
     stop("Window must be smaller than the raster dimensions.")
   }
-  if (wslI == 0) {
+  if (wslI <= 0) {
     stop("Window side length must be > 0.")
   }
   
   if(!is.null(wslO)){
-    if (wslO == 0) {
+    if (wslO <= 0) {
       stop("Window side length must be > 0.")
     }
     if (wslO %% 2 == 0) {
@@ -300,9 +307,9 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       stop("Distance value is too big.")
     }
     
-    if (!(angle %in% c("horizontal", "vertical", "diagonal45", "diagonal135", "all"))) {
+    if (angle != match.arg(angle)) {
       stop('Angle must be one of "horizontal", "vertical", "diagonal45", "diagonal135", or "all".')
-    }
+    }  
     
     if(!is.logical(rank)){
       stop("rank mjust be either TRUE or FALSE")
@@ -312,8 +319,12 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       stop("This diversity metric is not available.")
     }
     
-    if ( !(delta %in% c(0,1,2)) ) {
-      stop("Delta must be 0, 1, or 2.")
+    if(!(identical(fun, entropy) | identical(fun, entropyNorm) | identical(fun, contrast) | identical(fun, dissimilarity) | identical(fun, homogeneity))){
+      stop("fun must be one of entropy, entropyNorm, contrast, dissimilarity or homogeneity.")
+    }
+    
+    if (delta != match.arg(delta)) {
+      stop('Angle must be one of "0", "1", or "2".')
     }
     
     if(!(is.numeric(padValue) | is.na(padValue))){
