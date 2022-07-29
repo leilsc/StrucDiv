@@ -196,20 +196,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// EntropyParallel
-double EntropyParallel(NumericVector Hetx, NumericMatrix PMat, bool narm, bool display_progress);
-RcppExport SEXP _StrucDiv2_EntropyParallel(SEXP HetxSEXP, SEXP PMatSEXP, SEXP narmSEXP, SEXP display_progressSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type Hetx(HetxSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
-    Rcpp::traits::input_parameter< bool >::type narm(narmSEXP);
-    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
-    rcpp_result_gen = Rcpp::wrap(EntropyParallel(Hetx, PMat, narm, display_progress));
-    return rcpp_result_gen;
-END_RCPP
-}
 // EntropyRef
 double EntropyRef(NumericMatrix PMat, NumericVector xVal);
 RcppExport SEXP _StrucDiv2_EntropyRef(SEXP PMatSEXP, SEXP xValSEXP) {
@@ -810,7 +796,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_StrucDiv2_DissimilarityValueRef", (DL_FUNC) &_StrucDiv2_DissimilarityValueRef, 2},
     {"_StrucDiv2_Entropy", (DL_FUNC) &_StrucDiv2_Entropy, 4},
     {"_StrucDiv2_EntropyNested", (DL_FUNC) &_StrucDiv2_EntropyNested, 5},
-    {"_StrucDiv2_EntropyParallel", (DL_FUNC) &_StrucDiv2_EntropyParallel, 4},
     {"_StrucDiv2_EntropyRef", (DL_FUNC) &_StrucDiv2_EntropyRef, 2},
     {"_StrucDiv2_HomogeneityRank", (DL_FUNC) &_StrucDiv2_HomogeneityRank, 4},
     {"_StrucDiv2_HomogeneityRankNested", (DL_FUNC) &_StrucDiv2_HomogeneityRankNested, 5},

@@ -11,19 +11,19 @@
 #' Takes 5 options: \code{"horizontal"}, \code{"vertical"}, \code{"diagonal45"}, \code{"diagonal135"}, \code{"all"}. 
 #' The direction-invariant version is \code{"all"}, which considers all of the 4 angles. Defaults to \code{"all"}.
 #' @param rank logical. Should pixel values be replaced with ranks in each GLCM? Defaults to \code{FALSE}.
-#' @param fun function, the structural diversity metric. Takes one of the following: \code{entropy_ref},
-#' \code{entropyNorm_ref}, \code{contrast_ref}, \code{dissimilarity_ref}, or \code{homogeneity_ref}. 
-#' Structural diversity entropy is \code{entropy_ref} with different \code{delta} parameters. Shannon entropy is employed, when \code{delta = 0}. 
+#' @param fun function, the structural diversity metric. Takes one of the following: \code{entropyDom},
+#' \code{entropyNormDom}, \code{contrastDom}, \code{dissimilarityDom}, or \code{homogeneityDom}. 
+#' Structural diversity entropy is \code{entropyDom} with different \code{delta} parameters. Shannon entropy is employed, when \code{delta = 0}. 
 #' Shannon entropy has a scale-dependent maximum when \code{\link{strucDiv}} is used, but this maximum may be violated in \code{\link{strucDivNest}}, 
 #' when information from different scales is combined, depending on the posterior probabilities of pixel value co-occurrences.
 #' Additionally, the value gradient is considered when \code{delta = 1} or \code{delta = 2}. 
 #' The values of structural diversity entropy with \code{delta = 1} or \code{delta = 2} are not restricted and depend on the values of the input raster.
-#' the metric \code{entropyNorm_ref} is Shannon entropy normalized over maximum entropy, which depends on the size of the moving window when no scales are nested. 
-#' When information from different scales is combined in \code{\link{strucDivNest}}, the metric \code{entropyNorm_ref} may be larger than 1, 
+#' the metric \code{entropyNormDom} is Shannon entropy normalized over maximum entropy, which depends on the size of the moving window when no scales are nested. 
+#' When information from different scales is combined in \code{\link{strucDivNest}}, the metric \code{entropyNormDom} may be larger than 1, 
 #' depending on the posterior probabilities of pixel value co-occurrences.
-#' The metrics \code{contrast_ref} and \code{dissimilarity_ref} consider the value gradient, their values are not restricted and depend on the values of the input raster.
-#' The metric \code{homogeneity_ref} quantifies the closeness of empirical probabilities to the diagonal and ranges between 0 and 1 when scales are not nested. 
-#' When information from different scales is combined in \code{\link{strucDivNest}}, the metric \code{homogeneity_ref} may be larger than 1, 
+#' The metrics \code{contrastDom} and \code{dissimilarityDom} consider the value gradient, their values are not restricted and depend on the values of the input raster.
+#' The metric \code{homogeneityDom} quantifies the closeness of empirical probabilities to the diagonal and ranges between 0 and 1 when scales are not nested. 
+#' When information from different scales is combined in \code{\link{strucDivNest}}, the metric \code{homogeneityDom} may be larger than 1, 
 #' depending on the posterior probabilities of pixel value co-occurrences.
 #' @param delta numeric, takes three options: \code{0}, \code{1}, or \code{2}. 
 #' The parameter \code{delta} is the difference weight, 
@@ -95,7 +95,7 @@ strucDivDom <- function(x, dist = 1, angle = "all",
     
     vMat <- as.matrix(values(x), nrow(x), ncol(x), byrow=TRUE)
     Hetx <- vMat
-    values <- unique(vMat)
+    values <- sort(unique(vMat))
     
     switch_angle <- function(angle) {
       

@@ -1,19 +1,19 @@
-#' @name Diversity_ref
-#' @rdname Diversity_ref
+#' @name DiversityDom
+#' @rdname DiversityDom
 #' @title Spatial Structural Diversity Metrics
 #' @description
-#' The functions \code{entropy_ref} , \code{entropyNorm_ref}, \code{contrast_ref}, \code{dissimilarity_ref} and \code{homogeneity_ref}
+#' The functions \code{entropyDom} , \code{entropyNormDom}, \code{contrastDom}, \code{dissimilarityDom} and \code{homogeneityDom}
 #' are the spatial structural diversity metrics used in the default configurations of \code{\link{strucDiv}} and \code{\link{strucDivNest}}. 
-#' Structural diversity entropy is \code{entropy_ref} with different \code{delta} parameters. Shannon entropy is employed, when \code{delta = 0}. 
+#' Structural diversity entropy is \code{entropyDom} with different \code{delta} parameters. Shannon entropy is employed, when \code{delta = 0}. 
 #' Shannon entropy has a window-dependent maximum when \code{\link{strucDiv}} is used, which may be violated when \code{\link{strucDivNest}} is used, 
 #' depending on the posterior probabilities of pixel value co-occurrences.
 #' Additionally, the value gradient is considered when \code{delta = 1} or \code{delta = 2}. 
 #' The values of structural diversity entropy with \code{delta = 1} or \code{delta = 2} are not restricted and depend on the values of the input raster.
-#' the metric \code{entropyNorm_ref} is Shannon entropy normalized over maximum entropy, which depends on the size of the moving window when no nesting is used. 
-#' The metric \code{entropyNorm_ref} ranges between 0 and 1, when \code{\link{strucDiv}} is used, but may be larger than 1 when \code{\link{strucDivNest}} is used, 
+#' the metric \code{entropyNormDom} is Shannon entropy normalized over maximum entropy, which depends on the size of the moving window when no nesting is used. 
+#' The metric \code{entropyNormDom} ranges between 0 and 1, when \code{\link{strucDiv}} is used, but may be larger than 1 when \code{\link{strucDivNest}} is used, 
 #' depending on the posterior probabilities of pixel value co-occurrences.
-#' The metrics \code{contrast_ref} and \code{dissimilarity_ref} consider the value gradient, their values are not restricted and depend on the values of the input raster.
-#' The metric \code{homogeneity_ref} quantifies the closeness of empirical probabilities to the diagonal and ranges between 0 and 1 when \code{\link{strucDiv}} is used, 
+#' The metrics \code{contrastDom} and \code{dissimilarityDom} consider the value gradient, their values are not restricted and depend on the values of the input raster.
+#' The metric \code{homogeneityDom} quantifies the closeness of empirical probabilities to the diagonal and ranges between 0 and 1 when \code{\link{strucDiv}} is used, 
 #' but may be larger than 1 when \code{\link{strucDivNest}} is used, depending on the posterior probabilities of pixel value co-occurrences.
 #' @param rank logical. Should values be replaced with ranks in each co-occurrence 
 #' matrix (GLCM)? Defaults to \code{FALSE}.
@@ -33,7 +33,7 @@
 #' @importFrom raster raster
 #' @export
 
-homogeneity_ref <- function(rank, delta, PMat, xVal) {
+homogeneityDom <- function(rank, delta, PMat, xVal) {
   
   switch_function <- function(rank) {
     
@@ -48,11 +48,11 @@ homogeneity_ref <- function(rank, delta, PMat, xVal) {
   
 }
 
-#' @rdname Diversity_ref
+#' @rdname DiversityDom
 #' @export
 
 
-dissimilarity_ref <- function(rank, delta, PMat, xVal) {
+dissimilarityDom <- function(rank, delta, PMat, xVal) {
   
   switch_function <- function(rank) {
     
@@ -67,10 +67,10 @@ dissimilarity_ref <- function(rank, delta, PMat, xVal) {
   
 }
 
-#' @rdname Diversity_ref
+#' @rdname DiversityDom
 #' @export
 
-contrast_ref <- function(rank, delta, PMat, xVal) {
+contrastDom <- function(rank, delta, PMat, xVal) {
   
   switch_function <- function(rank) {
     
@@ -84,10 +84,10 @@ contrast_ref <- function(rank, delta, PMat, xVal) {
   
 }
 
-#' @rdname Diversity_ref
+#' @rdname DiversityDom
 #' @export
 
-entropy_ref <- function(rank, delta, PMat, xVal) {
+entropyDom <- function(rank, delta, PMat, xVal) {
   
   rank_delta <- paste(rank, delta)
   
