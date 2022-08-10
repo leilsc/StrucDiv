@@ -47,6 +47,12 @@ Structural diversity is quantified based on these posterior probabilities.
 Structural diversity metrics are calculated on every element of the GLCM, 
 and their sum is assigned to the center pixel of the moving window. The final map is called a '(spatial) structural diversity map' and is returned as a raster layer. The output map represents structural diversity, quantified across different spatial scales, which are defined by the outer scale and the inner scale.
 
+
+### `strucDivDom`: Structural diversity quantification of the domain
+
+The function `strucDivDom` quantifies structural diversity of the domain and returns a list including the structural diversity values, the GLCM and the diversity matrix. Structural diversity is calculated for every element of the GLCM, which returns the diversity matrix. The sum of this matrix represents the structural diversity value of the area under consideration. The spatial arrangement of pixel values is defined by distance and angle, as explained above. The same structural diversity metrics are available that are available for `strucDiv` and `strucDivNest`, but they are named slightly different, for programming reasons. More specifically, entropy is called entropyDom, contrast is called contrastDom and so forth. The mathematical formulations remain the same and therefore we do not list them separately (see below).
+
+
 ## Spatial structural diversity metrics
 
 Spatial structural diversity metrics include: contrast, dissimilarity, homogeneity, entropy in different formulations, and normalized entropy. Structural diversity entropy includes a difference weight $\delta \in \{0, 1, 2\}$, which weighs the differences between pixel values  v$_{i}$ and v$_{j}$, using either absolute, or square weights. When $\delta$ = 0, structural diversity entropy corresponds to Shannon entropy [@Shannon]. Shannon entropy has a scale-specific maximum, however, when the `strucDivNest` function is used, this maximum may be violated, depending on the posterior probabilities of pixel value co-occurrences.
