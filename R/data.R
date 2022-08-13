@@ -45,4 +45,13 @@
 #' For further details, see \url{https://lpdaac.usgs.gov/products/mod13q1v006/}
 #' and \url{https://earthengine.google.com/}
 #'
+#' @examples
+#' # This dataset is essentially constructed via:
+#' nGrayLevels <- 15
+#' require(raster)
+#' ndvi <- raster(StrucDiv2::ndvi)
+#' ndvi15 <- cut(ndvi, breaks=seq(minValue(ndvi), maxValue(ndvi), len=nGrayLevels + 1), 
+#'               include.lowest=TRUE, right=FALSE)
+#' 
+
 "ndvi.15gl"
