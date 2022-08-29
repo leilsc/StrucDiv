@@ -2,9 +2,9 @@
 using namespace Rcpp ;
 
 // [[Rcpp::export(name = ".ContrastRankRef")]]
-double ContrastRankRef( NumericMatrix PMat ){
+NumericMatrix ContrastRankRef( NumericMatrix PMat ){
   
-  double out;
+  NumericMatrix out;
   
   CharacterVector xrows = rownames(PMat);
   CharacterVector xVals = rownames(PMat);
@@ -20,7 +20,7 @@ double ContrastRankRef( NumericMatrix PMat ){
     }
   }
   
-  out = sum(ConMat);
+  out = ConMat;
   
   return(out);
   

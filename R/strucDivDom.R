@@ -104,7 +104,7 @@ strucDivDom <- function(x, dist = 1, angle = "all",
                                                          Values = values),
              "vertical" = .ProbabilityMatrixVertical(xMat = vMat, d = dist, 
                                                      Values = values),
-             "diagonal45" = ProbabilityMatrixDiagonal45(xMat = vMat, d = dist, 
+             "diagonal45" = .ProbabilityMatrixDiagonal45(xMat = vMat, d = dist, 
                                                         Values = values),
              "diagonal135" = .ProbabilityMatrixDiagonal135(xMat = vMat, d = dist, 
                                                            Values = values),
@@ -125,7 +125,7 @@ strucDivDom <- function(x, dist = 1, angle = "all",
 
   }
  
-  out <- list(GLCM = SpatMat, reference = v)
+  out <- list(GLCM = SpatMat, metric_matrix = v, reference = sum(v))
   return(out)
   
 }

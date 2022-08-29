@@ -2,9 +2,9 @@
 using namespace Rcpp ;
 
 // [[Rcpp::export(name = ".HomogeneityValueRef")]]
-double HomogeneityValueRef( NumericMatrix PMat, NumericVector xVal ){
+NumericMatrix HomogeneityValueRef( NumericMatrix PMat, NumericVector xVal ){
   
-  double out;
+  NumericMatrix out;
   
   CharacterVector xrows = rownames(PMat);
   CharacterVector xVals = rownames(PMat);
@@ -19,7 +19,7 @@ double HomogeneityValueRef( NumericMatrix PMat, NumericVector xVal ){
     }
   }
   
-  out = sum(HoMat);
+  out = HoMat;
   
   return(out);
   

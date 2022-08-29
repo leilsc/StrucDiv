@@ -2,9 +2,9 @@
 using namespace Rcpp ;
 
 // [[Rcpp::export(name = ".DissimilarityValueRef")]]
-double DissimilarityValueRef( NumericMatrix PMat, NumericVector xVal ){
+NumericMatrix DissimilarityValueRef( NumericMatrix PMat, NumericVector xVal ){
   
-  double out;
+  NumericMatrix out;
   
   CharacterVector xrows = rownames(PMat);
   CharacterVector xVals = rownames(PMat);
@@ -20,7 +20,7 @@ double DissimilarityValueRef( NumericMatrix PMat, NumericVector xVal ){
     }
   }
   
-  out = sum(DisMat);
+  out = DisMat;
   
   return(out);
   

@@ -35,7 +35,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // ContrastRankRef
-double ContrastRankRef(NumericMatrix PMat);
+NumericMatrix ContrastRankRef(NumericMatrix PMat);
 RcppExport SEXP _StrucDiv2_ContrastRankRef(SEXP PMatSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -116,7 +116,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // DissimilarityRankRef
-double DissimilarityRankRef(NumericMatrix PMat);
+NumericMatrix DissimilarityRankRef(NumericMatrix PMat);
 RcppExport SEXP _StrucDiv2_DissimilarityRankRef(SEXP PMatSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -156,7 +156,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // DissimilarityValueRef
-double DissimilarityValueRef(NumericMatrix PMat, NumericVector xVal);
+NumericMatrix DissimilarityValueRef(NumericMatrix PMat, NumericVector xVal);
 RcppExport SEXP _StrucDiv2_DissimilarityValueRef(SEXP PMatSEXP, SEXP xValSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -197,7 +197,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // EntropyRef
-double EntropyRef(NumericMatrix PMat, NumericVector xVal);
+NumericMatrix EntropyRef(NumericMatrix PMat, NumericVector xVal);
 RcppExport SEXP _StrucDiv2_EntropyRef(SEXP PMatSEXP, SEXP xValSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -238,7 +238,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // HomogeneityRankRef
-double HomogeneityRankRef(NumericMatrix PMat);
+NumericMatrix HomogeneityRankRef(NumericMatrix PMat);
 RcppExport SEXP _StrucDiv2_HomogeneityRankRef(SEXP PMatSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -278,7 +278,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // HomogeneityValueRef
-double HomogeneityValueRef(NumericMatrix PMat, NumericVector xVal);
+NumericMatrix HomogeneityValueRef(NumericMatrix PMat, NumericVector xVal);
 RcppExport SEXP _StrucDiv2_HomogeneityValueRef(SEXP PMatSEXP, SEXP xValSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -635,7 +635,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // WeightedEntropyAbsRankRef
-double WeightedEntropyAbsRankRef(NumericMatrix PMat);
+NumericMatrix WeightedEntropyAbsRankRef(NumericMatrix PMat);
 RcppExport SEXP _StrucDiv2_WeightedEntropyAbsRankRef(SEXP PMatSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -675,7 +675,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // WeightedEntropyAbsValueRef
-double WeightedEntropyAbsValueRef(NumericMatrix PMat, NumericVector xVal);
+NumericMatrix WeightedEntropyAbsValueRef(NumericMatrix PMat, NumericVector xVal);
 RcppExport SEXP _StrucDiv2_WeightedEntropyAbsValueRef(SEXP PMatSEXP, SEXP xValSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -716,7 +716,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // WeightedEntropySqrRankRef
-double WeightedEntropySqrRankRef(NumericMatrix PMat);
+NumericMatrix WeightedEntropySqrRankRef(NumericMatrix PMat);
 RcppExport SEXP _StrucDiv2_WeightedEntropySqrRankRef(SEXP PMatSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -756,7 +756,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // WeightedEntropySqrValueRef
-double WeightedEntropySqrValueRef(NumericMatrix PMat, NumericVector xVal);
+NumericMatrix WeightedEntropySqrValueRef(NumericMatrix PMat, NumericVector xVal);
 RcppExport SEXP _StrucDiv2_WeightedEntropySqrValueRef(SEXP PMatSEXP, SEXP xValSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

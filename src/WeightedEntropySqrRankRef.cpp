@@ -2,9 +2,9 @@
 using namespace Rcpp ;
 
 // [[Rcpp::export(name = ".WeightedEntropySqrRankRef")]]
-double WeightedEntropySqrRankRef( NumericMatrix PMat ){
+NumericMatrix WeightedEntropySqrRankRef( NumericMatrix PMat ){
   
-  double out;
+  NumericMatrix out;
   
   CharacterVector xrows = rownames(PMat);
   CharacterVector xVals = rownames(PMat);
@@ -21,7 +21,7 @@ double WeightedEntropySqrRankRef( NumericMatrix PMat ){
     }
   }
   
-  out = sum(EntMat);
+  out = EntMat;
   
   return(out);
   

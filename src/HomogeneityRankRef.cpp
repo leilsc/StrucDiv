@@ -2,9 +2,9 @@
 using namespace Rcpp ;
 
 // [[Rcpp::export(name = ".HomogeneityRankRef")]]
-double HomogeneityRankRef( NumericMatrix PMat ){
+NumericMatrix HomogeneityRankRef( NumericMatrix PMat ){
   
-  double out;
+  NumericMatrix out;
   
   CharacterVector xrows = rownames(PMat);
   CharacterVector xVals = rownames(PMat);
@@ -20,7 +20,7 @@ double HomogeneityRankRef( NumericMatrix PMat ){
     }
   }
   
-  out = sum(HoMat);
+  out = HoMat;
   
   return(out);
   
