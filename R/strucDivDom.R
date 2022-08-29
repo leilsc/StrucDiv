@@ -132,7 +132,7 @@ strucDivDom <- function(x, dist = 1, angle = "all",
 
   }
   
-  out <- list(GLCM = SpatMat, metric_matrix = v, div = sum(v))
+  out <- list(GLCM = SpatMat, divMat = v, div = sum(v))
 
   return(out)
   
