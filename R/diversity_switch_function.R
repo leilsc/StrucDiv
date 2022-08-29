@@ -3,7 +3,7 @@
 #' @title Spatial Structural Diversity Metrics
 #' @description
 #' The functions \code{entropy} , \code{entropyNorm}, \code{contrast}, \code{dissimilarity} and \code{homogeneity}
-#' are the spatial structural diversity metrics used in the default configurations of \code{\link{strucDiv}} and \code{\link{strucDivNest}}. 
+#' are the (spatial) structural diversity metrics used in the default configurations of \code{\link{strucDiv}} and \code{\link{strucDivNest}}. 
 #' Structural diversity entropy is \code{entropy} with different \code{delta} parameters. Shannon entropy is employed, when \code{delta = 0}. 
 #' Shannon entropy has a window-dependent maximum when \code{\link{strucDiv}} is used, which may be violated when \code{\link{strucDivNest}} is used, 
 #' depending on the posterior probabilities of pixel value co-occurrences.
@@ -17,19 +17,21 @@
 #' but may be larger than 1 when \code{\link{strucDivNest}} is used, depending on the posterior probabilities of pixel value co-occurrences.
 #' @param rank logical. Should values be replaced with ranks in each co-occurrence 
 #' matrix (GLCM)? Defaults to \code{FALSE}.
-#' @param vMat_big matrix. The value matrix of the outer scale. Defaults to \code{NULL}, in which case no nesting is used.
+#' @param vMat_big matrix. The matrix containing the pixel values of the outer scale. 
+#' Defaults to \code{NULL}, in which case no prior information is used.
 #' @param SpatMat is the probability matrix that is returned by an internal function
 #' to the \code{\link{strucDiv}} and \code{\link{strucDivNest}} functions. 
 #' @param delta numeric, takes 3 options: \code{0}, \code{1}, or \code{2}. 
-#' The parameter \code{delta} is the difference weight parameter, 
-#' it defines how the differences between pixel values within a pixel pair should be weighted.  
-#' If \code{rank = TRUE}, delta defines how the differences between ranks should be weighted.  
+#' The \code{delta} parameter defines how the differences between pixel values within a pixel 
+#' pair are weighted.  
+#' If \code{rank = TRUE}, delta defines how the differences between ranks are weighted.  
 #' The default value is \code{0} (no weight). Set \code{delta = 1} for absolute weights, 
 #' or \code{delta = 2} for squared weights. 
 #' The \code{delta} parameter can only be set when the metric \code{entropy} is used. 
 #' The metric \code{dissimilarity} automatically employs \code{delta = 1}, and \code{contrast} employs \code{delta = 2}.
 #' @param nrp integer. The total number of pixel pairs. \code{nrp} is calculated internally by the 
-#' functions \code{\link{strucDiv}} and \code{\link{strucDivNest}} and passed to the diversity functions.
+#' functions \code{\link{strucDiv}} and \code{\link{strucDivNest}} and passed to the structural 
+#' diversity metric functions.
 #' @param SpatMat the GLCM that is returned by an internal function
 #' to the \code{\link{strucDiv}} and \code{\link{strucDivNest}} functions. 
 #' @param Hetx the structural diversity matrix that is returned by an internal function
@@ -37,11 +39,12 @@
 #' The structural diversity metric is calculated on every element
 #' of the GLCM, which generates the structural diversity matrix \code{Hetx}. The sum of this
 #' matrix is assigned to the center pixel of the moving window. 
-#' @param narm logical. Should NAs be removed? It is automatically set to 0 if \code{na.handling = na.pass}, 
+#' @param narm logical. Should NAs be removed? 
+#' \code{narm} is automatically set to 0 if \code{na.handling = na.pass}, 
 #' and to 1 if \code{na.handling = na.omit}.
 #' @param display_progress logical. Should a progress bar be displayed?
 #' @param ... possible further arguments.
-#' @details This function is used internally and is called 
+#' @details These functions are used internally and are called 
 #' as an argument to the \code{\link{strucDiv}} and \code{\link{strucDivNest}} functions.
 #' @importFrom raster raster
 #' @export

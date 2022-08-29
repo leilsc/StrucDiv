@@ -3,8 +3,8 @@
 #' @title Quantify Spatial Structural Diversity in an Arbitrary Raster Layer 
 #' @description
 #' This is a wrapper function that returns a 'spatial structural diversity map' 
-#' as a raster layer. 
-#' 'Spatial structural diversity' will hereafter be used synonymous to 'structural diversity'.
+#' as a raster layer. Spatial refers to horizontal, i.e. spatially explicit, and 
+#' 'spatial structural diversity' will hereafter be used synonymous to 'structural diversity'. 
 #' Pixels are considered as pairs in user-specified distances and angles. 
 #' Angles include horizontal and vertical direction, and the diagonals at 45° and 135°. 
 #' The direction-invariant version considers all angles. 
@@ -35,23 +35,22 @@
 #' @param rank logical. Should pixel values be replaced with ranks in each GLCM? Defaults to \code{FALSE}.
 #' @param fun function, the structural diversity metric. Takes one of the following: \code{entropy},
 #' \code{entropyNorm}, \code{contrast}, \code{dissimilarity}, or \code{homogeneity}. 
-#' Structural diversity entropy is entropy with different \code{delta} parameters. Shannon entropy is employed, when \code{delta = 0}. 
+#' Structural diversity entropy is entropy with different \code{delta} parameters. Shannon entropy is employed when \code{delta = 0}. 
 #' Shannon entropy has a scale-dependent maximum.
 #' Additionally, the value gradient is considered when \code{delta} = 1 or \code{delta} = 2. 
 #' The values of structural diversity entropy with \code{delta} = 1 or \code{delta} = 2 are not restricted and depend on the values of the input raster.
 #' The metric \code{entropyNorm} is Shannon entropy normalized over maximum entropy, which depends on the size of the moving window. 
 #' The metric \code{entropyNorm} ranges between 0 and 1.
 #' The metrics \code{contrast} and \code{dissimilarity} consider the value gradient, their values are not restricted and depend on the values of the input raster.
-#' the metric \code{homogeneity} quantifies the closeness of empirical probabilities to the diagonal and ranges between 0 and 1. 
+#' The metric \code{homogeneity} quantifies the closeness of empirical probabilities to the diagonal and ranges between 0 and 1. 
 #' The metric \code{homogeneity} is 1 when all pixel pairs are the same and approaches  0 as differences increase.
 #' @param delta numeric, takes three options: \code{0}, \code{1}, or \code{2}. 
-#' the parameter \code{delta} is the difference weight, 
-#' it defines how the differences between pixel values within a pixel pair should be weighted.  
+#' The \code{delta} parameter defines how the differences between pixel values within a pixel pair should be weighted.  
 #' If \code{rank = TRUE}, delta defines how the differences between ranks should be weighted.  
-#' The default value is \code{0} (no weight). Set \code{delta = 2} for absolute difference weight, 
-#' or \code{delta = 2} for squared difference weight. 
+#' The default value is \code{0} (no weight). Set \code{delta = 1} for absolute weight, 
+#' or \code{delta = 2} for squared weight. 
 #' The \code{delta} parameter can only be set when the metric \code{entropy} is used. 
-#' The metric \code{dissimilarity} automatically employs \code{delta = 2}, and \code{contrast} employs \code{delta = 2}.
+#' The metric \code{dissimilarity} automatically employs \code{delta = 1}, and \code{contrast} employs \code{delta = 2}.
 #' @param na.handling \code{na.omit} or \code{na.pass}. 
 #' If \code{na.handling = na.omit}, NAs are ignored, structural diversity metrics are calculated with less values. 
 #' In this case the GLCM does not sum to 1.
@@ -65,7 +64,7 @@
 #' set \code{aroundTheGlobe = TRUE}, and the input raster will be 'glued together' from both sides
 #' to calculate structural diversity without edge effects.
 #' Defaults to \code{FALSE}.
-#' @param verbose logical. If \code{verbose = TRUE}, a progress bar will be visible.
+#' @param verbose logical. If \code{verbose = TRUE}, a progress bar will be visible. Defaults to TRUE.
 #' @param filename character. If the output raster should be written to a file, define file name (optional).
 #' @param ... possible further arguments.
 #' @importFrom raster raster

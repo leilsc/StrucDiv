@@ -1,10 +1,14 @@
 #' @name strucDivDom
 #' @rdname strucDivDom
-#' @title Returns the reference value for the whole image and the gray level co-occurrence matrix
-#' @description
-#' Returns the reference value for the whole image and the gray level co-occurrence matrix
+#' @title Returns the structural diversity value, the gray level co-occurrence matrix (GLCM) and the structural diversity 
+#' matrix of the domain. 
+#' @description The function \code{strucDivDom} returns the spatial, i.e. horizontal, structural diversity value for the domain (i.e. the input raster). 
+#' 'Spatial structural diversity' will hereafter be used synonymous to 'structural diversity'.
+#' The function also returns the gray level co-occurrence matrix (GLCM) and the structural diversity matrix of 
+#' the domain. Structural diversity is calculated on every element of the GLCM,
+#' which generates the structural diversity matrix.
 #' @param x raster layer. Input raster layer for which 
-#' horizontal structural diversity should be calculated.
+#' structural diversity should be calculated.
 #' @param dist integer. The distance between two pixels that should be considered as a pair, 
 #' defaults to \code{dist = 1} (direct neighbors).
 #' @param angle string. The angle on which pixels should be considered as pairs. 
@@ -13,18 +17,17 @@
 #' @param rank logical. Should pixel values be replaced with ranks in each GLCM? Defaults to \code{FALSE}.
 #' @param fun function, the structural diversity metric. Takes one of the following: \code{entropyDom},
 #' \code{entropyNormDom}, \code{contrastDom}, \code{dissimilarityDom}, or \code{homogeneityDom}. 
-#' Structural diversity entropy is \code{entropyDom} with different \code{delta} parameters. Shannon entropy is employed, when \code{delta = 0}. 
-#' Shannon entropy has a scale-dependent maximum when \code{\link{strucDiv}} is used, but this maximum may be violated in \code{\link{strucDivNest}}, 
-#' when information from different scales is combined, depending on the posterior probabilities of pixel value co-occurrences.
-#' Additionally, the value gradient is considered when \code{delta = 1} or \code{delta = 2}. 
-#' The values of structural diversity entropy with \code{delta = 1} or \code{delta = 2} are not restricted and depend on the values of the input raster.
-#' the metric \code{entropyNormDom} is Shannon entropy normalized over maximum entropy, which depends on the size of the moving window when no scales are nested. 
-#' When information from different scales is combined in \code{\link{strucDivNest}}, the metric \code{entropyNormDom} may be larger than 1, 
-#' depending on the posterior probabilities of pixel value co-occurrences.
-#' The metrics \code{contrastDom} and \code{dissimilarityDom} consider the value gradient, their values are not restricted and depend on the values of the input raster.
-#' The metric \code{homogeneityDom} quantifies the closeness of empirical probabilities to the diagonal and ranges between 0 and 1 when scales are not nested. 
-#' When information from different scales is combined in \code{\link{strucDivNest}}, the metric \code{homogeneityDom} may be larger than 1, 
-#' depending on the posterior probabilities of pixel value co-occurrences.
+#' Structural diversity entropy is \code{entropyDom} with different \code{delta} parameters. 
+#' Shannon entropy is employed when \code{delta = 0}. 
+#' Shannon entropy has a scale-dependent maximum. Scale-dependent means dependent on the extent of he area within which
+#' structural diversity is quantified, because this area defines he total number of pixel pairs.
+#' The metric \code{entropyNormDom} is Shannon entropy normalized over scale-dependent maximum entropy. 
+#' Additionally, the value gradient is considered with \code{delta = 1} and \code{delta = 2}. 
+#' The values of structural diversity entropy with \code{delta = 1} or \code{delta = 2} are not restricted 
+#' and depend on the values of the input raster.
+#' The metrics \code{contrastDom} and \code{dissimilarityDom} consider the value gradient,
+#'  their values are not restricted and depend on the values of the input raster.
+#' The metric \code{homogeneityDom} quantifies the closeness of empirical probabilities to the diagonal and ranges between 0 and 1.
 #' @param delta numeric, takes three options: \code{0}, \code{1}, or \code{2}. 
 #' The parameter \code{delta} is the difference weight, 
 #' it defines how the differences between pixel values within a pixel pair should be weighted.  
@@ -35,9 +38,7 @@
 #' the metric \code{dissimilarity} automatically employs \code{delta = 1}, and \code{contrast} employs \code{delta = 2}.
 #' @param na.handling \code{na.omit} or \code{na.pass}. 
 #' If \code{na.handling = na.omit}, NAs are ignored and structural diversity metrics are calculated with less values. 
-#' If \code{na.handling = na.pass} and if there is at least one missing value inside the moving window,
-#' an NA is assigned to the center pixel. Therefore, the diversity map will contain more 
-#' NAs than the input raster layer.
+#' If \code{na.handling = na.pass} and if there is at least one missing value in the domain, an NA will be returned.
 #' Defaults to \code{na.pass}.
 #' @importFrom raster raster
 #' @importFrom raster setValues
@@ -48,11 +49,17 @@
 #' @importFrom glue trim
 #' @details The memory requirement of the function is determined 
 #' by \code{raster::canProcessInMemory()}. 
-#' If the raster file cannot be processed in memory, its size needs to be reduced before \code{\link{strucDivNest}} can be used. 
-#' @return The output is a (spatial) structural diversity map, returned as a raster layer 
-#' and a reference value returned as a float.
+#' If the raster file cannot be processed in memory, its size needs to be 
+#' reduced before \code{\link{strucDivDom}} can be used. 
+#' @return The output is a list containing the structural diversity value of the domain, which can be accessed with $div. 
+#' the list also contains the gray level co-occurrence matrix ($GLCM) and the structural diversity 
+#' matrix ($divMat) of the domain. 
 #' @examples
-#' 
+#' # Calculate entropy on NDVI data binned to 15 gray levels
+#' ndvi15 <- raster::raster(ndvi.15gl)
+#' ndvi15Dom <- strucDivDom(ndvi15, fun = entropyDom)
+#' ndvi15GLCM <- ndvi15Dom$GLCM
+#' ndvi15Div <- ndvi15Dom$div
 #' 
 #' @export
 
@@ -124,8 +131,9 @@ strucDivDom <- function(x, dist = 1, angle = "all",
                            PMat = SpatMat, delta = delta))
 
   }
- 
-  out <- list(GLCM = SpatMat, metric_matrix = v, reference = sum(v))
+  
+  out <- list(GLCM = SpatMat, metric_matrix = v, div = sum(v))
+
   return(out)
   
 }

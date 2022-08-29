@@ -1,33 +1,26 @@
-############################################################################################################################
+#============================================================================================
 #
-# getValuesWindow
+# StrucDiv::getValuesWindow
+# Modified function from raster package, raster:: getValuesFocal()
 #
-############################################################################################################################
-#
-# # Dependent Function from Raster package - modified
-#
-############################################################################################################################
-
-# GET NEIGHBOURHOOD VALUES FOR EACH PIXEL
-
-# Modified R Code from raster package - getValuesFocal
-# to retrieve values of defined neighbourhood
-# returns one row per pixel (row containing pixel neighbourhood (wsl)
-# currently programmed with NA padding
-
-############################################################################################################################
+#============================================================================================
 
 #' @name getValuesWindow
 #' @rdname getValuesWindow
-#' @title Get the values from a raster object centered at each pixel
-#' @description Modified R Code from raster package - getValuesFocal,
-#' to retrieve values of defined neighbourhood. Returns one row per pixel 
-#' (row containing pixel neighbourhood (wsl)
-#' @param x raster layer. Input raster layer for which 
-#' @param wsl integer. size of neighbourhood
-#' @param padValue atomic. If a pixel is on the edges of an image, what value should it be padded with.
-#' @param aroundTheGlobe logical. Does the image go around the globe.
-#' @return A matrix
+#' @title Retrieve pixel values of a defined area. 
+#' The area is defined by the size of a window, which is centered on one pixel.
+#' @description Modified R Code from raster package raster::getValuesFocal.
+#' Returns one row per pixel, which contains the values
+#' of the pixel neighborhood that is defined by the size of the window.
+#' The size of the window is defined by the window side length (wsl).
+#' The window is centered on one specific pixel.
+#' @param x raster layer. The input raster layer.
+#' @param wsl integer. The window side length. The window is defined by \code{wsl x wsl}.
+#' @param padValue atomic. If a pixel is on the edge of an image, padding should be used?
+#' Can be NA or a value.
+#' @param aroundTheGlobe logical. Does the image go around the globe?
+#' @return Returns a matrix.
+#' The matrix contains the values of the defined window centered on the respective pixel.
 #' @export
 
 getValuesWindow <- function(x, wsl, padValue, aroundTheGlobe, ...) {
