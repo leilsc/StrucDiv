@@ -598,7 +598,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
         rows <- length(RowIndex)
         
         cl <- parallel::makePSOCKcluster(ncores)
-        registerDoSNOW(cl)
+        doParallel::registerDoParallel(cl)
         
         if(verbose){
           pb <- txtProgressBar(max=rows, style=3)
