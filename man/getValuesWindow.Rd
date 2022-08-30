@@ -16,6 +16,8 @@ getValuesWindow(x, wsl, padValue, aroundTheGlobe, ...)
 Can be NA or a value.}
 
 \item{aroundTheGlobe}{logical. Does the image go around the globe?}
+
+\item{...}{possible further arguments.}
 }
 \value{
 Returns a matrix.

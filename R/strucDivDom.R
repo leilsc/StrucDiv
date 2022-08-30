@@ -36,10 +36,10 @@
 #' or \code{delta = 2} for square weights. 
 #' The \code{delta} parameter can only be set when the metric \code{entropy} is used. 
 #' the metric \code{dissimilarity} automatically employs \code{delta = 1}, and \code{contrast} employs \code{delta = 2}.
-#' @param na.handling \code{na.omit} or \code{na.pass}. 
 #' If \code{na.handling = na.omit}, NAs are ignored and structural diversity metrics are calculated with less values. 
 #' If \code{na.handling = na.pass} and if there is at least one missing value in the domain, an NA will be returned.
 #' Defaults to \code{na.pass}.
+#' @param ... possible further arguments.
 #' @importFrom raster raster
 #' @importFrom raster setValues
 #' @importFrom raster values
@@ -127,8 +127,21 @@ strucDivDom <- function(x, dist = 1, angle = "all",
     rownames(SpatMat) = values
     colnames(SpatMat) = values
     
+    rows <- nrow(x)
+    cols <- ncol(x)
+    
+    if (angle %in% c("horizontal", "vertical")) {
+      nrp <- 2*rows*(cols - dist)
+    }
+    if (angle %in% c("diagonal45", "diagonal135")) {
+      nrp <- (rows - dist) * 2 *(cols - dist)
+    }
+    if (angle == "all") {
+      nrp <- 4 * (rows - dist) * (2 * cols - dist)
+    }
+    
     v <- do.call(fun, list(rank = rank, xVal = values, 
-                           PMat = SpatMat, delta = delta))
+                           PMat = SpatMat, delta = delta, nrp = nrp))
 
   }
   

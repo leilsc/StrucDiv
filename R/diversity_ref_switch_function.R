@@ -36,7 +36,7 @@
 #' @importFrom raster raster
 #' @export
 
-homogeneityDom <- function(rank, delta, PMat, xVal) {
+homogeneityDom <- function(rank, delta, PMat, xVal, nrp) {
   
   switch_function <- function(rank) {
     
@@ -55,7 +55,7 @@ homogeneityDom <- function(rank, delta, PMat, xVal) {
 #' @export
 
 
-dissimilarityDom <- function(rank, delta, PMat, xVal) {
+dissimilarityDom <- function(rank, delta, PMat, xVal, nrp) {
   
   switch_function <- function(rank) {
     
@@ -73,7 +73,7 @@ dissimilarityDom <- function(rank, delta, PMat, xVal) {
 #' @rdname DiversityDom
 #' @export
 
-contrastDom <- function(rank, delta, PMat, xVal) {
+contrastDom <- function(rank, delta, PMat, xVal, nrp) {
   
   switch_function <- function(rank) {
     
@@ -90,10 +90,9 @@ contrastDom <- function(rank, delta, PMat, xVal) {
 #' @rdname DiversityDom
 #' @export
 
-entropyDom <- function(rank, delta, PMat, xVal) {
+entropyDom <- function(rank, delta, PMat, xVal, nrp) {
   
   rank_delta <- paste(rank, delta)
-  
   
   switch_function <- function(rank_delta) {
     
@@ -112,7 +111,15 @@ entropyDom <- function(rank, delta, PMat, xVal) {
   
 }
 
+#' @rdname Diversity
+#' @export
 
+entropyNormDom <- function(rank, delta, PMat, xVal, nrp) {
+
+  v <- .NormalizedEntropyRef( PMat = PMat, xVal = xVal, nrp = nrp )
+  return(v)
+
+}
 
 
 

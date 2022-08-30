@@ -104,6 +104,8 @@
 #' @importFrom Rcpp sourceCpp
 #' @importFrom stats na.omit na.pass
 #' @importFrom glue trim
+#' @importFrom utils setTxtProgressBar txtProgressBar
+#' @importFrom foreach foreach %dopar%
 #' @details The memory requirement of the function is determined 
 #' by \code{raster::canProcessInMemory()}. 
 #' If the raster file cannot be processed in memory, its size needs to be reduced before \code{\link{strucDivNest}} can be used. 

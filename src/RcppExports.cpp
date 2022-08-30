@@ -320,6 +320,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// NormalizedEntropyRef
+NumericMatrix NormalizedEntropyRef(NumericMatrix PMat, NumericVector xVal, double nrp);
+RcppExport SEXP _StrucDiv2_NormalizedEntropyRef(SEXP PMatSEXP, SEXP xValSEXP, SEXP nrpSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type PMat(PMatSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type xVal(xValSEXP);
+    Rcpp::traits::input_parameter< double >::type nrp(nrpSEXP);
+    rcpp_result_gen = Rcpp::wrap(NormalizedEntropyRef(PMat, xVal, nrp));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ProbabilityMatrixHorizontal
 NumericMatrix ProbabilityMatrixHorizontal(NumericMatrix xMat, int d, NumericVector Values);
 RcppExport SEXP _StrucDiv2_ProbabilityMatrixHorizontal(SEXP xMatSEXP, SEXP dSEXP, SEXP ValuesSEXP) {
@@ -805,6 +818,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_StrucDiv2_HomogeneityValueRef", (DL_FUNC) &_StrucDiv2_HomogeneityValueRef, 2},
     {"_StrucDiv2_NormalizedEntropy", (DL_FUNC) &_StrucDiv2_NormalizedEntropy, 5},
     {"_StrucDiv2_NormalizedEntropyNested", (DL_FUNC) &_StrucDiv2_NormalizedEntropyNested, 6},
+    {"_StrucDiv2_NormalizedEntropyRef", (DL_FUNC) &_StrucDiv2_NormalizedEntropyRef, 3},
     {"_StrucDiv2_ProbabilityMatrixHorizontal", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontal, 3},
     {"_StrucDiv2_ProbabilityMatrixHorizontalDynamic", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontalDynamic, 4},
     {"_StrucDiv2_ProbabilityMatrixHorizontalNested", (DL_FUNC) &_StrucDiv2_ProbabilityMatrixHorizontalNested, 4},

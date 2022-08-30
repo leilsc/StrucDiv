@@ -19,6 +19,7 @@
 #' @param padValue atomic. If a pixel is on the edge of an image, padding should be used?
 #' Can be NA or a value.
 #' @param aroundTheGlobe logical. Does the image go around the globe?
+#' @param ... possible further arguments.
 #' @return Returns a matrix.
 #' The matrix contains the values of the defined window centered on the respective pixel.
 #' @export
