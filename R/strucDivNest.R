@@ -696,6 +696,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
         }
         
         else{
+          row.num <- NULL
           suppressWarnings(
             out <- foreach( row.num = 1:rows, .packages = c("raster", "StrucDiv2") ) %dopar% {
                               

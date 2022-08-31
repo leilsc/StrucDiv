@@ -36,16 +36,11 @@
 #' or \code{delta = 2} for square weights. 
 #' The \code{delta} parameter can only be set when the metric \code{entropy} is used. 
 #' the metric \code{dissimilarity} automatically employs \code{delta = 1}, and \code{contrast} employs \code{delta = 2}.
-#' If \code{na.handling = na.omit}, NAs are ignored and structural diversity metrics are calculated with less values. 
-#' If \code{na.handling = na.pass} and if there is at least one missing value in the domain, an NA will be returned.
-#' Defaults to \code{na.pass}.
-#' @param ... possible further arguments.
 #' @importFrom raster raster
 #' @importFrom raster setValues
 #' @importFrom raster values
 #' @importFrom Rcpp evalCpp
 #' @importFrom Rcpp sourceCpp
-#' @importFrom stats na.omit na.pass
 #' @importFrom glue trim
 #' @details The memory requirement of the function is determined 
 #' by \code{raster::canProcessInMemory()}. 
@@ -64,7 +59,7 @@
 #' @export
 
 strucDivDom <- function(x, dist = 1, angle = "all",
-                        rank = FALSE, fun, delta = 0, ...) {
+                        rank = FALSE, fun, delta = 0) {
   
   #browser()
   

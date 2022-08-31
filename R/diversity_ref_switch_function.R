@@ -30,7 +30,8 @@
 #' The metric \code{dissimilarityDom} automatically employs \code{delta = 1}, and \code{contrastDom} employs \code{delta = 2}.
 #' @param PMat the GLCM that is returned by an internal function
 #' to the \code{\link{strucDivDom}} function. 
-#' @param xVal what is xval?
+#' @param xVal the unique values in the raster layer. calculated internally.
+#' @param nrp the normalizing constant calculated internally based on the raster dimensions.
 #' @details These functions are used internally and are called 
 #' as an argument to the \code{\link{strucDivDom}}.
 #' @importFrom raster raster
