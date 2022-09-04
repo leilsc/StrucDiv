@@ -787,8 +787,12 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
         
         parallel::stopCluster(cl)
         
-        num <- raster::mosaic(out[[1]]$num, out[[2]]$num, fun = sum)
-        denom <- raster::mosaic(out[[1]]$denom, out[[2]]$denom, fun = sum)
+        for(i in 1:length(out)) {
+          
+          num <- raster::mosaic(num, out[[i]]$num, fun = sum)
+          denom <- raster::mosaic(denom, out[[i]]$denom, fun = sum)
+          
+        }
         
         out <- num/denom
         
