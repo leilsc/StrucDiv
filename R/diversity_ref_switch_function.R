@@ -122,7 +122,8 @@ entropyNormDom <- function(rank, delta, PMat, xVal, nrp) {
 
 }
 
-
+#' @rdname Diversity
+#' @export
 
 
 

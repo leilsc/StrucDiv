@@ -36,7 +36,7 @@ Pixel values v$_{i}$ and v$_{j}$ that occur as a pair enter the GLCM as row and 
 
 Structural diversity metrics are calculated for every element of the GLCM, and their sum is assigned to the center pixel of the moving window and represents the structural diversity of the area captured by the window. The final map is called a '(spatial) structural diversity map' and it represents spatial structural diversity quantified on a particular scale.
 
-### `strucDivNest`: Cross-scale spatial structural diversity quantification
+### `strucDivNest`: Multi-scale spatial structural diversity quantification
 
 The `strucDivNest` function allows to combine information from two different scales with an empirical Bayesian approach and a Beta-Binomial model. Two scales are nested inside each other - a larger, outer scale and a smaller, inner scale. Three different nesting schemes are available, whereby the inner scale is always a moving window. 
 The outer scale can either be another mowing window, a block, or the domain (i.e. the input raster). 

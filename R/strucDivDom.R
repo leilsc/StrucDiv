@@ -61,9 +61,9 @@
 strucDivDom <- function(x, dist = 1, angle = "all",
                         rank = FALSE, fun, delta = 0) {
   
-  #browser()
+  # browser()
   
-  dotArgs <- list(...)
+  # dotArgs <- list(...)
   
   ## General warnings and errors!
   

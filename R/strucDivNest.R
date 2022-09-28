@@ -156,7 +156,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                          verbose = TRUE, 
                          filename = "", ...) {
   
-  #browser()
+ # browser()
   
   dotArgs <- list(...)
   
@@ -226,17 +226,31 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     warning("oLap is ignored because dimB = FALSE")
   }
   
-  if((dimB != FALSE)[1] & is.null(oLap)){
+  # if((dimB != FALSE)[1] & is.null(oLap)){
+  #   
+  #   minOL <- (wslI-1)
+  #   maxOL <- 0.5* min(dimB)
+  #   oLap <- floor((maxOL-minOL)/2 + minOL)
+  #   warning("oLap is calculated to lie in the middle of its min and max values 
+  #           because it was not specified.")
+  #   
+  # }
+  
+  if((dimB != FALSE)[1] & is.null(wslO) & is.null(oLap)){
     
-    minOL <- (wslI-1)
-    maxOL <- 0.5* min(dimB)
-    oLap <- floor((maxOL-minOL)/2 + minOL)
-    warning("oLap is calculated to lie in the middle of its min and max values 
-            because it was not specified.")
+    oLap <- (wslI-1)
+    warning("Minimum overlap (wslI-1) is used, because oLap was not specified.")
     
   }
   
-  if(!is.null(oLap) & is.numeric(dimB)){
+  if((dimB != FALSE)[1] & is.numeric(wslO) &  is.null(oLap)){ 
+    
+    oLap <- (wslO-1)
+    warning("Minimum overlap (wslO-1) is used, because oLap was not specified.")
+    
+  }
+  
+  if(!is.null(oLap) & is.numeric(dimB) & is.null(wslO)){ ### should it not be is.numeric(oLap)?
     
     if (oLap < (wslI-1)) {
       stop("Overlap is too small. The overlap must be oLap >= wslI-1.")
@@ -249,7 +263,20 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     
   }
   
-  if(is.numeric(dimB) & is.null(oLap)){
+  if(!is.null(oLap) & is.numeric(dimB) & is.numeric(wslO)){ ### should it not be is.numeric(oLap)?
+    
+    if (oLap < (wslO-1)) {
+      stop("Overlap is too small. The overlap must be oLap >= wslO-1.")
+      
+    }
+    
+    if ( oLap > floor(dimB[1]/2) ) {
+      stop("Overlap is too big. Please input an overlap of at most half the window size.")
+    }
+    
+  }
+  
+  if(is.numeric(dimB) & is.null(oLap)){ ### is this not the same case as in dimB != FALSE)[1] line239? Can this be removed?
     stop("You must specify overlap.")
   }
   
@@ -263,7 +290,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
   
   if(priorB == FALSE & is.numeric(dimB[1])) {
     
-    warning("Blocks are only used for parallelization. 
+    warning("Blocks are only used for parallelization and only if ncores > 1. 
           If you want to use blocks for prior information, set priorB = TRUE.")
     
   }
