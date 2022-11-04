@@ -1,7 +1,7 @@
 Type: Package
-Package: StrucDiv2
+Package: StrucDiv
 Title: Spatial Structural Diversity Quantification in Raster Data
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Leila", "Schuh", email = "l.schuh@posteo.net", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-5646-7767")),
     person("Reinhard", "Furrer", email = "reinhard.furrer@math.uzh.ch", role = "aut", comment = c(ORCID = "0000-0002-6319-2332")),

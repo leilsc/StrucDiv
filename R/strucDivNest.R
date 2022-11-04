@@ -226,16 +226,6 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     warning("oLap is ignored because dimB = FALSE")
   }
   
-  # if((dimB != FALSE)[1] & is.null(oLap)){
-  #   
-  #   minOL <- (wslI-1)
-  #   maxOL <- 0.5* min(dimB)
-  #   oLap <- floor((maxOL-minOL)/2 + minOL)
-  #   warning("oLap is calculated to lie in the middle of its min and max values 
-  #           because it was not specified.")
-  #   
-  # }
-  
   if((dimB != FALSE)[1] & is.null(wslO) & is.null(oLap)){
     
     oLap <- (wslI-1)
@@ -250,7 +240,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     
   }
   
-  if(!is.null(oLap) & is.numeric(dimB) & is.null(wslO)){ ### should it not be is.numeric(oLap)?
+  if(!is.null(oLap) & is.numeric(dimB) & is.null(wslO)){ 
     
     if (oLap < (wslI-1)) {
       stop("Overlap is too small. The overlap must be oLap >= wslI-1.")
@@ -263,7 +253,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
     
   }
   
-  if(!is.null(oLap) & is.numeric(dimB) & is.numeric(wslO)){ ### should it not be is.numeric(oLap)?
+  if(!is.null(oLap) & is.numeric(dimB) & is.numeric(wslO)){ 
     
     if (oLap < (wslO-1)) {
       stop("Overlap is too small. The overlap must be oLap >= wslO-1.")
@@ -274,10 +264,6 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
       stop("Overlap is too big. Please input an overlap of at most half the window size.")
     }
     
-  }
-  
-  if(is.numeric(dimB) & is.null(oLap)){ ### is this not the same case as in dimB != FALSE)[1] line239? Can this be removed?
-    stop("You must specify overlap.")
   }
   
   if(!is.logical(priorB)){

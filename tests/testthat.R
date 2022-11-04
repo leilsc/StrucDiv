@@ -1,4 +1,4 @@
 library(testthat)
-library(StrucDiv2)
+library(StrucDiv)
 
-test_check("StrucDiv2")
+test_check("StrucDiv")
