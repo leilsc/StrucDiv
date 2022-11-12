@@ -620,7 +620,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
           progress <- function(n) setTxtProgressBar(pb, n)
           opts <- list(progress=progress)
           suppressWarnings(
-            out <- foreach( row.num = 1:rows, .packages = c("raster", "StrucDiv2"),
+            out <- foreach( row.num = 1:rows, .packages = c("raster", "StrucDiv"),
                             .options.snow=opts) %dopar% {
                               
                               for (j in 1:length(ColIndex)) {
@@ -652,11 +652,11 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                                 vMat_big = NULL
                                 
                                 if(!is.null(wslO)) {
-                                  suppressMessages( vMat_big <- StrucDiv2::getValuesWindow(blockra, wsl = wslO, padValue = NA,
+                                  suppressMessages( vMat_big <- StrucDiv::getValuesWindow(blockra, wsl = wslO, padValue = NA,
                                                                                            aroundTheGlobe = aroundTheGlobe) )
                                 }
                                 
-                                vMat <- StrucDiv2::getValuesWindow(blockra, wsl = wslI, padValue = NA, 
+                                vMat <- StrucDiv::getValuesWindow(blockra, wsl = wslI, padValue = NA, 
                                                                    aroundTheGlobe = aroundTheGlobe)
                                 Hetx <- vMat
                                 
@@ -711,7 +711,7 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
         else{
           row.num <- NULL
           suppressWarnings(
-            out <- foreach( row.num = 1:rows, .packages = c("raster", "StrucDiv2") ) %dopar% {
+            out <- foreach( row.num = 1:rows, .packages = c("raster", "StrucDiv") ) %dopar% {
                               
                               for (j in 1:length(ColIndex)) {
                                 block <- raster::getValuesBlock(x = x, row = RowIndex[row.num], nrows = dimB[1],
@@ -742,11 +742,11 @@ strucDivNest <- function(x, wslI = NULL, wslO = NULL, dimB = FALSE, oLap = NULL,
                                 vMat_big = NULL
                                 
                                 if(!is.null(wslO)) {
-                                  suppressMessages( vMat_big <- StrucDiv2::getValuesWindow(blockra, wsl = wslO, padValue = NA,
+                                  suppressMessages( vMat_big <- StrucDiv::getValuesWindow(blockra, wsl = wslO, padValue = NA,
                                                                                            aroundTheGlobe = aroundTheGlobe) )
                                 }
                                 
-                                vMat <- StrucDiv2::getValuesWindow(blockra, wsl = wslI, padValue = NA, 
+                                vMat <- StrucDiv::getValuesWindow(blockra, wsl = wslI, padValue = NA, 
                                                                    aroundTheGlobe = aroundTheGlobe)
                                 Hetx <- vMat
                                 

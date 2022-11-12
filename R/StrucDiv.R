@@ -108,7 +108,7 @@
 #' raster::plot(sde_ndvi)
 #' 
 #' @export
-#' @useDynLib StrucDiv2, .registration=TRUE
+#' @useDynLib StrucDiv, .registration=TRUE
 
 strucDiv <- function(x, wsl, dist = 1, angle = "all",
                      rank = FALSE, fun, delta = 0, 
