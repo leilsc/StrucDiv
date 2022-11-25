@@ -156,7 +156,7 @@ List ProbabilityMatrixAllNested(NumericMatrix vMat, NumericMatrix vMat_big,
               }
             }
             
-            if( (b >= d) & (a < xMat.nrow() - d) ){
+            if( (b >= d) && (a < xMat.nrow() - d) ){
               if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b-d)){
                 out(i,j) += 1;
               }
@@ -168,7 +168,7 @@ List ProbabilityMatrixAllNested(NumericMatrix vMat, NumericMatrix vMat_big,
               }
             }
             
-            if( (b < xMat.ncol() - d) & (a < xMat.nrow() - d) ){
+            if( (b < xMat.ncol() - d) && (a < xMat.nrow() - d) ){
               if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b+d)){
                 out(i,j) += 1;
               }
@@ -211,7 +211,7 @@ List ProbabilityMatrixAllNested(NumericMatrix vMat, NumericMatrix vMat_big,
               }
             }
             
-            if( (b >= d) & (a < xMat_big.nrow() - d) ){
+            if( (b >= d) && (a < xMat_big.nrow() - d) ){
               if(Values_big(i) == xMat_big(a,b) && Values_big(j) == xMat_big(a+d, b-d)){
                 out_big(i,j) += 1;
               }
@@ -223,7 +223,7 @@ List ProbabilityMatrixAllNested(NumericMatrix vMat, NumericMatrix vMat_big,
               }
             }
             
-            if( (b < xMat_big.ncol() - d) & (a < xMat_big.nrow() - d) ){
+            if( (b < xMat_big.ncol() - d) && (a < xMat_big.nrow() - d) ){
               if(Values_big(i) == xMat_big(a,b) && Values_big(j) == xMat_big(a+d, b+d)){
                 out_big(i,j) += 1;
               }

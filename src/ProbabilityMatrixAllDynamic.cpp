@@ -137,7 +137,7 @@ List ProbabilityMatrixAllDynamic(NumericMatrix vMat, int d, bool narm,
             }
           }
 
-          if( (b >= d) & (a < xMat.nrow() - d) ){
+          if( (b >= d) && (a < xMat.nrow() - d) ){
             if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b-d)){
               out(i,j) += 1;
             }
@@ -149,7 +149,7 @@ List ProbabilityMatrixAllDynamic(NumericMatrix vMat, int d, bool narm,
             }
           }
 
-          if( (b < xMat.ncol() - d) & (a < xMat.nrow() - d) ){
+          if( (b < xMat.ncol() - d) && (a < xMat.nrow() - d) ){
             if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b+d)){
               out(i,j) += 1;
             }

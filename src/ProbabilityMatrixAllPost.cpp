@@ -120,7 +120,7 @@ List ProbabilityMatrixAllPost(NumericMatrix vMat, NumericMatrix x, int d,
             }
           }
           
-          if( (b >= d) & (a < x.nrow() - d) ){
+          if( (b >= d) && (a < x.nrow() - d) ){
             if(Values_big(i) == x(a,b) && Values_big(j) == x(a+d, b-d)){
               out_big(i,j) += 1;
             }
@@ -132,7 +132,7 @@ List ProbabilityMatrixAllPost(NumericMatrix vMat, NumericMatrix x, int d,
             }
           }
           
-          if( (b < x.ncol() - d) & (a < x.nrow() - d) ){
+          if( (b < x.ncol() - d) && (a < x.nrow() - d) ){
             if(Values_big(i) == x(a,b) && Values_big(j) == x(a+d, b+d)){
               out_big(i,j) += 1;
             }
@@ -175,7 +175,7 @@ List ProbabilityMatrixAllPost(NumericMatrix vMat, NumericMatrix x, int d,
               }
             }
             
-            if( (b >= d) & (a < xMat.nrow() - d) ){
+            if( (b >= d) && (a < xMat.nrow() - d) ){
               if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b-d)){
                 out(i,j) += 1;
               }
@@ -187,7 +187,7 @@ List ProbabilityMatrixAllPost(NumericMatrix vMat, NumericMatrix x, int d,
               }
             }
             
-            if( (b < xMat.ncol() - d) & (a < xMat.nrow() - d) ){
+            if( (b < xMat.ncol() - d) && (a < xMat.nrow() - d) ){
               if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b+d)){
                 out(i,j) += 1;
               }

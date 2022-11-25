@@ -142,9 +142,9 @@ List ProbabilityMatrixDiagonal45Nested(NumericMatrix vMat, NumericMatrix vMat_bi
       for(int j = 0; j < out.ncol(); j++){
         for(int a = 0; a < xMat.nrow(); a++){
           for(int b = 0; b < xMat.ncol(); b++){
-            if( (b >= d) & (a < xMat.nrow() - d) ){
+            if( (b >= d) && (a < xMat.nrow() - d) ){
 
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a+d, b-d)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b-d)){
                 out(i,j) += 1;
 
               }
@@ -177,9 +177,9 @@ List ProbabilityMatrixDiagonal45Nested(NumericMatrix vMat, NumericMatrix vMat_bi
       for(int j = 0; j < out_big.ncol(); j++){
         for(int a = 0; a < xMat_big.nrow(); a++){
           for(int b = 0; b < xMat_big.ncol(); b++){
-            if( (b >= d) & (a < xMat_big.nrow() - d) ){
+            if( (b >= d) && (a < xMat_big.nrow() - d) ){
               
-              if(Values_big(i) == xMat_big(a,b) & Values_big(j) == xMat_big(a+d, b-d)){
+              if(Values_big(i) == xMat_big(a,b) && Values_big(j) == xMat_big(a+d, b-d)){
                 out_big(i,j) += 1;
                 
               }

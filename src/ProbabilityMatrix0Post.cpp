@@ -157,7 +157,7 @@ List ProbabilityMatrixHorizontalPost(NumericMatrix vMat, NumericMatrix x, int d,
             
             if(b < xMat.ncol() - d){
               
-              if(Values(i) == xMat(a,b) & Values(j) == xMat(a, b+d)){
+              if(Values(i) == xMat(a,b) && Values(j) == xMat(a, b+d)){
                 out(i,j) += 1;
                 
               }

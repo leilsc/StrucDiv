@@ -21,7 +21,7 @@ NumericMatrix ProbabilityMatrixAll(NumericMatrix xMat, int d, NumericVector Valu
             }
           }
           
-          if( (b >= d) & (a < xMat.nrow() - d) ){
+          if( (b >= d) && (a < xMat.nrow() - d) ){
             if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b-d)){
               out(i,j) += 1;
             }
@@ -33,7 +33,7 @@ NumericMatrix ProbabilityMatrixAll(NumericMatrix xMat, int d, NumericVector Valu
             }
           }
           
-          if( (b < xMat.ncol() - d) & (a < xMat.nrow() - d) ){
+          if( (b < xMat.ncol() - d) && (a < xMat.nrow() - d) ){
             if(Values(i) == xMat(a,b) && Values(j) == xMat(a+d, b+d)){
               out(i,j) += 1;
             }
