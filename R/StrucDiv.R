@@ -97,13 +97,10 @@
 #'     na.handling = na.pass, rank = FALSE)
 #' raster::plot(dissim_b)
 #' 
-#' # Calculate shannon entropy on NDVI data binned to 15 gray levels
-#' ndvi.15gl <- raster::raster(ndvi.15gl)
-#' entropy_ndvi15 <- strucDiv(ndvi.15gl, wsl = 5, fun = entropy, na.handling = na.pass, rank = FALSE)
-#' raster::plot(entropy_ndvi15)
-#' 
 #' # Calculate structural diversity entropy with delta = 2 on NDVI data binned to 15 gray levels
-#' sde_ndvi15 <- strucDiv(ndvi.15gl, wsl = 3, fun = entropy, delta = 2, na.handling = na.pass, rank = FALSE)
+#' ndvi.15gl <- raster::raster(ndvi.15gl)
+#' sde_ndvi15 <- strucDiv(ndvi.15gl, wsl = 3, fun = entropy, delta = 2, na.handling = na.pass, 
+#'     rank = FALSE)
 #' raster::plot(sde_ndvi15)
 #' 
 #' @export
