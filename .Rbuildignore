@@ -4,3 +4,4 @@ CommentsRF.md
 README.Rmd
 testdat.tif
 testv2.R
+^\.gitlab-ci\.yml$
