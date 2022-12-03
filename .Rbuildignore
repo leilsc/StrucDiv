@@ -5,3 +5,4 @@ README.Rmd
 testdat.tif
 testv2.R
 ^\.gitlab-ci\.yml$
+^tic\.R$
