@@ -8,7 +8,7 @@ job:
     - export DATE=$(date '+%d-%m')
 
     # install dependencies
-    - R -q -e 'install.packages("tic")'
+    - R -q -e 'options(repos = c(ropensci = "https://ropensci.r-universe.dev", getOptions("repos"))); install.packages("tic")'
     - R -q -e 'tic::before_install()'
     - R -q -e 'tic::install()'
 
