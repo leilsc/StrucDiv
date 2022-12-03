@@ -58,7 +58,7 @@
 #' @format A matrix with 90 rows and 90 columns. Simulated patches.
 #'
 #' \describe{
-#' \item{\code{Simulated random patches}} {The background is random structure, depicting no spatial correlation, and structure is also random within patches.}
+#' \item{\code{Simulated random patches}}{The background is random structure, depicting no spatial correlation, and structure is also random within patches.}
 #' \item{\code{Value range}}{Data contains 20 gray levels.}
 #' }
 #'
