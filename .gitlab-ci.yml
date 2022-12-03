@@ -7,6 +7,9 @@ job:
     # create a unique env var for the cache.
     - export DATE=$(date '+%d-%m')
 
+    # allow installing apt packages
+    - sudo apt update
+
     # install dependencies
     - R -q -e 'options(repos = c(ropensci = "https://ropensci.r-universe.dev", getOption("repos"))); install.packages("tic")'
     - R -q -e 'tic::before_install()'
