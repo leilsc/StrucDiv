@@ -2,8 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-R/RcppExports.R
-man/*.Rd
 man/.Rapp.history
 data/.Rapp.history
 tests/.Rapp.history
